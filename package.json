@@ -8,6 +8,10 @@
     "node": ">=10.16.3"
   },
   "scripts": {
+    "prettier": "prettier -c *.ts **/*.ts",
+    "prettier-write": "npm run prettier -- --write",
+    "lint": "eslint --ext .ts ./",
+    "lint-fix": "npm run lint -- --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
