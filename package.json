@@ -44,5 +44,8 @@
   },
   "dependencies": {
     "rpc-request": "^3.0.1"
+  },
+  "directories": {
+    "test": "test"
   }
 }
