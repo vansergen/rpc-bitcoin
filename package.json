@@ -1,0 +1,27 @@
+{
+  "name": "rpc-bitcoin",
+  "version": "1.0.0",
+  "description": "A TypeScript library to make RPC and HTTP REST requests to Bitcoin Core",
+  "main": "build/index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=10.16.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vansergen/rpc-bitcoin.git"
+  },
+  "keywords": [
+    "RPC",
+    "Bitcoin"
+  ],
+  "author": "Sergey Bakulin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vansergen/rpc-bitcoin/issues"
+  },
+  "homepage": "https://github.com/vansergen/rpc-bitcoin#readme"
+}
