@@ -9,6 +9,8 @@
   },
   "types": "build/index.d.ts",
   "scripts": {
+    "build": "tsc",
+    "install": "npm run build",
     "prettier": "prettier -c *.ts **/*.ts",
     "prettier-write": "npm run prettier -- --write",
     "lint": "eslint --ext .ts ./",
