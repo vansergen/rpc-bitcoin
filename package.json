@@ -13,7 +13,7 @@
     "prettier-write": "npm run prettier -- --write",
     "lint": "eslint --ext .ts ./",
     "lint-fix": "npm run lint -- --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts"
   },
   "repository": {
     "type": "git",
