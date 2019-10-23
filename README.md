@@ -1,11 +1,33 @@
 # rpc-bitcoin [![Build Status](https://travis-ci.com/vansergen/rpc-bitcoin.svg?token=cg5dVMovG8Db6p5Qzzps&branch=master)](https://travis-ci.com/vansergen/rpc-bitcoin)
 
-A TypeScript library to make RPC and HTTP REST requests to Bitcoin Core.
+A [TypeScript](https://www.typescriptlang.org) library to make RPC and HTTP REST requests to [Bitcoin Core](https://bitcoin.org/en/bitcoin-core/).
 
 ## Installation
 
 ```bash
 npm install rpc-bitcoin
+```
+
+## [RPC](https://bitcoin.org/en/developer-reference#remote-procedure-calls-rpcs)
+
+```javascript
+const { RPCClient } = require("rpc-bitcoin");
+const url = "http://192.168.0.10";
+const user = "rpcuser";
+const pass = "rpcpassword";
+const port = 18832;
+const timeout = 10000;
+const client = new RPCClient({ url, port, timeout, user, pass });
+```
+
+- batch
+
+```javascript
+const response = await client.batch([
+  { method: "getbestblockhash", id: 1 },
+  { method: "help", params: { command: "help" }, id: "custom-id" },
+  { method: "getzmqnotifications", params: {}, id: 2 }
+]);
 ```
 
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
