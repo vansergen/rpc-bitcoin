@@ -99,6 +99,12 @@ const blockhash =
 const data = await client.getchaintxstats({ nblocks, blockhash });
 ```
 
+- [`getdifficulty`](https://bitcoin.org/en/developer-reference#getdifficulty)
+
+```javascript
+const difficulty = await client.getdifficulty();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
