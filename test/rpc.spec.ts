@@ -1,4 +1,4 @@
-import { RPCClient } from "../.";
+import { RPCClient, GetBlockParams } from "../.";
 import * as nock from "nock";
 import * as assert from "assert";
 
@@ -132,7 +132,7 @@ suite("RPCClient", () => {
       const blockhash =
         "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
       const verbosity = 2;
-      const params = { blockhash, verbosity };
+      const params: GetBlockParams = { blockhash, verbosity };
       const request = { params, method: "getblock", id, jsonrpc };
       const result = {
         hash:
@@ -265,7 +265,7 @@ suite("RPCClient", () => {
         .times(1)
         .basicAuth(auth)
         .reply(200, response);
-      const data = await client.getblock({ blockhash, verbosity });
+      const data = await client.getblock(params);
       assert.deepStrictEqual(data, result);
     });
 
@@ -329,6 +329,22 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, response);
       const data = await client.getblockcount();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getblockhash()", async () => {
+      const height = 1583782;
+      const params = { height };
+      const request = { params, method: "getblockhash", id, jsonrpc };
+      const result =
+        "00000000a4991fe43933f0a0bde13b6b22b4308442453845903151004e9cc0a5";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getblockhash(params);
       assert.deepStrictEqual(data, result);
     });
   });
