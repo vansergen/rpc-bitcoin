@@ -248,4 +248,11 @@ export class RPCClient extends RESTClient {
   async verifychain({ checklevel = 3, nblocks = 6 } = {}) {
     return this.rpc("verifychain", { checklevel, nblocks });
   }
+
+  /**
+   * @description Verifies that a proof points to a transaction in a block, returning the transaction it commits to and throwing an RPC error if the block is not in our best chain.
+   */
+  async verifytxoutproof({ proof }: { proof: string }) {
+    return this.rpc("verifytxoutproof", { proof });
+  }
 }
