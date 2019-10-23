@@ -121,6 +121,13 @@ const txid = "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b";
 const data = await client.getmempooldescendants({ txid, verbose });
 ```
 
+- [`getmempoolentry`](https://bitcoin.org/en/developer-reference#getmempoolentry)
+
+```javascript
+const txid = "0629e01f05088728b089715f247de82a160428c06d6c85484adab2aa66574ace";
+const data = await client.getmempoolentry({ txid });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
