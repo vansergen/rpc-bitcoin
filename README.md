@@ -32,10 +32,19 @@ const response = await client.batch([
 
 ### Blockchain
 
-- [getBestBlockHash](https://bitcoin.org/en/developer-reference#getbestblockhash)
+- [`getbestblockhash`](https://bitcoin.org/en/developer-reference#getbestblockhash)
 
 ```javascript
 const hex = await client.getbestblockhash();
+```
+
+- [`getblock`](https://bitcoin.org/en/developer-reference#getblock)
+
+```javascript
+const blockhash =
+  "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+const verbosity = 2;
+const block = await client.getblock({ blockhash, verbosity });
 ```
 
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
