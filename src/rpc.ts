@@ -145,4 +145,11 @@ export class RPCClient extends RESTClient {
   async getmempoolancestors({ txid, verbose = false }: GetMemPoolParams) {
     return this.rpc("getmempoolancestors", { txid, verbose });
   }
+
+  /**
+   * @description If txid is in the mempool, returns all in-mempool descendants.
+   */
+  async getmempooldescendants({ txid, verbose = false }: GetMemPoolParams) {
+    return this.rpc("getmempooldescendants", { txid, verbose });
+  }
 }
