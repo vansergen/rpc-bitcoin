@@ -84,6 +84,12 @@ const stats = ["txs", "time"];
 const info = await client.getblockstats({ hash_or_height, stats });
 ```
 
+- [`getchaintips`](https://bitcoin.org/en/developer-reference#getchaintips)
+
+```javascript
+const tips = await client.getchaintips();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
