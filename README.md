@@ -182,6 +182,12 @@ const height = 1000;
 const result = await client.pruneblockchain({ height });
 ```
 
+- [`savemempool`](https://bitcoin.org/en/developer-reference#savemempool)
+
+```javascript
+const result = await client.savemempool();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
