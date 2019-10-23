@@ -890,4 +890,33 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
   });
+
+  suite("Zmq", () => {
+    test(".getzmqnotifications()", async () => {
+      const params = {};
+      const request = { params, method: "getzmqnotifications", id, jsonrpc };
+      const result = [
+        {
+          type: "pubhashblock",
+          address: "tcp://127.0.0.1:3333",
+          hwm: 1000
+        },
+        { type: "pubhashtx", address: "tcp://127.0.0.1:3333", hwm: 1000 },
+        {
+          type: "pubrawblock",
+          address: "tcp://127.0.0.1:3333",
+          hwm: 1000
+        },
+        { type: "pubrawtx", address: "tcp://127.0.0.1:3333", hwm: 1000 }
+      ];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getzmqnotifications();
+      assert.deepStrictEqual(data, result);
+    });
+  });
 });
