@@ -159,4 +159,11 @@ export class RPCClient extends RESTClient {
   async getmempoolentry({ txid }: TxId) {
     return this.rpc("getmempoolentry", { txid });
   }
+
+  /**
+   * @description Returns details on the active state of the TX memory pool.
+   */
+  async getmempoolinfo() {
+    return this.rpc("getmempoolinfo");
+  }
 }
