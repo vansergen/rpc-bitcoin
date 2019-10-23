@@ -105,6 +105,14 @@ const data = await client.getchaintxstats({ nblocks, blockhash });
 const difficulty = await client.getdifficulty();
 ```
 
+- [`getmempoolancestors`](https://bitcoin.org/en/developer-reference#getmempoolancestors)
+
+```javascript
+const verbose = true;
+const txid = "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a";
+const data = await client.getmempoolancestors({ txid, verbose });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
