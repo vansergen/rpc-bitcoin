@@ -707,5 +707,25 @@ suite("RPCClient", () => {
       const data = await client.gettxout(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".gettxoutproof()", async () => {
+      const txids = [
+        "e50c4bf07ca16e5089bf8c4f4b4d12b4e6b2bb47b09d533ebaa395342c756b95"
+      ];
+      const blockhash =
+        "000000005a9b7656024e9d1a2a0e559b91dcc5756048ce4904ba877686f0eecc";
+      const params = { txids, blockhash };
+      const request = { params, method: "gettxoutproof", id, jsonrpc };
+      const result =
+        "00000020e798ee174759ba2eb4f57c8055eaadb903aeef74a407878265361d00000000005c70c7f197058b8ff6f06d9f144497d1801e057e06735a56b658ac78ff915516fa7ab05dffff001d32384563dd00000009eeeb7a022e70291fe3d8d5186615358d45107c10d71a212459b30fe73174494f956b752c3495a3ba3e539db047bbb2e6b4124d4b4f8cbf89506ea17cf04b0ce5864f91edb21f1918fb1031d5545c7b835fb82d8cdc87f1df76808c599bbcb4e372e0788a9ce2c9b2f1a07305b7bea5e1fca0b19f77d919e51e2e72e438c19df5a953ce7bad42e1c78372ad2df199a08c26153f7846f6cc95c4615572bc997b45803b803c49e6298dec1a9029c32addac44f2abbc8c496def1f47a6ff55d8f90901b66efccdea0dcb52c26d610c4f2ac0b1e699ee4606918ff9901c317919038a5a3f3cedf7d664a2891fe1e116dc52e9ca9166e4e8a6398b10072412ef3893693508204127c87c8c025dded104f34ceeb44958095571907e6787615929cbc8cd03ff0200";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.gettxoutproof(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
