@@ -161,6 +161,12 @@ const blockhash =
 const data = await client.gettxoutproof({ txids, blockhash });
 ```
 
+- [`gettxoutsetinfo`](https://bitcoin.org/en/developer-reference#gettxoutsetinfo)
+
+```javascript
+const info = await client.gettxoutsetinfo();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
