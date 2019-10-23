@@ -134,6 +134,13 @@ const data = await client.getmempoolentry({ txid });
 const info = await client.getmempoolinfo();
 ```
 
+- [`getrawmempool`](https://bitcoin.org/en/developer-reference#getrawmempool)
+
+```javascript
+const verbose = true;
+const data = await client.getrawmempool({ verbose });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
