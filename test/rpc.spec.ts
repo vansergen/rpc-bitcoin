@@ -676,5 +676,36 @@ suite("RPCClient", () => {
       const data = await client.getrawmempool(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".gettxout()", async () => {
+      const txid =
+        "d2f6b1d1844e483ce350a4a22fbaef36c31ebe88730415b7408c1f34b834fab5";
+      const n = 1;
+      const include_mempool = true;
+      const params = { txid, n, include_mempool };
+      const request = { params, method: "gettxout", id, jsonrpc };
+      const result = {
+        bestblock:
+          "000000000000006b3157f2f7d8cda21be0204863c93521e9afa05615436deb71",
+        confirmations: 0,
+        value: 76.67255676,
+        scriptPubKey: {
+          asm: "OP_HASH160 f2420e17b443ea418ec4c6ac97affaafd48eca70 OP_EQUAL",
+          hex: "a914f2420e17b443ea418ec4c6ac97affaafd48eca7087",
+          reqSigs: 1,
+          type: "scripthash",
+          addresses: ["2NFLAeHuBzrMfqQHfCtnKErNJSF3fqysUhF"]
+        },
+        coinbase: false
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.gettxout(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
