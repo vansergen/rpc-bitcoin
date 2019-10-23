@@ -45,6 +45,8 @@ export type GetTxOutParams = TxId & {
   include_mempool?: boolean;
 };
 
+export type GetTxOutProofParams = { txids: string[]; blockhash?: string };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -184,5 +186,12 @@ export class RPCClient extends RESTClient {
    */
   async gettxout({ txid, n, include_mempool = true }: GetTxOutParams) {
     return this.rpc("gettxout", { txid, n, include_mempool });
+  }
+
+  /**
+   * @description Returns a hex-encoded proof that "txid" was included in a block.
+   */
+  async gettxoutproof({ txids, blockhash }: GetTxOutProofParams) {
+    return this.rpc("gettxoutproof", { txids, blockhash });
   }
 }
