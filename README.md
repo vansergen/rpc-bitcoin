@@ -59,6 +59,13 @@ const info = await client.getblockchaininfo();
 const count = await client.getblockcount();
 ```
 
+- [`getblockhash`](https://bitcoin.org/en/developer-reference#getblockhash)
+
+```javascript
+const height = 1583782;
+const hash = await client.getblockhash({ height });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
