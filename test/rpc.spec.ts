@@ -318,5 +318,18 @@ suite("RPCClient", () => {
       const data = await client.getblockchaininfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getblockcount()", async () => {
+      const request = { params: {}, method: "getblockcount", id, jsonrpc };
+      const result = 1583782;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getblockcount();
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
