@@ -53,6 +53,12 @@ const block = await client.getblock({ blockhash, verbosity });
 const info = await client.getblockchaininfo();
 ```
 
+- [`getblockcount`](https://bitcoin.org/en/developer-reference#getblockcount)
+
+```javascript
+const count = await client.getblockcount();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
