@@ -16,6 +16,8 @@ export type JSONRPC = {
 
 export type Verbosity = { verbosity: 0 | 1 | 2 };
 
+export type Height = { height: number };
+
 export type Blockhash = { blockhash: string };
 
 export type GetBlockParams = Verbosity & Blockhash;
@@ -75,5 +77,12 @@ export class RPCClient extends RESTClient {
    */
   async getblockcount() {
     return this.rpc("getblockcount");
+  }
+
+  /**
+   * @description Returns hash of block in best-block-chain at height provided.
+   */
+  async getblockhash({ height }: Height) {
+    return this.rpc("getblockhash", { height });
   }
 }
