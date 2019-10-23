@@ -141,6 +141,15 @@ const verbose = true;
 const data = await client.getrawmempool({ verbose });
 ```
 
+- [`gettxout`](https://bitcoin.org/en/developer-reference#gettxout)
+
+```javascript
+const txid = "d2f6b1d1844e483ce350a4a22fbaef36c31ebe88730415b7408c1f34b834fab5";
+const n = 1;
+const include_mempool = true;
+const data = await client.gettxout({ txid, n, include_mempool });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
