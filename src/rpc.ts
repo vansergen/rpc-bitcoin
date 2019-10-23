@@ -194,4 +194,11 @@ export class RPCClient extends RESTClient {
   async gettxoutproof({ txids, blockhash }: GetTxOutProofParams) {
     return this.rpc("gettxoutproof", { txids, blockhash });
   }
+
+  /**
+   * @description Returns statistics about the unspent transaction output set.
+   */
+  async gettxoutsetinfo() {
+    return this.rpc("gettxoutsetinfo");
+  }
 }
