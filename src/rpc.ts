@@ -40,6 +40,11 @@ export type GetChainTxStatsParams = {
 
 export type GetMemPoolParams = TxId & Verbose;
 
+export type GetTxOutParams = TxId & {
+  n: number;
+  include_mempool?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -172,5 +177,12 @@ export class RPCClient extends RESTClient {
    */
   async getrawmempool({ verbose = false }: Verbose = {}) {
     return this.rpc("getrawmempool", { verbose });
+  }
+
+  /**
+   * @description Returns details about an unspent transaction output.
+   */
+  async gettxout({ txid, n, include_mempool = true }: GetTxOutParams) {
+    return this.rpc("gettxout", { txid, n, include_mempool });
   }
 }
