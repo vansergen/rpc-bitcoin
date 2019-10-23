@@ -128,6 +128,12 @@ const txid = "0629e01f05088728b089715f247de82a160428c06d6c85484adab2aa66574ace";
 const data = await client.getmempoolentry({ txid });
 ```
 
+- [`getmempoolinfo`](https://bitcoin.org/en/developer-reference#getmempoolinfo)
+
+```javascript
+const info = await client.getmempoolinfo();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
