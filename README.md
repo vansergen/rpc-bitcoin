@@ -188,6 +188,21 @@ const result = await client.pruneblockchain({ height });
 const result = await client.savemempool();
 ```
 
+- [`scantxoutset`](https://bitcoin.org/en/developer-reference#scantxoutset)
+
+```javascript
+const action = "start";
+const scanobjects = [
+  "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)",
+  {
+    desc:
+      "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex",
+    range: [1, 3]
+  }
+];
+const result = await client.scantxoutset({ action, scanobjects });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
