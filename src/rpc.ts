@@ -208,4 +208,11 @@ export class RPCClient extends RESTClient {
   async preciousblock({ blockhash }: Blockhash) {
     return this.rpc("preciousblock", { blockhash });
   }
+
+  /**
+   * @description Prune the blockchain.
+   */
+  async pruneblockchain({ height }: Height) {
+    return this.rpc("pruneblockchain", { height });
+  }
 }
