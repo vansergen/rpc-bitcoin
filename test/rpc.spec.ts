@@ -767,5 +767,20 @@ suite("RPCClient", () => {
       const data = await client.preciousblock(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".pruneblockchain()", async () => {
+      const height = 1000;
+      const params = { height };
+      const request = { params, method: "pruneblockchain", id, jsonrpc };
+      const result = 1566856;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.pruneblockchain(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
