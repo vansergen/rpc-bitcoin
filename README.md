@@ -167,6 +167,14 @@ const data = await client.gettxoutproof({ txids, blockhash });
 const info = await client.gettxoutsetinfo();
 ```
 
+- [`preciousblock`](https://bitcoin.org/en/developer-reference#preciousblock)
+
+```javascript
+const blockhash =
+  "00000000000000261a35cf378bf8fa1bf6ac87800d798ce2a11f581f562e92ba";
+const data = await client.preciousblock({ blockhash });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
