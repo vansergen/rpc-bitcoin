@@ -1,4 +1,9 @@
-import { RPCClient, GetBlockParams } from "../.";
+import {
+  RPCClient,
+  GetBlockParams,
+  ScanTxOutSetParams,
+  Descriptor
+} from "../.";
 import * as nock from "nock";
 import * as assert from "assert";
 
@@ -793,6 +798,61 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, response);
       const data = await client.savemempool();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".scantxoutset()", async () => {
+      const action = "start";
+      const desc_1 = "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)";
+      const desc_2: Descriptor = {
+        desc:
+          "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex",
+        range: [1, 20]
+      };
+      const scanobjects = [desc_1, desc_2];
+      const params: ScanTxOutSetParams = { action, scanobjects };
+      const request = { params, method: "scantxoutset", id, jsonrpc };
+      const result = {
+        success: true,
+        searched_items: 22946468,
+        unspents: [
+          {
+            txid:
+              "ab78587c07c039d1e55dc0efc959ba872693f98dce9e749a53582125e692f408",
+            vout: 1,
+            scriptPubKey: "76a914bdad1f4d02035b61fb1d237410e85d8402a1187d88ac",
+            desc: "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)#7ca3vlzt",
+            amount: 0.08745533,
+            height: 1583799
+          },
+          {
+            txid:
+              "ed6f71276d0624989e8d572c98386e35c646cdce062c73ae0a1f554887d41aa5",
+            vout: 1,
+            scriptPubKey: "76a914bdad1f4d02035b61fb1d237410e85d8402a1187d88ac",
+            desc: "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)#7ca3vlzt",
+            amount: 0,
+            height: 1352790
+          },
+          {
+            txid:
+              "801d5821586dd0dc10123b17d284983d6c835b8aa616e0ee828721c9073ba7ea",
+            vout: 1,
+            scriptPubKey: "76a914bdad1f4d02035b61fb1d237410e85d8402a1187d88ac",
+            desc: "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)#7ca3vlzt",
+            amount: 0,
+            height: 1326382
+          }
+        ],
+        total_amount: 0.08745533
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.scantxoutset(params);
       assert.deepStrictEqual(data, result);
     });
   });
