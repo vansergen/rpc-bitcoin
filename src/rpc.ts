@@ -69,4 +69,11 @@ export class RPCClient extends RESTClient {
   async getblockchaininfo() {
     return this.rpc("getblockchaininfo");
   }
+
+  /**
+   * @description Returns the number of blocks in the longest blockchain.
+   */
+  async getblockcount() {
+    return this.rpc("getblockcount");
+  }
 }
