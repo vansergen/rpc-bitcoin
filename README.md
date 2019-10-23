@@ -30,6 +30,14 @@ const response = await client.batch([
 ]);
 ```
 
+### Blockchain
+
+- [getBestBlockHash](https://bitcoin.org/en/developer-reference#getbestblockhash)
+
+```javascript
+const hex = await client.getbestblockhash();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
