@@ -14,6 +14,12 @@ export type JSONRPC = {
   params?: any;
 };
 
+export type Verbosity = { verbosity: 0 | 1 | 2 };
+
+export type Blockhash = { blockhash: string };
+
+export type GetBlockParams = Verbosity & Blockhash;
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -46,7 +52,14 @@ export class RPCClient extends RESTClient {
   /**
    * @description Returns the hash of the best (tip) block in the longest blockchain.
    */
-  async getBestBlockHash() {
+  async getbestblockhash() {
     return this.rpc("getbestblockhash");
+  }
+
+  /**
+   * @description If verbosity is 0, returns a string that is serialized, hex-encoded data for block 'hash'. If verbosity is 1, returns an Object with information about block <hash>. If verbosity is 2, returns an Object with information about block <hash> and information about each transaction.
+   */
+  async getblock({ blockhash, verbosity = 1 }: GetBlockParams) {
+    return this.rpc("getblock", { blockhash, verbosity });
   }
 }
