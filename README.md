@@ -175,6 +175,13 @@ const blockhash =
 const data = await client.preciousblock({ blockhash });
 ```
 
+- [`pruneblockchain`](https://bitcoin.org/en/developer-reference#pruneblockchain)
+
+```javascript
+const height = 1000;
+const result = await client.pruneblockchain({ height });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
