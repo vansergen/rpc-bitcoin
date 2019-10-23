@@ -612,5 +612,69 @@ suite("RPCClient", () => {
       const data = await client.getmempoolinfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getrawmempool()", async () => {
+      const verbose = true;
+      const params = { verbose };
+      const request = { params, method: "getrawmempool", id, jsonrpc };
+      const result = {
+        "9d4e511e5138b90cf530e1b33e391bf2f04f68a6d5bec3218b03d353655e3769": {
+          fees: {
+            base: 0.00000543,
+            modified: 0.00000543,
+            ancestor: 0.00000543,
+            descendant: 0.00000543
+          },
+          size: 149,
+          fee: 0.00000543,
+          modifiedfee: 0.00000543,
+          time: 1571846917,
+          height: 1583787,
+          descendantcount: 1,
+          descendantsize: 149,
+          descendantfees: 543,
+          ancestorcount: 1,
+          ancestorsize: 149,
+          ancestorfees: 543,
+          wtxid:
+            "957c764cede26364705436977e087039f4a8fb9d68c51c9db9e2347dbd12a120",
+          depends: [],
+          spentby: [],
+          "bip125-replaceable": true
+        },
+        "2275109000640d8e45ec8e23cf74ba8a82850bb5c01993972f1a40dd20fa9484": {
+          fees: {
+            base: 0.00016797,
+            modified: 0.00016797,
+            ancestor: 0.00016797,
+            descendant: 0.00016797
+          },
+          size: 166,
+          fee: 0.00016797,
+          modifiedfee: 0.00016797,
+          time: 1571846920,
+          height: 1583787,
+          descendantcount: 1,
+          descendantsize: 166,
+          descendantfees: 16797,
+          ancestorcount: 1,
+          ancestorsize: 166,
+          ancestorfees: 16797,
+          wtxid:
+            "7b05abb26d64d6c39d1f483a2cac992c3ebad77f9240fadeeee90649ffbc9092",
+          depends: [],
+          spentby: [],
+          "bip125-replaceable": false
+        }
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getrawmempool(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
