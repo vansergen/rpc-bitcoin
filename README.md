@@ -1,4 +1,4 @@
-# rpc-bitcoin
+# rpc-bitcoin [![Build Status](https://travis-ci.com/vansergen/rpc-bitcoin.svg?token=cg5dVMovG8Db6p5Qzzps&branch=master)](https://travis-ci.com/vansergen/rpc-bitcoin)
 
 A TypeScript library to make RPC and HTTP REST requests to Bitcoin Core.
 
