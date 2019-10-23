@@ -201,4 +201,11 @@ export class RPCClient extends RESTClient {
   async gettxoutsetinfo() {
     return this.rpc("gettxoutsetinfo");
   }
+
+  /**
+   * @description Treats a block as if it were received before others with the same work.
+   */
+  async preciousblock({ blockhash }: Blockhash) {
+    return this.rpc("preciousblock", { blockhash });
+  }
 }
