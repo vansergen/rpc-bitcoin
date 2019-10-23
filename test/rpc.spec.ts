@@ -347,5 +347,23 @@ suite("RPCClient", () => {
       const data = await client.getblockhash(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getblockheader()", async () => {
+      const blockhash =
+        "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+      const verbose = false;
+      const params = { blockhash, verbose };
+      const request = { params, method: "getblockheader", id, jsonrpc };
+      const result =
+        "00000020be5175185b585f99038eb6dae6bc084eeb1a0d796ce5a4586aa17d6d00000000f5c0b3856438c40ab89c9d3aa86801bc5536218a59a5f941d31981c831bbf3d358fe965dffff001d1734db1f";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getblockheader(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
