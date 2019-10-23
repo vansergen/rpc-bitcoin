@@ -219,6 +219,14 @@ const proof =
 const result = await client.verifytxoutproof({ proof });
 ```
 
+### ZMQ
+
+- [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
+
+```javascript
+const result = await client.getzmqnotifications();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
