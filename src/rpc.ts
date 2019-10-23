@@ -42,4 +42,11 @@ export class RPCClient extends RESTClient {
     const response = await this.batch(body, uri);
     return this.fullResponse ? response : response.result;
   }
+
+  /**
+   * @description Returns the hash of the best (tip) block in the longest blockchain.
+   */
+  async getBestBlockHash() {
+    return this.rpc("getbestblockhash");
+  }
 }
