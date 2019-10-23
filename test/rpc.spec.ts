@@ -507,5 +507,49 @@ suite("RPCClient", () => {
       const data = await client.getmempoolancestors(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getmempooldescendants()", async () => {
+      const verbose = true;
+      const txid =
+        "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b";
+      const params = { verbose, txid };
+      const request = { params, method: "getmempooldescendants", id, jsonrpc };
+      const result = {
+        "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a": {
+          fees: {
+            base: 0.00000141,
+            modified: 0.00000141,
+            ancestor: 0.00000349,
+            descendant: 0.00000141
+          },
+          size: 141,
+          fee: 0.00000141,
+          modifiedfee: 0.00000141,
+          time: 1571845933,
+          height: 1583786,
+          descendantcount: 1,
+          descendantsize: 141,
+          descendantfees: 141,
+          ancestorcount: 2,
+          ancestorsize: 349,
+          ancestorfees: 349,
+          wtxid:
+            "6a2704699b5935b96a9c008b21518e99990cf099a6977760d56aec350b2d9d66",
+          depends: [
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b"
+          ],
+          spentby: [],
+          "bip125-replaceable": true
+        }
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getmempooldescendants(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
