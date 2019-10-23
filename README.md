@@ -150,6 +150,17 @@ const include_mempool = true;
 const data = await client.gettxout({ txid, n, include_mempool });
 ```
 
+- [`gettxoutproof`](https://bitcoin.org/en/developer-reference#gettxoutproof)
+
+```javascript
+const txids = [
+  "42e75d074cf5b836170d20fc09593245c65a3f07283a497c3350c4d109b38bb6"
+];
+const blockhash =
+  "000000000000000000055bc30b762904ab996430603cafe846cc6adc82c4af1e";
+const data = await client.gettxoutproof({ txids, blockhash });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
