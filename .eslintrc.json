@@ -21,6 +21,9 @@
     "prefer-destructuring": "error",
     "semi": "error",
     "camelcase": "off",
-    "@typescript-eslint/camelcase": ["error", { "properties": "never" }]
+    "@typescript-eslint/camelcase": [
+      "error",
+      { "properties": "never", "allow": ["hash_or_height", "include_mempool"] }
+    ]
   }
 }

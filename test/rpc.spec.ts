@@ -803,13 +803,13 @@ suite("RPCClient", () => {
 
     test(".scantxoutset()", async () => {
       const action = "start";
-      const desc_1 = "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)";
-      const desc_2: Descriptor = {
+      const desc1 = "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)";
+      const desc2: Descriptor = {
         desc:
           "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex",
         range: [1, 20]
       };
-      const scanobjects = [desc_1, desc_2];
+      const scanobjects = [desc1, desc2];
       const params: ScanTxOutSetParams = { action, scanobjects };
       const request = { params, method: "scantxoutset", id, jsonrpc };
       const result = {
@@ -887,6 +887,35 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, response);
       const data = await client.verifytxoutproof(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
+  suite("Zmq", () => {
+    test(".getzmqnotifications()", async () => {
+      const params = {};
+      const request = { params, method: "getzmqnotifications", id, jsonrpc };
+      const result = [
+        {
+          type: "pubhashblock",
+          address: "tcp://127.0.0.1:3333",
+          hwm: 1000
+        },
+        { type: "pubhashtx", address: "tcp://127.0.0.1:3333", hwm: 1000 },
+        {
+          type: "pubrawblock",
+          address: "tcp://127.0.0.1:3333",
+          hwm: 1000
+        },
+        { type: "pubrawtx", address: "tcp://127.0.0.1:3333", hwm: 1000 }
+      ];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getzmqnotifications();
       assert.deepStrictEqual(data, result);
     });
   });
