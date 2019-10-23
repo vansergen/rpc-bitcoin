@@ -751,5 +751,21 @@ suite("RPCClient", () => {
       const data = await client.gettxoutsetinfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".preciousblock()", async () => {
+      const blockhash =
+        "00000000000000261a35cf378bf8fa1bf6ac87800d798ce2a11f581f562e92ba";
+      const params = { blockhash };
+      const request = { params, method: "preciousblock", id, jsonrpc };
+      const result = null;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.preciousblock(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
