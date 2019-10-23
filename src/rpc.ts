@@ -24,6 +24,11 @@ export type GetBlockParams = Verbosity & Blockhash;
 
 export type GetBlockHeaderParams = Blockhash & { verbose: boolean };
 
+export type GetBlockStatsParams = {
+  hash_or_height: string | number;
+  stats?: string[];
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -93,5 +98,12 @@ export class RPCClient extends RESTClient {
    */
   async getblockheader({ blockhash, verbose = true }: GetBlockHeaderParams) {
     return this.rpc("getblockheader", { blockhash, verbose });
+  }
+
+  /**
+   * @description Compute per block statistics for a given window.
+   */
+  async getblockstats({ hash_or_height, stats = [] }: GetBlockStatsParams) {
+    return this.rpc("getblockstats", { hash_or_height, stats });
   }
 }
