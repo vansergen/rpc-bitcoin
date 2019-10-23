@@ -592,5 +592,25 @@ suite("RPCClient", () => {
       const data = await client.getmempoolentry(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getmempoolinfo()", async () => {
+      const request = { params: {}, method: "getmempoolinfo", id, jsonrpc };
+      const result = {
+        size: 208,
+        bytes: 73712,
+        usage: 362416,
+        maxmempool: 300000000,
+        mempoolminfee: 0.00001,
+        minrelaytxfee: 0.00001
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getmempoolinfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
