@@ -75,6 +75,15 @@ const verbose = false;
 const header = await client.getblockheader({ blockhash, verbose });
 ```
 
+- [`getblockstats`](https://bitcoin.org/en/developer-reference#getblockstats)
+
+```javascript
+const hash_or_height =
+  "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+const stats = ["txs", "time"];
+const info = await client.getblockstats({ hash_or_height, stats });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
