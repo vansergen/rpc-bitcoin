@@ -215,4 +215,11 @@ export class RPCClient extends RESTClient {
   async pruneblockchain({ height }: Height) {
     return this.rpc("pruneblockchain", { height });
   }
+
+  /**
+   * @description Dumps the mempool to disk. It will fail until the previous dump is fully loaded.
+   */
+  async savemempool() {
+    return this.rpc("savemempool");
+  }
 }
