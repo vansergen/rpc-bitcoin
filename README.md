@@ -47,6 +47,12 @@ const verbosity = 2;
 const block = await client.getblock({ blockhash, verbosity });
 ```
 
+- [`getblockchaininfo`](https://bitcoin.org/en/developer-reference#getblockchaininfo)
+
+```javascript
+const info = await client.getblockchaininfo();
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
