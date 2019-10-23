@@ -112,4 +112,20 @@ suite("RPCClient", () => {
     const data = await client.rpc(method, params, wallet);
     assert.deepStrictEqual(data, result);
   });
+
+  suite("Blockchain", () => {
+    test(".getBestBlockHash()", async () => {
+      const request = { params: {}, method: "getbestblockhash", id, jsonrpc };
+      const result =
+        "000000006e60e2ae7b464e4e38e061cb4aea9dafa605cc1d38d34601fdf77064";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getBestBlockHash();
+      assert.deepStrictEqual(data, result);
+    });
+  });
 });
