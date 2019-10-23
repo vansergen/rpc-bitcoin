@@ -62,4 +62,11 @@ export class RPCClient extends RESTClient {
   async getblock({ blockhash, verbosity = 1 }: GetBlockParams) {
     return this.rpc("getblock", { blockhash, verbosity });
   }
+
+  /**
+   * @description Returns an object containing various state info regarding blockchain processing.
+   */
+  async getblockchaininfo() {
+    return this.rpc("getblockchaininfo");
+  }
 }
