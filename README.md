@@ -90,6 +90,15 @@ const info = await client.getblockstats({ hash_or_height, stats });
 const tips = await client.getchaintips();
 ```
 
+- [`getchaintxstats`](https://bitcoin.org/en/developer-reference#getchaintxstats)
+
+```javascript
+const nblocks = 2016;
+const blockhash =
+  "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+const data = await client.getchaintxstats({ nblocks, blockhash });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
