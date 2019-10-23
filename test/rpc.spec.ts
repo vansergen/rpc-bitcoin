@@ -450,5 +450,18 @@ suite("RPCClient", () => {
       const data = await client.getchaintxstats(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getdifficulty()", async () => {
+      const request = { params: {}, method: "getdifficulty", id, jsonrpc };
+      const result = 1;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getdifficulty();
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
