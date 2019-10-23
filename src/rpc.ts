@@ -47,6 +47,18 @@ export type GetTxOutParams = TxId & {
 
 export type GetTxOutProofParams = { txids: string[]; blockhash?: string };
 
+export type Descriptor =
+  | string
+  | {
+      desc: string;
+      range: number | [number, number];
+    };
+
+export type ScanTxOutSetParams = {
+  action: "start" | "abort" | "status";
+  scanobjects: Descriptor[];
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -221,5 +233,12 @@ export class RPCClient extends RESTClient {
    */
   async savemempool() {
     return this.rpc("savemempool");
+  }
+
+  /**
+   * @description Scans the unspent transaction output set for entries that match certain output descriptors.
+   */
+  async scantxoutset({ action, scanobjects }: ScanTxOutSetParams) {
+    return this.rpc("scantxoutset", { action, scanobjects });
   }
 }
