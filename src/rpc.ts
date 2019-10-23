@@ -106,4 +106,11 @@ export class RPCClient extends RESTClient {
   async getblockstats({ hash_or_height, stats = [] }: GetBlockStatsParams) {
     return this.rpc("getblockstats", { hash_or_height, stats });
   }
+
+  /**
+   * @description Return information about all known tips in the block tree, including the main chain as well as orphaned branches.
+   */
+  async getchaintips() {
+    return this.rpc("getchaintips");
+  }
 }
