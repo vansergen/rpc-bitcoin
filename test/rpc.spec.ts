@@ -365,5 +365,22 @@ suite("RPCClient", () => {
       const data = await client.getblockheader(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getblockstats()", async () => {
+      const hash_or_height =
+        "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+      const stats = ["txs", "time"];
+      const params = { hash_or_height, stats };
+      const request = { params, method: "getblockstats", id, jsonrpc };
+      const result = { time: 1570176600, txs: 469 };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getblockstats(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
