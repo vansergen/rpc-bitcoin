@@ -66,6 +66,15 @@ const height = 1583782;
 const hash = await client.getblockhash({ height });
 ```
 
+- [`getblockheader`](https://bitcoin.org/en/developer-reference#getblockheader)
+
+```javascript
+const blockhash =
+  "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+const verbose = false;
+const header = await client.getblockheader({ blockhash, verbose });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
