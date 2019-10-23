@@ -166,4 +166,11 @@ export class RPCClient extends RESTClient {
   async getmempoolinfo() {
     return this.rpc("getmempoolinfo");
   }
+
+  /**
+   * @description Returns all transaction ids in memory pool as a json array of string transaction ids.
+   */
+  async getrawmempool({ verbose = false }: Verbose = {}) {
+    return this.rpc("getrawmempool", { verbose });
+  }
 }
