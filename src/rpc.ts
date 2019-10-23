@@ -22,6 +22,8 @@ export type Blockhash = { blockhash: string };
 
 export type GetBlockParams = Verbosity & Blockhash;
 
+export type GetBlockHeaderParams = Blockhash & { verbose: boolean };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -84,5 +86,12 @@ export class RPCClient extends RESTClient {
    */
   async getblockhash({ height }: Height) {
     return this.rpc("getblockhash", { height });
+  }
+
+  /**
+   * @description If verbose is `false`, returns a string that is serialized, hex-encoded data for blockheader 'hash'. If verbose is `true`, returns an Object with information about blockheader <hash>.
+   */
+  async getblockheader({ blockhash, verbose = true }: GetBlockHeaderParams) {
+    return this.rpc("getblockheader", { blockhash, verbose });
   }
 }
