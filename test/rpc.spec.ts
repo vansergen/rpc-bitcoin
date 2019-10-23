@@ -424,5 +424,31 @@ suite("RPCClient", () => {
       const data = await client.getchaintips();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getchaintxstats()", async () => {
+      const nblocks = 2016;
+      const blockhash =
+        "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
+      const params = { nblocks, blockhash };
+      const request = { params, method: "getchaintxstats", id, jsonrpc };
+      const result = {
+        time: 1570176600,
+        txcount: 52393515,
+        window_final_block_hash:
+          "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c",
+        window_block_count: 2016,
+        window_tx_count: 274713,
+        window_interval: 1731648,
+        txrate: 0.1586425185719038
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getchaintxstats(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
