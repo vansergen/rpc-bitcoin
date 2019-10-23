@@ -125,4 +125,11 @@ export class RPCClient extends RESTClient {
   async getchaintxstats({ nblocks, blockhash }: GetChainTxStatsParams) {
     return this.rpc("getchaintxstats", { nblocks, blockhash });
   }
+
+  /**
+   * @description Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
+   */
+  async getdifficulty() {
+    return this.rpc("getdifficulty");
+  }
 }
