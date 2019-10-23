@@ -382,5 +382,47 @@ suite("RPCClient", () => {
       const data = await client.getblockstats(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getchaintips()", async () => {
+      const request = { params: {}, method: "getchaintips", id, jsonrpc };
+      const result = [
+        {
+          height: 1583784,
+          hash:
+            "0000000071434abcdf7b2a82fb3005a67fe9f458e542a586313f5a7dc671a0c9",
+          branchlen: 0,
+          status: "active"
+        },
+        {
+          height: 1580960,
+          hash:
+            "000000006999656106c726515ccfc34d160a5fa299ddb6bb278598b2feefaa7e",
+          branchlen: 1,
+          status: "valid-fork"
+        },
+        {
+          height: 1580787,
+          hash:
+            "0000000029515fe9800761af4c19a087525ad9f3a1e41c4d1b136993711c3f83",
+          branchlen: 1,
+          status: "valid-fork"
+        },
+        {
+          height: 1414433,
+          hash:
+            "00000000210004840364b52bc5e455d888f164e4264a4fec06a514b67e9d5722",
+          branchlen: 23,
+          status: "headers-only"
+        }
+      ];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getchaintips();
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
