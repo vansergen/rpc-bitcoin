@@ -241,4 +241,11 @@ export class RPCClient extends RESTClient {
   async scantxoutset({ action, scanobjects }: ScanTxOutSetParams) {
     return this.rpc("scantxoutset", { action, scanobjects });
   }
+
+  /**
+   * @description Verifies blockchain database.
+   */
+  async verifychain({ checklevel = 3, nblocks = 6 } = {}) {
+    return this.rpc("verifychain", { checklevel, nblocks });
+  }
 }
