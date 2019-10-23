@@ -255,4 +255,11 @@ export class RPCClient extends RESTClient {
   async verifytxoutproof({ proof }: { proof: string }) {
     return this.rpc("verifytxoutproof", { proof });
   }
+
+  /**
+   * @description Returns information about the active ZeroMQ notifications.
+   */
+  async getzmqnotifications() {
+    return this.rpc("getzmqnotifications");
+  }
 }
