@@ -14,15 +14,19 @@ export type JSONRPC = {
   params?: any;
 };
 
-export type Verbosity = { verbosity: 0 | 1 | 2 };
+export type Verbosity = { verbosity?: 0 | 1 | 2 };
+
+export type Verbose = { verbose?: boolean };
 
 export type Height = { height: number };
 
 export type Blockhash = { blockhash: string };
 
+export type TxId = { txid: string };
+
 export type GetBlockParams = Verbosity & Blockhash;
 
-export type GetBlockHeaderParams = Blockhash & { verbose: boolean };
+export type GetBlockHeaderParams = Blockhash & Verbose;
 
 export type GetBlockStatsParams = {
   hash_or_height: string | number;
@@ -33,6 +37,8 @@ export type GetChainTxStatsParams = {
   nblocks?: number;
   blockhash?: string;
 };
+
+export type GetMemPoolParams = TxId & Verbose;
 
 export class RPCClient extends RESTClient {
   wallet?: string;
@@ -131,5 +137,12 @@ export class RPCClient extends RESTClient {
    */
   async getdifficulty() {
     return this.rpc("getdifficulty");
+  }
+
+  /**
+   * @description If txid is in the mempool, returns all in-mempool ancestors.
+   */
+  async getmempoolancestors({ txid, verbose = false }: GetMemPoolParams) {
+    return this.rpc("getmempoolancestors", { txid, verbose });
   }
 }
