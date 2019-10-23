@@ -268,5 +268,55 @@ suite("RPCClient", () => {
       const data = await client.getblock({ blockhash, verbosity });
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getblockchaininfo()", async () => {
+      const request = { params: {}, method: "getblockchaininfo", id, jsonrpc };
+      const result = {
+        chain: "test",
+        blocks: 1583781,
+        headers: 1583781,
+        bestblockhash:
+          "000000003572a2f04d0b30c644ae4281b37e9becde9fc8a17fb54253a1a07397",
+        difficulty: 1,
+        mediantime: 1571834687,
+        verificationprogress: 0.9999861133153368,
+        initialblockdownload: false,
+        chainwork:
+          "00000000000000000000000000000000000000000000012e44a73ad9f48c5bbb",
+        size_on_disk: 1004297599,
+        pruned: true,
+        pruneheight: 1566856,
+        automatic_pruning: true,
+        prune_target_size: 1073741824,
+        softforks: [
+          { id: "bip34", version: 2, reject: { status: true } },
+          { id: "bip66", version: 3, reject: { status: true } },
+          { id: "bip65", version: 4, reject: { status: true } }
+        ],
+        bip9_softforks: {
+          csv: {
+            status: "active",
+            startTime: 1456790400,
+            timeout: 1493596800,
+            since: 770112
+          },
+          segwit: {
+            status: "active",
+            startTime: 1462060800,
+            timeout: 1493596800,
+            since: 834624
+          }
+        },
+        warnings: "Warning: unknown new rules activated (versionbit 28)"
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getblockchaininfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
