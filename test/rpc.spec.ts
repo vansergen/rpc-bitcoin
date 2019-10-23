@@ -551,5 +551,46 @@ suite("RPCClient", () => {
       const data = await client.getmempooldescendants(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getmempoolentry()", async () => {
+      const txid =
+        "0629e01f05088728b089715f247de82a160428c06d6c85484adab2aa66574ace";
+      const params = { txid };
+      const request = { params, method: "getmempoolentry", id, jsonrpc };
+      const result = {
+        fees: {
+          base: 0.00000148,
+          modified: 0.00000148,
+          ancestor: 0.00000391,
+          descendant: 0.00000148
+        },
+        size: 146,
+        fee: 0.00000148,
+        modifiedfee: 0.00000148,
+        time: 1571846114,
+        height: 1583786,
+        descendantcount: 1,
+        descendantsize: 146,
+        descendantfees: 148,
+        ancestorcount: 2,
+        ancestorsize: 389,
+        ancestorfees: 391,
+        wtxid:
+          "cf5208ea2196816473a315504b5476fb4e75a16fb4584dda92093b72901bde08",
+        depends: [
+          "f594f57099cd6e1c4d0697ad92795196a1774ea752d1bec481019abd3eef30ee"
+        ],
+        spentby: [],
+        "bip125-replaceable": false
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getmempoolentry(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
