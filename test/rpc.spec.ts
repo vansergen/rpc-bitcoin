@@ -727,5 +727,29 @@ suite("RPCClient", () => {
       const data = await client.gettxoutproof(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".gettxoutsetinfo()", async () => {
+      const request = { params: {}, method: "gettxoutsetinfo", id, jsonrpc };
+      const result = {
+        height: 1583793,
+        bestblock:
+          "00000000000000b332c067ccb2cb52aafac5b7de4bec01470b6c634449e6ebbc",
+        transactions: 8345507,
+        txouts: 22946232,
+        bogosize: 1722061178,
+        hash_serialized_2:
+          "9b4021d53da6689371aa734ef32fe502ed38a47870db2802c48c8cde0a5c191e",
+        disk_size: 1256916738,
+        total_amount: 20879513.30609612
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.gettxoutsetinfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
