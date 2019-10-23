@@ -855,5 +855,21 @@ suite("RPCClient", () => {
       const data = await client.scantxoutset(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".verifychain()", async () => {
+      const checklevel = 1;
+      const nblocks = 10;
+      const params = { checklevel, nblocks };
+      const request = { params, method: "verifychain", id, jsonrpc };
+      const result = true;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.verifychain(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 });
