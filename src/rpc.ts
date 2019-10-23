@@ -29,6 +29,11 @@ export type GetBlockStatsParams = {
   stats?: string[];
 };
 
+export type GetChainTxStatsParams = {
+  nblocks?: number;
+  blockhash?: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -112,5 +117,12 @@ export class RPCClient extends RESTClient {
    */
   async getchaintips() {
     return this.rpc("getchaintips");
+  }
+
+  /**
+   * @description Compute statistics about the total number and rate of transactions in the chain.
+   */
+  async getchaintxstats({ nblocks, blockhash }: GetChainTxStatsParams) {
+    return this.rpc("getchaintxstats", { nblocks, blockhash });
   }
 }
