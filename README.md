@@ -203,6 +203,14 @@ const scanobjects = [
 const result = await client.scantxoutset({ action, scanobjects });
 ```
 
+- [`verifychain`](https://bitcoin.org/en/developer-reference#verifychain)
+
+```javascript
+const checklevel = 1;
+const nblocks = 10;
+const result = await client.verifychain({ checklevel, nblocks });
+```
+
 ## [HTTP REST](https://bitcoin.org/en/developer-reference#http-rest)
 
 ```javascript
