@@ -1582,6 +1582,32 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Util", () => {
+    test(".createmultisig()", async () => {
+      const nrequired = 2;
+      const keys = [
+        "03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd",
+        "03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626"
+      ];
+      const address_type: "bech32" = "bech32";
+      const params = { nrequired, keys, address_type };
+      const request = { params, method: "createmultisig", id, jsonrpc };
+      const result = {
+        address:
+          "tb1q0jnggjwnn22a4ywxc2pcw86c0d6tghqkgk3hlryrxl7nmxkylmnqdcdsu7",
+        redeemScript:
+          "522103789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd2103dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a6162652ae"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createmultisig(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
