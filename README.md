@@ -426,6 +426,20 @@ const state = false;
 const result = await client.setnetworkactive({ state });
 ```
 
+### Util
+
+- [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
+
+```javascript
+const nrequired = 2;
+const keys = [
+  "03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd",
+  "03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626"
+];
+const address_type = "bech32";
+const result = await client.createmultisig({ nrequired, keys, address_type });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
