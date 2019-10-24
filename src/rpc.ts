@@ -454,6 +454,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns an object containing various state info regarding P2P networking.
+   */
+  async getnetworkinfo() {
+    return this.rpc("getnetworkinfo");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
