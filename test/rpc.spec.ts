@@ -1698,6 +1698,23 @@ suite("RPCClient", () => {
       const data = await client.validateaddress(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".verifymessage()", async () => {
+      const address = "myv3xs1BBBhaDVU62LFNBho2zSp4KLBkgK";
+      const signature =
+        "H14/QyrMj8e63GyEXBDDWnWrplXK3OORnMc3B+fEOOisbNFEAQuNB9myAH9qs7h1VNJb1xq1ytPQqiLcmSwwPv8=";
+      const message = "Hello World";
+      const params = { address, signature, message };
+      const request = { params, method: "verifymessage", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.verifymessage(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
