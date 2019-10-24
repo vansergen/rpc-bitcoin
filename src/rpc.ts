@@ -475,6 +475,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description List all banned IPs/Subnets.
+   */
+  async listbanned() {
+    return this.rpc("listbanned");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
