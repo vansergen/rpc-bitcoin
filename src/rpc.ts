@@ -461,6 +461,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Return known addresses which can potentially be used to find new nodes in the network
+   */
+  async getnodeaddresses({ count = 1 } = {}) {
+    return this.rpc("getnodeaddresses", { count });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
