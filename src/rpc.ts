@@ -73,6 +73,10 @@ export type GenerateParams = {
   maxtries?: number;
 };
 
+export type GenerateToAddressParams = GenerateParams & {
+  address: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -319,7 +323,21 @@ export class RPCClient extends RESTClient {
     { nblocks, maxtries = 1000000 }: GenerateParams,
     wallet?: string
   ) {
-    return this.rpc("generate", { nblocks, maxtries }, wallet);
+    return this.rpc("generate", { nblocks, maxtries }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Mine blocks immediately to a specified address (before the RPC call returns)
+   */
+  async generatetoaddress(
+    { nblocks, address, maxtries = 1000000 }: GenerateToAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "generatetoaddress",
+      { nblocks, maxtries, address },
+      wallet || this.wallet
+    );
   }
 
   /**
