@@ -343,6 +343,12 @@ const command = "onetry";
 const result = await client.addnode({ node, command });
 ```
 
+- [`clearbanned`](https://bitcoin.org/en/developer-reference#clearbanned)
+
+```javascript
+const result = await client.clearbanned();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
