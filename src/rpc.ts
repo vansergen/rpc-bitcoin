@@ -468,6 +468,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns data about each connected network node as a json array of objects.
+   */
+  async getpeerinfo() {
+    return this.rpc("getpeerinfo");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
