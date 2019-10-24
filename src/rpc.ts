@@ -566,6 +566,16 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Sign a message with the private key of an address.
+   */
+  async signmessagewithprivkey({
+    privkey,
+    message
+  }: SignMessageWithPrivKeyParams) {
+    return this.rpc("signmessagewithprivkey", { privkey, message });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
