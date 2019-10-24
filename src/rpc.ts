@@ -482,6 +482,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Requests that a ping be sent to all other nodes, to measure ping time.
+   */
+  async ping() {
+    return this.rpc("ping");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
