@@ -255,6 +255,12 @@ const result = await client.logging({ include, exclude });
 const result = await client.stop();
 ```
 
+- [`uptime`](https://bitcoin.org/en/developer-reference#uptime)
+
+```javascript
+const result = await client.uptime();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
