@@ -349,6 +349,16 @@ const result = await client.addnode({ node, command });
 const result = await client.clearbanned();
 ```
 
+- [`disconnectnode`](https://bitcoin.org/en/developer-reference#disconnectnode)
+
+```javascript
+const address = "192.168.1.123:18333";
+let result = await client.disconnectnode({ address });
+// or by a `nodeid`
+const nodeid = 3;
+result = await client.disconnectnode({ nodeid });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
