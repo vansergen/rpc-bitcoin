@@ -71,12 +71,11 @@ suite("RPCClient", () => {
     const request = { params: {}, method, id, jsonrpc };
     const result =
       "000000000004f7f1ec631acb86a86ef0d97f1294d79f5fba1d0e579c1513b5ea";
-    const response = { error, id, result };
     nock(uri)
       .post("/", request)
       .times(1)
       .basicAuth(auth)
-      .reply(200, response);
+      .reply(200, { error, id, result });
     const data = await client.rpc(method);
     assert.deepStrictEqual(data, result);
   });
@@ -103,12 +102,11 @@ suite("RPCClient", () => {
     const request = { params, method, id, jsonrpc };
     const wallet = "wallet123.dat";
     const result = "tb1quchcvzestaj5kfnyu6wz7hwyn0lttdq2949tsj";
-    const response = { result, error, id };
     nock(uri)
       .post("/wallet/" + wallet, request)
       .times(1)
       .basicAuth(auth)
-      .reply(200, response);
+      .reply(200, { result, error, id });
     const data = await client.rpc(method, params, wallet);
     assert.deepStrictEqual(data, result);
   });
@@ -118,12 +116,11 @@ suite("RPCClient", () => {
       const request = { params: {}, method: "getbestblockhash", id, jsonrpc };
       const result =
         "000000006e60e2ae7b464e4e38e061cb4aea9dafa605cc1d38d34601fdf77064";
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getbestblockhash();
       assert.deepStrictEqual(data, result);
     });
@@ -259,12 +256,11 @@ suite("RPCClient", () => {
         nextblockhash:
           "000000005104d2692a021f9b58932c3fa32ea15b97cbff2147e11ad24f9d49af"
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblock(params);
       assert.deepStrictEqual(data, result);
     });
@@ -309,12 +305,11 @@ suite("RPCClient", () => {
         },
         warnings: "Warning: unknown new rules activated (versionbit 28)"
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblockchaininfo();
       assert.deepStrictEqual(data, result);
     });
@@ -322,12 +317,11 @@ suite("RPCClient", () => {
     test(".getblockcount()", async () => {
       const request = { params: {}, method: "getblockcount", id, jsonrpc };
       const result = 1583782;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblockcount();
       assert.deepStrictEqual(data, result);
     });
@@ -338,12 +332,11 @@ suite("RPCClient", () => {
       const request = { params, method: "getblockhash", id, jsonrpc };
       const result =
         "00000000a4991fe43933f0a0bde13b6b22b4308442453845903151004e9cc0a5";
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblockhash(params);
       assert.deepStrictEqual(data, result);
     });
@@ -356,12 +349,11 @@ suite("RPCClient", () => {
       const request = { params, method: "getblockheader", id, jsonrpc };
       const result =
         "00000020be5175185b585f99038eb6dae6bc084eeb1a0d796ce5a4586aa17d6d00000000f5c0b3856438c40ab89c9d3aa86801bc5536218a59a5f941d31981c831bbf3d358fe965dffff001d1734db1f";
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblockheader(params);
       assert.deepStrictEqual(data, result);
     });
@@ -373,12 +365,11 @@ suite("RPCClient", () => {
       const params = { hash_or_height, stats };
       const request = { params, method: "getblockstats", id, jsonrpc };
       const result = { time: 1570176600, txs: 469 };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblockstats(params);
       assert.deepStrictEqual(data, result);
     });
@@ -415,12 +406,11 @@ suite("RPCClient", () => {
           status: "headers-only"
         }
       ];
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getchaintips();
       assert.deepStrictEqual(data, result);
     });
@@ -441,12 +431,11 @@ suite("RPCClient", () => {
         window_interval: 1731648,
         txrate: 0.1586425185719038
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getchaintxstats(params);
       assert.deepStrictEqual(data, result);
     });
@@ -454,12 +443,11 @@ suite("RPCClient", () => {
     test(".getdifficulty()", async () => {
       const request = { params: {}, method: "getdifficulty", id, jsonrpc };
       const result = 1;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getdifficulty();
       assert.deepStrictEqual(data, result);
     });
@@ -498,12 +486,11 @@ suite("RPCClient", () => {
           "bip125-replaceable": true
         }
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getmempoolancestors(params);
       assert.deepStrictEqual(data, result);
     });
@@ -542,12 +529,11 @@ suite("RPCClient", () => {
           "bip125-replaceable": true
         }
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getmempooldescendants(params);
       assert.deepStrictEqual(data, result);
     });
@@ -583,12 +569,11 @@ suite("RPCClient", () => {
         spentby: [],
         "bip125-replaceable": false
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getmempoolentry(params);
       assert.deepStrictEqual(data, result);
     });
@@ -603,12 +588,11 @@ suite("RPCClient", () => {
         mempoolminfee: 0.00001,
         minrelaytxfee: 0.00001
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getmempoolinfo();
       assert.deepStrictEqual(data, result);
     });
@@ -667,12 +651,11 @@ suite("RPCClient", () => {
           "bip125-replaceable": false
         }
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getrawmempool(params);
       assert.deepStrictEqual(data, result);
     });
@@ -698,12 +681,11 @@ suite("RPCClient", () => {
         },
         coinbase: false
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.gettxout(params);
       assert.deepStrictEqual(data, result);
     });
@@ -718,12 +700,11 @@ suite("RPCClient", () => {
       const request = { params, method: "gettxoutproof", id, jsonrpc };
       const result =
         "00000020e798ee174759ba2eb4f57c8055eaadb903aeef74a407878265361d00000000005c70c7f197058b8ff6f06d9f144497d1801e057e06735a56b658ac78ff915516fa7ab05dffff001d32384563dd00000009eeeb7a022e70291fe3d8d5186615358d45107c10d71a212459b30fe73174494f956b752c3495a3ba3e539db047bbb2e6b4124d4b4f8cbf89506ea17cf04b0ce5864f91edb21f1918fb1031d5545c7b835fb82d8cdc87f1df76808c599bbcb4e372e0788a9ce2c9b2f1a07305b7bea5e1fca0b19f77d919e51e2e72e438c19df5a953ce7bad42e1c78372ad2df199a08c26153f7846f6cc95c4615572bc997b45803b803c49e6298dec1a9029c32addac44f2abbc8c496def1f47a6ff55d8f90901b66efccdea0dcb52c26d610c4f2ac0b1e699ee4606918ff9901c317919038a5a3f3cedf7d664a2891fe1e116dc52e9ca9166e4e8a6398b10072412ef3893693508204127c87c8c025dded104f34ceeb44958095571907e6787615929cbc8cd03ff0200";
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.gettxoutproof(params);
       assert.deepStrictEqual(data, result);
     });
@@ -742,12 +723,11 @@ suite("RPCClient", () => {
         disk_size: 1256916738,
         total_amount: 20879513.30609612
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.gettxoutsetinfo();
       assert.deepStrictEqual(data, result);
     });
@@ -758,12 +738,11 @@ suite("RPCClient", () => {
       const params = { blockhash };
       const request = { params, method: "preciousblock", id, jsonrpc };
       const result = null;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.preciousblock(params);
       assert.deepStrictEqual(data, result);
     });
@@ -773,12 +752,11 @@ suite("RPCClient", () => {
       const params = { height };
       const request = { params, method: "pruneblockchain", id, jsonrpc };
       const result = 1566856;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.pruneblockchain(params);
       assert.deepStrictEqual(data, result);
     });
@@ -786,12 +764,11 @@ suite("RPCClient", () => {
     test(".savemempool()", async () => {
       const request = { params: {}, method: "savemempool", id, jsonrpc };
       const result = null;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.savemempool();
       assert.deepStrictEqual(data, result);
     });
@@ -839,12 +816,11 @@ suite("RPCClient", () => {
         ],
         total_amount: 0.08745533
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.scantxoutset(params);
       assert.deepStrictEqual(data, result);
     });
@@ -855,12 +831,11 @@ suite("RPCClient", () => {
       const params = { checklevel, nblocks };
       const request = { params, method: "verifychain", id, jsonrpc };
       const result = true;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.verifychain(params);
       assert.deepStrictEqual(data, result);
     });
@@ -873,12 +848,11 @@ suite("RPCClient", () => {
       const result = [
         "6f0b2595600c49d6f6483c71bbfa348c31d214bfcc340c3b40aed9d7ffa84d8a"
       ];
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.verifytxoutproof(params);
       assert.deepStrictEqual(data, result);
     });
@@ -898,12 +872,11 @@ suite("RPCClient", () => {
           chunks_free: 3
         }
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getmemoryinfo(params);
       assert.deepStrictEqual(data, result);
     });
@@ -913,12 +886,11 @@ suite("RPCClient", () => {
       const result = {
         active_commands: [{ method: "getrpcinfo", duration: 0 }]
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getrpcinfo();
       assert.deepStrictEqual(data, result);
     });
@@ -928,12 +900,11 @@ suite("RPCClient", () => {
       const request = { params, method: "help", id, jsonrpc };
       const result =
         'getzmqnotifications\n\nReturns information about the active ZeroMQ notifications.\n\nResult:\n[\n  {                        (json object)\n    "type": "pubhashtx",   (string) Type of notification\n    "address": "...",      (string) Address of the publisher\n    "hwm": n                 (numeric) Outbound message high water mark\n  },\n  ...\n]\n\nExamples:\n> bitcoin-cli getzmqnotifications \n> curl --user myusername --data-binary \'{"jsonrpc": "1.0", "id":"curltest", "method": "getzmqnotifications", "params": [] }\' -H \'content-type: text/plain;\' http://127.0.0.1:8332/\n';
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.help(params);
       assert.deepStrictEqual(data, result);
     });
@@ -966,12 +937,11 @@ suite("RPCClient", () => {
         qt: false,
         leveldb: false
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.logging(params);
       assert.deepStrictEqual(data, result);
     });
@@ -979,12 +949,11 @@ suite("RPCClient", () => {
     test(".stop()", async () => {
       const request = { params: {}, method: "stop", id, jsonrpc };
       const result = "Bitcoin server stopping";
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.stop();
       assert.deepStrictEqual(data, result);
     });
@@ -992,12 +961,11 @@ suite("RPCClient", () => {
     test(".uptime()", async () => {
       const request = { params: {}, method: "uptime", id, jsonrpc };
       const result = 31;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.uptime();
       assert.deepStrictEqual(data, result);
     });
@@ -1008,12 +976,11 @@ suite("RPCClient", () => {
       const params = { nblocks: 1, maxtries: 10000 };
       const request = { params, method: "generate", id, jsonrpc };
       const result: any[] = [];
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.generate(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1023,12 +990,11 @@ suite("RPCClient", () => {
       const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generate", id, jsonrpc };
       const result: any[] = [];
-      const response = { result, error, id };
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.generate(params, wallet);
       assert.deepStrictEqual(data, result);
     });
@@ -1039,12 +1005,11 @@ suite("RPCClient", () => {
       const params = { nblocks: 1, maxtries: 10000 };
       const request = { params, method: "generate", id, jsonrpc };
       const result: any[] = [];
-      const response = { result, error, id };
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.generate(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1054,12 +1019,11 @@ suite("RPCClient", () => {
       const params = { nblocks: 1, maxtries: 10000, address };
       const request = { params, method: "generatetoaddress", id, jsonrpc };
       const result: any[] = [];
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.generatetoaddress(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1069,13 +1033,12 @@ suite("RPCClient", () => {
       const params = { nblocks: 1, maxtries: 10000, address };
       const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generatetoaddress", id, jsonrpc };
-      const result: any[] = [];
-      const response = { result, error, id };
+      const result: string[] = [];
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.generatetoaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
@@ -1087,12 +1050,11 @@ suite("RPCClient", () => {
       const params = { nblocks: 1, maxtries: 10000, address };
       const request = { params, method: "generatetoaddress", id, jsonrpc };
       const result: any[] = [];
-      const response = { result, error, id };
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.generatetoaddress(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1158,12 +1120,11 @@ suite("RPCClient", () => {
         default_witness_commitment:
           "6a24aa21a9ed78a54605e10113365da2095badf375ae434b5abcda3d864a73c91477bd480676"
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getblocktemplate(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1180,12 +1141,11 @@ suite("RPCClient", () => {
         chain: "test",
         warnings: "Warning: unknown new rules activated (versionbit 28)"
       };
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getmininginfo();
       assert.deepStrictEqual(data, result);
     });
@@ -1194,12 +1154,11 @@ suite("RPCClient", () => {
       const params = { nblocks: 100, height: 100 };
       const request = { params, method: "getnetworkhashps", id, jsonrpc };
       const result = 40893390.77406456;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getnetworkhashps(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1211,12 +1170,11 @@ suite("RPCClient", () => {
       const params = { txid, fee_delta };
       const request = { params, method: "prioritisetransaction", id, jsonrpc };
       const result = true;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.prioritisetransaction(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1225,12 +1183,11 @@ suite("RPCClient", () => {
       const params = { hexdata: "PreviosBlockHex" };
       const request = { params, method: "submitblock", id, jsonrpc };
       const result = "duplicate";
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.submitblock(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1239,12 +1196,11 @@ suite("RPCClient", () => {
       const params = { hexdata: "PreviosBlockHeaderHex" };
       const request = { params, method: "submitheader", id, jsonrpc };
       const result = null;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.submitheader(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1581,6 +1537,36 @@ suite("RPCClient", () => {
       const data = await client.ping();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".setban()", async () => {
+      const subnet = "92.53.89.123";
+      const command: "add" = "add";
+      const bantime = 1581599503;
+      const absolute = true;
+      const params = { subnet, command, bantime, absolute };
+      const request = { params, method: "setban", id, jsonrpc };
+      const result = [
+        {
+          time: 1569474479,
+          services: 1036,
+          address: "188.162.132.87",
+          port: 18333
+        },
+        {
+          time: 1569557642,
+          services: 1037,
+          address: "174.138.24.48",
+          port: 18333
+        }
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.setban(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
@@ -1601,12 +1587,11 @@ suite("RPCClient", () => {
         },
         { type: "pubrawtx", address: "tcp://127.0.0.1:3333", hwm: 1000 }
       ];
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.getzmqnotifications();
       assert.deepStrictEqual(data, result);
     });
