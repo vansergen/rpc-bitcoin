@@ -128,6 +128,12 @@ export type SignMessageWithPrivKeyParams = {
   message: string;
 };
 
+export type VerifyMessageParams = {
+  address: string;
+  signature: string;
+  message: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -585,6 +591,13 @@ export class RPCClient extends RESTClient {
    */
   async validateaddress({ address }: { address: string }) {
     return this.rpc("validateaddress", { address });
+  }
+
+  /**
+   * @description Verify a signed message
+   */
+  async verifymessage({ address, signature, message }: VerifyMessageParams) {
+    return this.rpc("verifymessage", { address, signature, message });
   }
 
   /**
