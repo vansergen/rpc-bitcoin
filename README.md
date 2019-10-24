@@ -366,6 +366,12 @@ const node = "192.168.0.201";
 const result = await client.getaddednodeinfo({ node });
 ```
 
+- [`getconnectioncount`](https://bitcoin.org/en/developer-reference#getconnectioncount)
+
+```javascript
+const result = await client.getconnectioncount();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
