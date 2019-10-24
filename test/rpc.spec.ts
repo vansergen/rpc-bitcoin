@@ -1234,6 +1234,20 @@ suite("RPCClient", () => {
       const data = await client.submitblock(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".submitheader()", async () => {
+      const params = { hexdata: "PreviosBlockHeaderHex" };
+      const request = { params, method: "submitheader", id, jsonrpc };
+      const result = null;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.submitheader(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
