@@ -397,6 +397,12 @@ const result = await client.getnodeaddresses({ count });
 const result = await client.getpeerinfo();
 ```
 
+- [`listbanned`](https://bitcoin.org/en/developer-reference#listbanned)
+
+```javascript
+const result = await client.listbanned();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
