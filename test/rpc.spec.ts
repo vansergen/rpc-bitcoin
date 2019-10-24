@@ -1,9 +1,4 @@
-import {
-  RPCClient,
-  GetBlockParams,
-  ScanTxOutSetParams,
-  Descriptor
-} from "../.";
+import { RPCClient, ScanTxOutSetParams } from "../.";
 import * as nock from "nock";
 import * as assert from "assert";
 
@@ -136,8 +131,8 @@ suite("RPCClient", () => {
     test(".getblock()", async () => {
       const blockhash =
         "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
-      const verbosity = 2;
-      const params: GetBlockParams = { blockhash, verbosity };
+      const verbosity: 2 = 2;
+      const params = { blockhash, verbosity };
       const request = { params, method: "getblock", id, jsonrpc };
       const result = {
         hash:
@@ -804,12 +799,10 @@ suite("RPCClient", () => {
     test(".scantxoutset()", async () => {
       const action = "start";
       const desc1 = "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)";
-      const desc2: Descriptor = {
-        desc:
-          "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex",
-        range: [1, 20]
-      };
-      const scanobjects = [desc1, desc2];
+      const desc =
+        "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex";
+      const range: [number, number] = [1, 20];
+      const scanobjects = [desc1, { desc, range }];
       const params: ScanTxOutSetParams = { action, scanobjects };
       const request = { params, method: "scantxoutset", id, jsonrpc };
       const result = {
@@ -1101,6 +1094,77 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, response);
       const data = await client.generatetoaddress(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
+  suite("Mining", () => {
+    test(".getblocktemplate()", async () => {
+      const rules = ["segwit"];
+      const mode: "template" = "template";
+      const capabilities = ["serverlist", "proposal"];
+      const template_request = { rules, mode, capabilities };
+      const params = { template_request };
+      const request = { params, method: "getblocktemplate", id, jsonrpc };
+      const result = {
+        capabilities: ["proposal"],
+        version: 536870912,
+        rules: ["csv", "segwit"],
+        vbavailable: {},
+        vbrequired: 0,
+        previousblockhash:
+          "00000000001eae7e020859bd4e814194768171fafa32ec0ff29a7f7718c68e3e",
+        transactions: [
+          {
+            data:
+              "02000000011dee34a06e97aa79e62a962deaaf36af4ade5cfa9d368e59b5f07d7a95f56a9c000000006a4730440220122a6742b92f4f7028d180a8439cd28923ac786c7014a511ff6a43a0b1f0a19c02201cef3090451ce5c40a11e511e00e906ff44547a21d96ba639b6f56bf43cdf88a012103842711dd54b0e087bc458952e482ef9b7605a74e02267d8e613e90c900b46b2ffeffffff029fe50a000000000017a914c6953707c8fe999f1597445182a316efc8c9a4f087480504000000000017a914895227f5e3b944768038354203245e3c8934acf8870e2b1800",
+            txid:
+              "304df7393fd7a5fa6ca3010f52c19a1b11294deb51040645ebc09c76f0c39e16",
+            hash:
+              "304df7393fd7a5fa6ca3010f52c19a1b11294deb51040645ebc09c76f0c39e16",
+            depends: [],
+            fee: 22361,
+            sigops: 0,
+            weight: 884
+          },
+          {
+            data:
+              "02000000000101e451d098b58f159d1879155f3b358ac3f1c9bca1b899c1f11556cfe97dd38109010000001716001490f5c95ca55492835d7b96f205122954496520b2feffffff02eb5c8e210200000017a914dff56b87c21831d6bc8a84407ceedb43ac700b8b87febc37000000000017a914c8847d0cced847080f0bd1811af48f0cde3b8ed38702473044022039395e975051eb8b302fd0bc21b82b336571f6251afe9ecf59da8a5810cfb15802201b005281279f93f3945985c9419cb6d6fb5f2a8e57309f125e71edd6be07383c012102d63dbd2425c008dc5af42f75e35cb14ab12f2d79444dc722aacd7d0b6da8a2260e2b1800",
+            txid:
+              "be76e368477a3de6c2f4ee69c578019384dfaf05e69b4481bbc84997691175b5",
+            hash:
+              "23f676d0e98ff7c0ab6b118ca2fcf9f073cf7e916a5c61673eb36fb1c4f79221",
+            depends: [],
+            fee: 16796,
+            sigops: 1,
+            weight: 661
+          }
+        ],
+        coinbaseaux: { flags: "" },
+        coinbasevalue: 39633673,
+        longpollid:
+          "00000000001eae7e020859bd4e814194768171fafa32ec0ff29a7f7718c68e3e1596",
+        target:
+          "0000000000000175ed0000000000000000000000000000000000000000000000",
+        mintime: 1571918831,
+        mutable: ["time", "transactions", "prevblock"],
+        noncerange: "00000000ffffffff",
+        sigoplimit: 80000,
+        sizelimit: 4000000,
+        weightlimit: 4000000,
+        curtime: 1571924701,
+        bits: "1a0175ed",
+        height: 1583887,
+        default_witness_commitment:
+          "6a24aa21a9ed78a54605e10113365da2095badf375ae434b5abcda3d864a73c91477bd480676"
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getblocktemplate(params);
       assert.deepStrictEqual(data, result);
     });
   });
