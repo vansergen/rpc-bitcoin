@@ -356,6 +356,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns a json object containing mining-related information.
+   */
+  async getmininginfo() {
+    return this.rpc("getmininginfo");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
