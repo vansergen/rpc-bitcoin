@@ -473,6 +473,13 @@ const message = "Hello World";
 const result = await client.signmessagewithprivkey({ privkey, message });
 ```
 
+- [`validateaddress`](https://bitcoin.org/en/developer-reference#validateaddress)
+
+```javascript
+const address = "1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1";
+const result = await client.validateaddress({ address });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
