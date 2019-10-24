@@ -1256,12 +1256,11 @@ suite("RPCClient", () => {
       const params = { node: "192.168.0.6:8333", command };
       const request = { params, method: "addnode", id, jsonrpc };
       const result = null;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.addnode(params);
       assert.deepStrictEqual(data, result);
     });
@@ -1269,12 +1268,11 @@ suite("RPCClient", () => {
     test(".clearbanned()", async () => {
       const request = { params: {}, method: "clearbanned", id, jsonrpc };
       const result = null;
-      const response = { result, error, id };
       nock(uri)
         .post("/", request)
         .times(1)
         .basicAuth(auth)
-        .reply(200, response);
+        .reply(200, { result, error, id });
       const data = await client.clearbanned();
       assert.deepStrictEqual(data, result);
     });
@@ -1308,6 +1306,18 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, { result, error, id });
       const data = await client.getaddednodeinfo(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getconnectioncount()", async () => {
+      const request = { params: {}, method: "getconnectioncount", id, jsonrpc };
+      const result = 9;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getconnectioncount();
       assert.deepStrictEqual(data, result);
     });
   });
