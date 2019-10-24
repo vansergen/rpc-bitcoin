@@ -249,6 +249,12 @@ const exclude = ["mempoolrej", "estimatefee"];
 const result = await client.logging({ include, exclude });
 ```
 
+- [`stop`](https://bitcoin.org/en/developer-reference#stop)
+
+```javascript
+const result = await client.stop();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
