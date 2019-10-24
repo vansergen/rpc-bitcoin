@@ -77,6 +77,14 @@ export type GenerateToAddressParams = GenerateParams & {
   address: string;
 };
 
+export type GetBlockTemplateParams = {
+  template_request: {
+    mode?: "template" | "proposal";
+    capabilities?: string[];
+    rules: string[];
+  };
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -338,6 +346,13 @@ export class RPCClient extends RESTClient {
       { nblocks, maxtries, address },
       wallet || this.wallet
     );
+  }
+
+  /**
+   * @description It returns data needed to construct a block to work on.
+   */
+  async getblocktemplate({ template_request }: GetBlockTemplateParams) {
+    return this.rpc("getblocktemplate", { template_request });
   }
 
   /**
