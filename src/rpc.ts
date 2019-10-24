@@ -59,6 +59,15 @@ export type ScanTxOutSetParams = {
   scanobjects: Descriptor[];
 };
 
+export type HelpParams = {
+  command?: string;
+};
+
+export type LoggingParams = {
+  include?: string[] | "all" | "none" | 0 | 1;
+  exclude?: string[] | "all" | "none" | 0 | 1;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -254,6 +263,48 @@ export class RPCClient extends RESTClient {
    */
   async verifytxoutproof({ proof }: { proof: string }) {
     return this.rpc("verifytxoutproof", { proof });
+  }
+
+  /**
+   * @description Returns an object containing information about memory usage.
+   */
+  async getmemoryinfo({ mode = "stats" } = {}) {
+    return this.rpc("getmemoryinfo", { mode });
+  }
+
+  /**
+   * @description Returns details of the RPC server.
+   */
+  async getrpcinfo() {
+    return this.rpc("getrpcinfo");
+  }
+
+  /**
+   * @description List all commands, or get help for a specified command.
+   */
+  async help({ command }: HelpParams = {}) {
+    return this.rpc("help", { command });
+  }
+
+  /**
+   * @description Gets and sets the logging configuration.
+   */
+  async logging({ include, exclude }: LoggingParams = {}) {
+    return this.rpc("logging", { include, exclude });
+  }
+
+  /**
+   * @description Stop Bitcoin server.
+   */
+  async stop() {
+    return this.rpc("stop");
+  }
+
+  /**
+   * @description Returns the total uptime of the server.
+   */
+  async uptime() {
+    return this.rpc("uptime");
   }
 
   /**

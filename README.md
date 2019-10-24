@@ -96,7 +96,7 @@ const tips = await client.getchaintips();
 const nblocks = 2016;
 const blockhash =
   "000000004182034f427d463b92162d35d0accef9ea0c5354a87e870ca1815b4c";
-const data = await client.getchaintxstats({ nblocks, blockhash });
+const result = await client.getchaintxstats({ nblocks, blockhash });
 ```
 
 - [`getdifficulty`](https://bitcoin.org/en/developer-reference#getdifficulty)
@@ -110,7 +110,7 @@ const difficulty = await client.getdifficulty();
 ```javascript
 const verbose = true;
 const txid = "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a";
-const data = await client.getmempoolancestors({ txid, verbose });
+const result = await client.getmempoolancestors({ txid, verbose });
 ```
 
 - [`getmempooldescendants`](https://bitcoin.org/en/developer-reference#getmempooldescendants)
@@ -118,14 +118,14 @@ const data = await client.getmempoolancestors({ txid, verbose });
 ```javascript
 const verbose = true;
 const txid = "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b";
-const data = await client.getmempooldescendants({ txid, verbose });
+const result = await client.getmempooldescendants({ txid, verbose });
 ```
 
 - [`getmempoolentry`](https://bitcoin.org/en/developer-reference#getmempoolentry)
 
 ```javascript
 const txid = "0629e01f05088728b089715f247de82a160428c06d6c85484adab2aa66574ace";
-const data = await client.getmempoolentry({ txid });
+const result = await client.getmempoolentry({ txid });
 ```
 
 - [`getmempoolinfo`](https://bitcoin.org/en/developer-reference#getmempoolinfo)
@@ -138,7 +138,7 @@ const info = await client.getmempoolinfo();
 
 ```javascript
 const verbose = true;
-const data = await client.getrawmempool({ verbose });
+const result = await client.getrawmempool({ verbose });
 ```
 
 - [`gettxout`](https://bitcoin.org/en/developer-reference#gettxout)
@@ -147,7 +147,7 @@ const data = await client.getrawmempool({ verbose });
 const txid = "d2f6b1d1844e483ce350a4a22fbaef36c31ebe88730415b7408c1f34b834fab5";
 const n = 1;
 const include_mempool = true;
-const data = await client.gettxout({ txid, n, include_mempool });
+const result = await client.gettxout({ txid, n, include_mempool });
 ```
 
 - [`gettxoutproof`](https://bitcoin.org/en/developer-reference#gettxoutproof)
@@ -158,7 +158,7 @@ const txids = [
 ];
 const blockhash =
   "000000000000000000055bc30b762904ab996430603cafe846cc6adc82c4af1e";
-const data = await client.gettxoutproof({ txids, blockhash });
+const result = await client.gettxoutproof({ txids, blockhash });
 ```
 
 - [`gettxoutsetinfo`](https://bitcoin.org/en/developer-reference#gettxoutsetinfo)
@@ -172,7 +172,7 @@ const info = await client.gettxoutsetinfo();
 ```javascript
 const blockhash =
   "00000000000000261a35cf378bf8fa1bf6ac87800d798ce2a11f581f562e92ba";
-const data = await client.preciousblock({ blockhash });
+const result = await client.preciousblock({ blockhash });
 ```
 
 - [`pruneblockchain`](https://bitcoin.org/en/developer-reference#pruneblockchain)
@@ -217,6 +217,48 @@ const result = await client.verifychain({ checklevel, nblocks });
 const proof =
   "00000020ed07b12f0398e45fd403db11dbe894dc3301ce1a7725424e0b5e460c0000000066fca14db436f305aea37b3ae0f8b188cbf112dff3854c3d419f3ff3ebbc821f6c0c975dffff001d8fd5a7d2eb00000009e7acd3f605d1b957d684d9eeca9c472d803d90c0d17e29e5606f9b080b177a4abcd854622ad3900b5bc1ae71e99699a05eb972d46bd439c08eb7fbd20bba6494542222b2d1388f52c6d23ac12b32245ca47b02fc2f0a283a88aabca1f4db43ca8a4da8ffd7d9ae403b0c34ccbf14d2318c34fabb713c48f6d6490c6095250b6f08f26f020275d448dfb9967c62bedefaf29260021671a191f620f7783252788549b1e033dc815e2cd36ff204b398046f834643859f881a4d93b3fc5b91413a009c5069be274e1dcc675183ea2a989ef598422c0ed02e407aade8eaa6ef7ec1120ca4ffdef21b5fd26c4525a27c78cc38026b257f9d23f0d796603b1d3cbf539bdf87ccf9e81954f58e072d67eff2891339f203cbdec68bbbabbbbc0c070cceea03bf0a00";
 const result = await client.verifytxoutproof({ proof });
+```
+
+### Control
+
+- [`getmemoryinfo`](https://bitcoin.org/en/developer-reference#getmemoryinfo)
+
+```javascript
+const mode = "mallocinfo";
+const result = await client.getmemoryinfo({ mode });
+```
+
+- [`getrpcinfo`](https://bitcoin.org/en/developer-reference#getrpcinfo)
+
+```javascript
+const result = await client.getrpcinfo();
+```
+
+- [`help`](https://bitcoin.org/en/developer-reference#help)
+
+```javascript
+const command = "getzmqnotifications";
+const result = await client.help({ command });
+```
+
+- [`logging`](https://bitcoin.org/en/developer-reference#logging)
+
+```javascript
+const include = ["net", "rpc"];
+const exclude = ["mempoolrej", "estimatefee"];
+const result = await client.logging({ include, exclude });
+```
+
+- [`stop`](https://bitcoin.org/en/developer-reference#stop)
+
+```javascript
+const result = await client.stop();
+```
+
+- [`uptime`](https://bitcoin.org/en/developer-reference#uptime)
+
+```javascript
+const result = await client.uptime();
 ```
 
 ### ZMQ

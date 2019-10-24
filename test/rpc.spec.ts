@@ -891,6 +891,125 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Control", () => {
+    test(".getmemoryinfo()", async () => {
+      const params = { mode: "stats" };
+      const request = { params, method: "getmemoryinfo", id, jsonrpc };
+      const result = {
+        locked: {
+          used: 194112,
+          free: 68032,
+          total: 262144,
+          locked: 0,
+          chunks_used: 6065,
+          chunks_free: 3
+        }
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getmemoryinfo(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getrpcinfo()", async () => {
+      const request = { params: {}, method: "getrpcinfo", id, jsonrpc };
+      const result = {
+        active_commands: [{ method: "getrpcinfo", duration: 0 }]
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getrpcinfo();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".help()", async () => {
+      const params = { command: "getzmqnotifications" };
+      const request = { params, method: "help", id, jsonrpc };
+      const result =
+        'getzmqnotifications\n\nReturns information about the active ZeroMQ notifications.\n\nResult:\n[\n  {                        (json object)\n    "type": "pubhashtx",   (string) Type of notification\n    "address": "...",      (string) Address of the publisher\n    "hwm": n                 (numeric) Outbound message high water mark\n  },\n  ...\n]\n\nExamples:\n> bitcoin-cli getzmqnotifications \n> curl --user myusername --data-binary \'{"jsonrpc": "1.0", "id":"curltest", "method": "getzmqnotifications", "params": [] }\' -H \'content-type: text/plain;\' http://127.0.0.1:8332/\n';
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.help(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".logging()", async () => {
+      const include = ["net", "rpc"];
+      const exclude = ["mempoolrej", "estimatefee"];
+      const params = { include, exclude };
+      const request = { params, method: "logging", id, jsonrpc };
+      const result = {
+        net: true,
+        tor: false,
+        mempool: false,
+        http: false,
+        bench: false,
+        zmq: false,
+        db: false,
+        rpc: true,
+        estimatefee: false,
+        addrman: false,
+        selectcoins: false,
+        reindex: false,
+        cmpctblock: false,
+        rand: false,
+        prune: false,
+        proxy: false,
+        mempoolrej: false,
+        libevent: false,
+        coindb: false,
+        qt: false,
+        leveldb: false
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.logging(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".stop()", async () => {
+      const request = { params: {}, method: "stop", id, jsonrpc };
+      const result = "Bitcoin server stopping";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.stop();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".uptime()", async () => {
+      const request = { params: {}, method: "uptime", id, jsonrpc };
+      const result = 31;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.uptime();
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
