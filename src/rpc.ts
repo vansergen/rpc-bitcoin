@@ -113,6 +113,11 @@ export type CreateMultiSigParams = {
   address_type?: "legacy" | "p2sh-segwit" | "bech32";
 };
 
+export type DeriveAddressesParams = {
+  descriptor: string;
+  range?: number | [number, number];
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -529,6 +534,13 @@ export class RPCClient extends RESTClient {
     address_type = "legacy"
   }: CreateMultiSigParams) {
     return this.rpc("createmultisig", { nrequired, keys, address_type });
+  }
+
+  /**
+   * @description Derives one or more addresses corresponding to an output descriptor.
+   */
+  async deriveaddresses({ descriptor, range }: DeriveAddressesParams) {
+    return this.rpc("deriveaddresses", { descriptor, range });
   }
 
   /**
