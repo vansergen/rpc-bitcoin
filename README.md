@@ -480,6 +480,16 @@ const address = "1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1";
 const result = await client.validateaddress({ address });
 ```
 
+- [`verifymessage`](https://bitcoin.org/en/developer-reference#verifymessage)
+
+```javascript
+const address = "myv3xs1BBBhaDVU62LFNBho2zSp4KLBkgK";
+const message = "Hello World";
+const signature =
+  "H14/QyrMj8e63GyEXBDDWnWrplXK3OORnMc3B+fEOOisbNFEAQuNB9myAH9qs7h1VNJb1xq1ytPQqiLcmSwwPv8=";
+const result = await client.verifymessage({ address, message, signature });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
