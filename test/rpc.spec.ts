@@ -1550,6 +1550,25 @@ suite("RPCClient", () => {
       const data = await client.getpeerinfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listbanned()", async () => {
+      const request = { params: {}, method: "listbanned", id, jsonrpc };
+      const result = [
+        {
+          address: "92.53.89.123/32",
+          banned_until: 1571932132,
+          ban_created: 1571932032,
+          ban_reason: "manually added"
+        }
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listbanned();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
