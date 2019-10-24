@@ -995,6 +995,19 @@ suite("RPCClient", () => {
       const data = await client.stop();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".uptime()", async () => {
+      const request = { params: {}, method: "uptime", id, jsonrpc };
+      const result = 31;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.uptime();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
