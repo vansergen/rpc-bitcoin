@@ -100,6 +100,13 @@ export type AddNodeParams = {
 
 export type DisconnectNodeParams = { address: string } | { nodeid: number };
 
+export type SetBanParams = {
+  subnet: string;
+  command: "add" | "remove";
+  bantime?: number;
+  absolute?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -486,6 +493,18 @@ export class RPCClient extends RESTClient {
    */
   async ping() {
     return this.rpc("ping");
+  }
+
+  /**
+   * @description Attempts to add or remove an IP/Subnet from the banned list
+   */
+  async setban({
+    subnet,
+    command,
+    bantime = 0,
+    absolute = false
+  }: SetBanParams) {
+    return this.rpc("setban", { subnet, command, bantime, absolute });
   }
 
   /**
