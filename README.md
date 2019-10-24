@@ -261,6 +261,17 @@ const result = await client.stop();
 const result = await client.uptime();
 ```
 
+### Generating
+
+- [`generate`](https://bitcoin.org/en/developer-reference#generate)
+
+```javascript
+const nblocks = 1;
+const maxtries = 10000;
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.generate({ nblocks, maxtries }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
