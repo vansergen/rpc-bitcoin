@@ -241,6 +241,14 @@ const command = "getzmqnotifications";
 const result = await client.help({ command });
 ```
 
+- [`logging`](https://bitcoin.org/en/developer-reference#logging)
+
+```javascript
+const include = ["net", "rpc"];
+const exclude = ["mempoolrej", "estimatefee"];
+const result = await client.logging({ include, exclude });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
