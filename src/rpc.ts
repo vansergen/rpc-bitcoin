@@ -294,6 +294,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Stop Bitcoin server.
+   */
+  async stop() {
+    return this.rpc("stop");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
