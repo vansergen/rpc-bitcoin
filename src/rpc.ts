@@ -544,6 +544,16 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Estimates the approximate fee per kilobyte needed for a transaction to begin confirmation within `conf_target` blocks if possible and return the number of blocks for which the estimate is valid.
+   */
+  async estimatesmartfee({
+    conf_target,
+    estimate_mode = "CONSERVATIVE"
+  }: EstimateSmartFeeParams) {
+    return this.rpc("estimatesmartfee", { conf_target, estimate_mode });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
