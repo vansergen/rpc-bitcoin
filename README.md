@@ -465,6 +465,14 @@ const descriptor =
 const result = await client.getdescriptorinfo({ descriptor });
 ```
 
+- [`signmessagewithprivkey`](https://bitcoin.org/en/developer-reference#signmessagewithprivkey)
+
+```javascript
+const privkey = "yourPrivateKey";
+const message = "Hello World";
+const result = await client.signmessagewithprivkey({ privkey, message });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
