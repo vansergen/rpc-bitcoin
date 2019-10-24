@@ -944,6 +944,44 @@ suite("RPCClient", () => {
       const data = await client.help(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".logging()", async () => {
+      const include = ["net", "rpc"];
+      const exclude = ["mempoolrej", "estimatefee"];
+      const params = { include, exclude };
+      const request = { params, method: "logging", id, jsonrpc };
+      const result = {
+        net: true,
+        tor: false,
+        mempool: false,
+        http: false,
+        bench: false,
+        zmq: false,
+        db: false,
+        rpc: true,
+        estimatefee: false,
+        addrman: false,
+        selectcoins: false,
+        reindex: false,
+        cmpctblock: false,
+        rand: false,
+        prune: false,
+        proxy: false,
+        mempoolrej: false,
+        libevent: false,
+        coindb: false,
+        qt: false,
+        leveldb: false
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.logging(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
