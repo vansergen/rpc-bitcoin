@@ -264,6 +264,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns details of the RPC server.
+   */
+  async getrpcinfo() {
+    return this.rpc("getrpcinfo");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
