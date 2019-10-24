@@ -1189,6 +1189,20 @@ suite("RPCClient", () => {
       const data = await client.getmininginfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getnetworkhashps()", async () => {
+      const params = { nblocks: 100, height: 100 };
+      const request = { params, method: "getnetworkhashps", id, jsonrpc };
+      const result = 40893390.77406456;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getnetworkhashps(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
