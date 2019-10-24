@@ -395,6 +395,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Decode the given hexdata as a header and submit it as a candidate chain tip if valid.
+   */
+  async submitheader({ hexdata }: HexData) {
+    return this.rpc("submitheader", { hexdata });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
