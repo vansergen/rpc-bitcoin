@@ -975,7 +975,7 @@ suite("RPCClient", () => {
     test(".generate()", async () => {
       const params = { nblocks: 1, maxtries: 10000 };
       const request = { params, method: "generate", id, jsonrpc };
-      const result: any[] = [];
+      const result: string[] = [];
       nock(uri)
         .post("/", request)
         .times(1)
@@ -989,7 +989,7 @@ suite("RPCClient", () => {
       const params = { nblocks: 1, maxtries: 10000 };
       const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generate", id, jsonrpc };
-      const result: any[] = [];
+      const result: string[] = [];
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
@@ -1004,7 +1004,7 @@ suite("RPCClient", () => {
       const client = new RPCClient({ port, timeout, pass, wallet });
       const params = { nblocks: 1, maxtries: 10000 };
       const request = { params, method: "generate", id, jsonrpc };
-      const result: any[] = [];
+      const result: string[] = [];
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
@@ -1018,7 +1018,7 @@ suite("RPCClient", () => {
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
       const request = { params, method: "generatetoaddress", id, jsonrpc };
-      const result: any[] = [];
+      const result: string[] = [];
       nock(uri)
         .post("/", request)
         .times(1)
@@ -1049,7 +1049,7 @@ suite("RPCClient", () => {
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
       const request = { params, method: "generatetoaddress", id, jsonrpc };
-      const result: any[] = [];
+      const result: string[] = [];
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)

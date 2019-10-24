@@ -11,7 +11,7 @@ export type JSONRPC = {
   jsonrpc?: string | number;
   id?: string | number;
   method: string;
-  params?: any;
+  params?: object;
 };
 
 export type Verbosity = { verbosity?: 0 | 1 | 2 };
