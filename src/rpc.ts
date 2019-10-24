@@ -447,6 +447,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns information about network traffic, including bytes in, bytes out, and current time.
+   */
+  async getnettotals() {
+    return this.rpc("getnettotals");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
