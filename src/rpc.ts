@@ -59,6 +59,10 @@ export type ScanTxOutSetParams = {
   scanobjects: Descriptor[];
 };
 
+export type HelpParams = {
+  command?: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -268,6 +272,13 @@ export class RPCClient extends RESTClient {
    */
   async getrpcinfo() {
     return this.rpc("getrpcinfo");
+  }
+
+  /**
+   * @description List all commands, or get help for a specified command.
+   */
+  async help({ command }: HelpParams = {}) {
+    return this.rpc("help", { command });
   }
 
   /**
