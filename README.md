@@ -319,6 +319,13 @@ const fee_delta = 1000;
 const result = await client.prioritisetransaction({ txid, fee_delta });
 ```
 
+- [`submitblock`](https://bitcoin.org/en/developer-reference#submitblock)
+
+```javascript
+const hexdata = "hexEncodedBlock";
+const result = await client.submitblock({ hexdata });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
