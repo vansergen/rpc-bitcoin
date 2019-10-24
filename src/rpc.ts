@@ -68,6 +68,11 @@ export type LoggingParams = {
   exclude?: string[] | "all" | "none" | 0 | 1;
 };
 
+export type GenerateParams = {
+  nblocks: number;
+  maxtries?: number;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -305,6 +310,16 @@ export class RPCClient extends RESTClient {
    */
   async uptime() {
     return this.rpc("uptime");
+  }
+
+  /**
+   * @description Mine up to nblocks blocks immediately (before the RPC call returns) to an address in the wallet.
+   */
+  async generate(
+    { nblocks, maxtries = 1000000 }: GenerateParams,
+    wallet?: string
+  ) {
+    return this.rpc("generate", { nblocks, maxtries }, wallet);
   }
 
   /**
