@@ -1203,6 +1203,23 @@ suite("RPCClient", () => {
       const data = await client.getnetworkhashps(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".prioritisetransaction()", async () => {
+      const txid =
+        "9b0fc92260312ce44e74ef369f5c66bbb85848f2eddd5a7a1cde251e54ccfdd5";
+      const fee_delta = 100;
+      const params = { txid, fee_delta };
+      const request = { params, method: "prioritisetransaction", id, jsonrpc };
+      const result = true;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.prioritisetransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
