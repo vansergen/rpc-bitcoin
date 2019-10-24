@@ -301,6 +301,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns the total uptime of the server.
+   */
+  async uptime() {
+    return this.rpc("uptime");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
