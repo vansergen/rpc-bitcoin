@@ -297,6 +297,12 @@ const template_request = { rules, mode, capabilities };
 const result = await client.getblocktemplate({ template_request });
 ```
 
+- [`getmininginfo`](https://bitcoin.org/en/developer-reference#getmininginfo)
+
+```javascript
+const result = await client.getmininginfo();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
