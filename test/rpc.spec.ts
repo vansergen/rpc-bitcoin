@@ -1220,6 +1220,20 @@ suite("RPCClient", () => {
       const data = await client.prioritisetransaction(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".submitblock()", async () => {
+      const params = { hexdata: "PreviosBlockHex" };
+      const request = { params, method: "submitblock", id, jsonrpc };
+      const result = "duplicate";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.submitblock(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
