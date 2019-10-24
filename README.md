@@ -440,6 +440,15 @@ const address_type = "bech32";
 const result = await client.createmultisig({ nrequired, keys, address_type });
 ```
 
+- [`deriveaddresses`](https://bitcoin.org/en/developer-reference#deriveaddresses)
+
+```javascript
+const descriptor =
+  "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex";
+const range = [0, 2];
+const result = await client.deriveaddresses({ descriptor, range });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
