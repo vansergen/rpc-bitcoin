@@ -457,6 +457,14 @@ const estimate_mode = "ECONOMICAL";
 const result = await client.estimatesmartfee({ conf_target, estimate_mode });
 ```
 
+- [`getdescriptorinfo`](https://bitcoin.org/en/developer-reference#getdescriptorinfo)
+
+```javascript
+const descriptor =
+  "wpkh([d34db33f/84h/0h/0h]0279be667ef9dcbbac55a06295Ce870b07029Bfcdb2dce28d959f2815b16f81798)";
+const result = await client.getdescriptorinfo({ descriptor });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
