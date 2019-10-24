@@ -1167,6 +1167,28 @@ suite("RPCClient", () => {
       const data = await client.getblocktemplate(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getmininginfo()", async () => {
+      const request = { params: {}, method: "getmininginfo", id, jsonrpc };
+      const result = {
+        blocks: 1583887,
+        currentblockweight: 235257,
+        currentblocktx: 134,
+        difficulty: 1,
+        networkhashps: 26197621661352.18,
+        pooledtx: 101,
+        chain: "test",
+        warnings: "Warning: unknown new rules activated (versionbit 28)"
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getmininginfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
