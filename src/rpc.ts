@@ -89,6 +89,10 @@ export type PrioritiseTransactionParams = TxId & {
   fee_delta: number;
 };
 
+export type HexData = {
+  hexdata: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -381,6 +385,13 @@ export class RPCClient extends RESTClient {
     fee_delta
   }: PrioritiseTransactionParams) {
     return this.rpc("prioritisetransaction", { txid, fee_delta });
+  }
+
+  /**
+   * @description Attempts to submit new block to network.
+   */
+  async submitblock({ hexdata }: HexData) {
+    return this.rpc("submitblock", { hexdata });
   }
 
   /**
