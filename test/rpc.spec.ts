@@ -891,6 +891,31 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Control", () => {
+    test(".getmemoryinfo()", async () => {
+      const params = { mode: "stats" };
+      const request = { params, method: "getmemoryinfo", id, jsonrpc };
+      const result = {
+        locked: {
+          used: 194112,
+          free: 68032,
+          total: 262144,
+          locked: 0,
+          chunks_used: 6065,
+          chunks_free: 3
+        }
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getmemoryinfo(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
