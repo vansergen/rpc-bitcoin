@@ -23,7 +23,15 @@
     "camelcase": "off",
     "@typescript-eslint/camelcase": [
       "error",
-      { "properties": "never", "allow": ["hash_or_height", "include_mempool"] }
+      {
+        "properties": "never",
+        "allow": [
+          "hash_or_height",
+          "include_mempool",
+          "template_request",
+          "fee_delta"
+        ]
+      }
     ]
   }
 }

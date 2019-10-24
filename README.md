@@ -285,6 +285,54 @@ const result = await client.generatetoaddress(
 );
 ```
 
+### Mining
+
+- [`getblocktemplate`](https://bitcoin.org/en/developer-reference#getblocktemplate)
+
+```javascript
+const rules = ["segwit"];
+const mode = "template";
+const capabilities = ["serverlist", "proposal"];
+const template_request = { rules, mode, capabilities };
+const result = await client.getblocktemplate({ template_request });
+```
+
+- [`getmininginfo`](https://bitcoin.org/en/developer-reference#getmininginfo)
+
+```javascript
+const result = await client.getmininginfo();
+```
+
+- [`getnetworkhashps`](https://bitcoin.org/en/developer-reference#getnetworkhashps)
+
+```javascript
+const nblocks = 100;
+const height = 100;
+const result = await client.getnetworkhashps({ nblocks, height });
+```
+
+- [`prioritisetransaction`](https://bitcoin.org/en/developer-reference#prioritisetransaction)
+
+```javascript
+const txid = "9b0fc92260312ce44e74ef369f5c66bbb85848f2eddd5a7a1cde251e54ccfdd5";
+const fee_delta = 1000;
+const result = await client.prioritisetransaction({ txid, fee_delta });
+```
+
+- [`submitblock`](https://bitcoin.org/en/developer-reference#submitblock)
+
+```javascript
+const hexdata = "hexEncodedBlock";
+const result = await client.submitblock({ hexdata });
+```
+
+- [`submitheader`](https://bitcoin.org/en/developer-reference#submitheader)
+
+```javascript
+const hexdata = "hexEncodedBlockHeaderData";
+const result = await client.submitheader({ hexdata });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)

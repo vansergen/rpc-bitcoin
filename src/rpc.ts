@@ -77,6 +77,22 @@ export type GenerateToAddressParams = GenerateParams & {
   address: string;
 };
 
+export type GetBlockTemplateParams = {
+  template_request: {
+    mode?: "template" | "proposal";
+    capabilities?: string[];
+    rules: string[];
+  };
+};
+
+export type PrioritiseTransactionParams = TxId & {
+  fee_delta: number;
+};
+
+export type HexData = {
+  hexdata: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -338,6 +354,51 @@ export class RPCClient extends RESTClient {
       { nblocks, maxtries, address },
       wallet || this.wallet
     );
+  }
+
+  /**
+   * @description It returns data needed to construct a block to work on.
+   */
+  async getblocktemplate({ template_request }: GetBlockTemplateParams) {
+    return this.rpc("getblocktemplate", { template_request });
+  }
+
+  /**
+   * @description Returns a json object containing mining-related information.
+   */
+  async getmininginfo() {
+    return this.rpc("getmininginfo");
+  }
+
+  /**
+   * @description Returns the estimated network hashes per second based on the last `n` blocks.
+   */
+  async getnetworkhashps({ nblocks = 120, height = -1 } = {}) {
+    return this.rpc("getnetworkhashps", { nblocks, height });
+  }
+
+  /**
+   * @description Accepts the transaction into mined blocks at a higher (or lower) priority
+   */
+  async prioritisetransaction({
+    txid,
+    fee_delta
+  }: PrioritiseTransactionParams) {
+    return this.rpc("prioritisetransaction", { txid, fee_delta });
+  }
+
+  /**
+   * @description Attempts to submit new block to network.
+   */
+  async submitblock({ hexdata }: HexData) {
+    return this.rpc("submitblock", { hexdata });
+  }
+
+  /**
+   * @description Decode the given hexdata as a header and submit it as a candidate chain tip if valid.
+   */
+  async submitheader({ hexdata }: HexData) {
+    return this.rpc("submitheader", { hexdata });
   }
 
   /**
