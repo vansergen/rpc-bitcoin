@@ -419,6 +419,13 @@ const absolute = true;
 const result = await client.setban({ subnet, command, bantime, absolute });
 ```
 
+- [`setnetworkactive`](https://bitcoin.org/en/developer-reference#setnetworkactive)
+
+```javascript
+const state = false;
+const result = await client.setnetworkactive({ state });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
