@@ -1661,6 +1661,22 @@ suite("RPCClient", () => {
       const data = await client.getdescriptorinfo(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".signmessagewithprivkey()", async () => {
+      const privkey = "cPGLkRL4zvHfpcEkjPb93GEHth8WZpTJH2YCCoYWS7kHcFFarn8U";
+      const message = "Hello World";
+      const params = { privkey, message };
+      const request = { params, method: "signmessagewithprivkey", id, jsonrpc };
+      const result =
+        "IIXi7nhOGKbW2uOW2cmV/BbOvlIDzVu0KTZdvntP634/BRL2DmFSvtwifkDMa+pDKd+eRrTbEi6XVAc82JKTiwA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signmessagewithprivkey(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {

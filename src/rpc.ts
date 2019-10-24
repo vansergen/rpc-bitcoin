@@ -123,6 +123,11 @@ export type EstimateSmartFeeParams = {
   estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
 };
 
+export type SignMessageWithPrivKeyParams = {
+  privkey: string;
+  message: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
