@@ -914,6 +914,21 @@ suite("RPCClient", () => {
       const data = await client.getmemoryinfo(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getrpcinfo()", async () => {
+      const request = { params: {}, method: "getrpcinfo", id, jsonrpc };
+      const result = {
+        active_commands: [{ method: "getrpcinfo", duration: 0 }]
+      };
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.getrpcinfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
