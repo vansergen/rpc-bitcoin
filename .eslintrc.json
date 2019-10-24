@@ -29,7 +29,10 @@
           "hash_or_height",
           "include_mempool",
           "template_request",
-          "fee_delta"
+          "fee_delta",
+          "address_type",
+          "estimate_mode",
+          "conf_target"
         ]
       }
     ]

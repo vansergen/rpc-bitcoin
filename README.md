@@ -426,6 +426,70 @@ const state = false;
 const result = await client.setnetworkactive({ state });
 ```
 
+### Util
+
+- [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
+
+```javascript
+const nrequired = 2;
+const keys = [
+  "03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd",
+  "03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626"
+];
+const address_type = "bech32";
+const result = await client.createmultisig({ nrequired, keys, address_type });
+```
+
+- [`deriveaddresses`](https://bitcoin.org/en/developer-reference#deriveaddresses)
+
+```javascript
+const descriptor =
+  "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex";
+const range = [0, 2];
+const result = await client.deriveaddresses({ descriptor, range });
+```
+
+- [`estimatesmartfee`](https://bitcoin.org/en/developer-reference#estimatesmartfee)
+
+```javascript
+const conf_target = 2;
+const estimate_mode = "ECONOMICAL";
+const result = await client.estimatesmartfee({ conf_target, estimate_mode });
+```
+
+- [`getdescriptorinfo`](https://bitcoin.org/en/developer-reference#getdescriptorinfo)
+
+```javascript
+const descriptor =
+  "wpkh([d34db33f/84h/0h/0h]0279be667ef9dcbbac55a06295Ce870b07029Bfcdb2dce28d959f2815b16f81798)";
+const result = await client.getdescriptorinfo({ descriptor });
+```
+
+- [`signmessagewithprivkey`](https://bitcoin.org/en/developer-reference#signmessagewithprivkey)
+
+```javascript
+const privkey = "yourPrivateKey";
+const message = "Hello World";
+const result = await client.signmessagewithprivkey({ privkey, message });
+```
+
+- [`validateaddress`](https://bitcoin.org/en/developer-reference#validateaddress)
+
+```javascript
+const address = "1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1";
+const result = await client.validateaddress({ address });
+```
+
+- [`verifymessage`](https://bitcoin.org/en/developer-reference#verifymessage)
+
+```javascript
+const address = "myv3xs1BBBhaDVU62LFNBho2zSp4KLBkgK";
+const message = "Hello World";
+const signature =
+  "H14/QyrMj8e63GyEXBDDWnWrplXK3OORnMc3B+fEOOisbNFEAQuNB9myAH9qs7h1VNJb1xq1ytPQqiLcmSwwPv8=";
+const result = await client.verifymessage({ address, message, signature });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)

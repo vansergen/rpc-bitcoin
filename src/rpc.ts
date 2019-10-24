@@ -107,6 +107,33 @@ export type SetBanParams = {
   absolute?: boolean;
 };
 
+export type CreateMultiSigParams = {
+  nrequired: number;
+  keys: string[];
+  address_type?: "legacy" | "p2sh-segwit" | "bech32";
+};
+
+export type DeriveAddressesParams = {
+  descriptor: string;
+  range?: number | [number, number];
+};
+
+export type EstimateSmartFeeParams = {
+  conf_target: number;
+  estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
+};
+
+export type SignMessageWithPrivKeyParams = {
+  privkey: string;
+  message: string;
+};
+
+export type VerifyMessageParams = {
+  address: string;
+  signature: string;
+  message: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -512,6 +539,65 @@ export class RPCClient extends RESTClient {
    */
   async setnetworkactive({ state }: { state: boolean }) {
     return this.rpc("setnetworkactive", { state });
+  }
+
+  /**
+   * @description Creates a multi-signature address with n signature of m keys required.
+   */
+  async createmultisig({
+    nrequired,
+    keys,
+    address_type = "legacy"
+  }: CreateMultiSigParams) {
+    return this.rpc("createmultisig", { nrequired, keys, address_type });
+  }
+
+  /**
+   * @description Derives one or more addresses corresponding to an output descriptor.
+   */
+  async deriveaddresses({ descriptor, range }: DeriveAddressesParams) {
+    return this.rpc("deriveaddresses", { descriptor, range });
+  }
+
+  /**
+   * @description Estimates the approximate fee per kilobyte needed for a transaction to begin confirmation within `conf_target` blocks if possible and return the number of blocks for which the estimate is valid.
+   */
+  async estimatesmartfee({
+    conf_target,
+    estimate_mode = "CONSERVATIVE"
+  }: EstimateSmartFeeParams) {
+    return this.rpc("estimatesmartfee", { conf_target, estimate_mode });
+  }
+
+  /**
+   * @description Analyses a descriptor.
+   */
+  async getdescriptorinfo({ descriptor }: { descriptor: string }) {
+    return this.rpc("getdescriptorinfo", { descriptor });
+  }
+
+  /**
+   * @description Sign a message with the private key of an address.
+   */
+  async signmessagewithprivkey({
+    privkey,
+    message
+  }: SignMessageWithPrivKeyParams) {
+    return this.rpc("signmessagewithprivkey", { privkey, message });
+  }
+
+  /**
+   * @description Return information about the given bitcoin address.
+   */
+  async validateaddress({ address }: { address: string }) {
+    return this.rpc("validateaddress", { address });
+  }
+
+  /**
+   * @description Verify a signed message
+   */
+  async verifymessage({ address, signature, message }: VerifyMessageParams) {
+    return this.rpc("verifymessage", { address, signature, message });
   }
 
   /**

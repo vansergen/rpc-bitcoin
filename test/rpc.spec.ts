@@ -1582,6 +1582,141 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Util", () => {
+    test(".createmultisig()", async () => {
+      const nrequired = 2;
+      const keys = [
+        "03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd",
+        "03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626"
+      ];
+      const address_type: "bech32" = "bech32";
+      const params = { nrequired, keys, address_type };
+      const request = { params, method: "createmultisig", id, jsonrpc };
+      const result = {
+        address:
+          "tb1q0jnggjwnn22a4ywxc2pcw86c0d6tghqkgk3hlryrxl7nmxkylmnqdcdsu7",
+        redeemScript:
+          "522103789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd2103dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a6162652ae"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createmultisig(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".deriveaddresses()", async () => {
+      const descriptor =
+        "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex";
+      const range: [number, number] = [0, 2];
+      const params = { descriptor, range };
+      const request = { params, method: "deriveaddresses", id, jsonrpc };
+      const result = [
+        "tb1q7as9cz0t8rfng5f0xdklfgyp0x6ya0tu6ckaqs",
+        "tb1q0aducdmz77tfu4dhfez8ayycmp2pz6jwy85hhn",
+        "tb1qsdqewd8upv66txx48qssr0an5r3llaxtwqzytk"
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.deriveaddresses(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".estimatesmartfee()", async () => {
+      const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
+      const params = { conf_target: 2, estimate_mode };
+      const request = { params, method: "estimatesmartfee", id, jsonrpc };
+      const result = { feerate: 0.00001, blocks: 2 };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.estimatesmartfee(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getdescriptorinfo()", async () => {
+      const descriptor =
+        "wpkh([d34db33f/84h/0h/0h]0279be667ef9dcbbac55a06295Ce870b07029Bfcdb2dce28d959f2815b16f81798)";
+      const params = { descriptor };
+      const request = { params, method: "getdescriptorinfo", id, jsonrpc };
+      const result = {
+        descriptor:
+          "wpkh([d34db33f/84'/0'/0']0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798)#n9g43y4k",
+        isrange: false,
+        issolvable: true,
+        hasprivatekeys: false
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getdescriptorinfo(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".signmessagewithprivkey()", async () => {
+      const privkey = "cPGLkRL4zvHfpcEkjPb93GEHth8WZpTJH2YCCoYWS7kHcFFarn8U";
+      const message = "Hello World";
+      const params = { privkey, message };
+      const request = { params, method: "signmessagewithprivkey", id, jsonrpc };
+      const result =
+        "IIXi7nhOGKbW2uOW2cmV/BbOvlIDzVu0KTZdvntP634/BRL2DmFSvtwifkDMa+pDKd+eRrTbEi6XVAc82JKTiwA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signmessagewithprivkey(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".validateaddress()", async () => {
+      const params = { address: "tb1qmv634mfk34sks9z3tcwwncd9ug0why3a0pl4px" };
+      const request = { params, method: "validateaddress", id, jsonrpc };
+      const result = {
+        isvalid: true,
+        address: "tb1qmv634mfk34sks9z3tcwwncd9ug0why3a0pl4px",
+        scriptPubKey: "0014db351aed368d616814515e1ce9e1a5e21eeb923d",
+        isscript: false,
+        iswitness: true,
+        witness_version: 0,
+        witness_program: "db351aed368d616814515e1ce9e1a5e21eeb923d"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.validateaddress(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".verifymessage()", async () => {
+      const address = "myv3xs1BBBhaDVU62LFNBho2zSp4KLBkgK";
+      const signature =
+        "H14/QyrMj8e63GyEXBDDWnWrplXK3OORnMc3B+fEOOisbNFEAQuNB9myAH9qs7h1VNJb1xq1ytPQqiLcmSwwPv8=";
+      const message = "Hello World";
+      const params = { address, signature, message };
+      const request = { params, method: "verifymessage", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.verifymessage(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
