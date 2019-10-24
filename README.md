@@ -384,6 +384,13 @@ const result = await client.getnettotals();
 const result = await client.getnetworkinfo();
 ```
 
+- [`getnodeaddresses`](https://bitcoin.org/en/developer-reference#getnodeaddresses)
+
+```javascript
+const count = 8;
+const result = await client.getnodeaddresses({ count });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
