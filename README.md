@@ -333,6 +333,99 @@ const hexdata = "hexEncodedBlockHeaderData";
 const result = await client.submitheader({ hexdata });
 ```
 
+### Network
+
+- [`addnode`](https://bitcoin.org/en/developer-reference#addnode)
+
+```javascript
+const node = "192.168.0.6:8333";
+const command = "onetry";
+const result = await client.addnode({ node, command });
+```
+
+- [`clearbanned`](https://bitcoin.org/en/developer-reference#clearbanned)
+
+```javascript
+const result = await client.clearbanned();
+```
+
+- [`disconnectnode`](https://bitcoin.org/en/developer-reference#disconnectnode)
+
+```javascript
+const address = "192.168.1.123:18333";
+let result = await client.disconnectnode({ address });
+// or by a `nodeid`
+const nodeid = 3;
+result = await client.disconnectnode({ nodeid });
+```
+
+- [`getaddednodeinfo`](https://bitcoin.org/en/developer-reference#getaddednodeinfo)
+
+```javascript
+const node = "192.168.0.201";
+const result = await client.getaddednodeinfo({ node });
+```
+
+- [`getconnectioncount`](https://bitcoin.org/en/developer-reference#getconnectioncount)
+
+```javascript
+const result = await client.getconnectioncount();
+```
+
+- [`getnettotals`](https://bitcoin.org/en/developer-reference#getnettotals)
+
+```javascript
+const result = await client.getnettotals();
+```
+
+- [`getnetworkinfo`](https://bitcoin.org/en/developer-reference#getnetworkinfo)
+
+```javascript
+const result = await client.getnetworkinfo();
+```
+
+- [`getnodeaddresses`](https://bitcoin.org/en/developer-reference#getnodeaddresses)
+
+```javascript
+const count = 8;
+const result = await client.getnodeaddresses({ count });
+```
+
+- [`getpeerinfo`](https://bitcoin.org/en/developer-reference#getpeerinfo)
+
+```javascript
+const result = await client.getpeerinfo();
+```
+
+- [`listbanned`](https://bitcoin.org/en/developer-reference#listbanned)
+
+```javascript
+const result = await client.listbanned();
+```
+
+- [`ping`](https://bitcoin.org/en/developer-reference#ping)
+
+```javascript
+const result = await client.ping();
+```
+
+- [`setban`](https://bitcoin.org/en/developer-reference#setban)
+
+```javascript
+const subnet = "192.168.0.6";
+const command = "add";
+const bantime = 1581599503;
+const absolute = true;
+const result = await client.setban({ subnet, command, bantime, absolute });
+```
+
+- [`setnetworkactive`](https://bitcoin.org/en/developer-reference#setnetworkactive)
+
+```javascript
+const state = false;
+const result = await client.setnetworkactive({ state });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
@@ -351,7 +444,7 @@ const timeout = 20000;
 const restClient = new RESTClient({ url, port, timeout });
 ```
 
-- [getBlock](https://bitcoin.org/en/developer-reference#get-block)
+- [`getBlock`](https://bitcoin.org/en/developer-reference#get-block)
 
 ```javascript
 const hash = "00000000099de420b319c7804c4bfee5357d3f5ddbfd3c71c15b3625347792bf";
@@ -359,7 +452,7 @@ const format = "hex";
 await restClient.getBlock({ hash, format });
 ```
 
-- [getBlockNoTxDetails](https://bitcoin.org/en/developer-reference#get-blocknotxdetails)
+- [`getBlockNoTxDetails`](https://bitcoin.org/en/developer-reference#get-blocknotxdetails)
 
 ```javascript
 const hash = "00000000099de420b319c7804c4bfee5357d3f5ddbfd3c71c15b3625347792bf";
@@ -367,7 +460,7 @@ const format = "hex";
 await restClient.getBlockNoTxDetails({ hash, format });
 ```
 
-- [getBlockHashByHeight](https://bitcoin.org/en/developer-reference#get-blockhashbyheight)
+- [`getBlockHashByHeight`](https://bitcoin.org/en/developer-reference#get-blockhashbyheight)
 
 ```javascript
 const height = 1;
@@ -375,13 +468,13 @@ const format = "hex";
 await restClient.getBlockHashByHeight({ height, format });
 ```
 
-- [getChainInfo](https://bitcoin.org/en/developer-reference#get-chaininfo)
+- [`getChainInfo`](https://bitcoin.org/en/developer-reference#get-chaininfo)
 
 ```javascript
 await restClient.getChainInfo();
 ```
 
-- [getUtxos](https://bitcoin.org/en/developer-reference#get-getutxos)
+- [`getUtxos`](https://bitcoin.org/en/developer-reference#get-getutxos)
 
 ```javascript
 const checkmempool = true;
@@ -399,7 +492,7 @@ const format = "hex";
 await restClient.getUtxos({ checkmempool, outpoints, format });
 ```
 
-- [getHeaders](https://bitcoin.org/en/developer-reference#get-headers)
+- [`getHeaders`](https://bitcoin.org/en/developer-reference#get-headers)
 
 ```javascript
 const count = 5;
@@ -408,19 +501,19 @@ const format = "hex";
 await restClient.getHeaders({ count, hash, format });
 ```
 
-- [getMemPoolContents](https://bitcoin.org/en/developer-reference#get-mempoolcontents)
+- [`getMemPoolContents`](https://bitcoin.org/en/developer-reference#get-mempoolcontents)
 
 ```javascript
 await restClient.getMemPoolContents();
 ```
 
-- [getMemPoolInfo](https://bitcoin.org/en/developer-reference#get-mempoolinfo)
+- [`getMemPoolInfo`](https://bitcoin.org/en/developer-reference#get-mempoolinfo)
 
 ```javascript
 await restClient.getMemPoolInfo();
 ```
 
-- [getTx](https://bitcoin.org/en/developer-reference#get-tx)
+- [`getTx`](https://bitcoin.org/en/developer-reference#get-tx)
 
 ```javascript
 const txid = "93520a51cc6c694e79913f1daf0288cb10e0d7946723c06b4e7b6c2e5b057933";

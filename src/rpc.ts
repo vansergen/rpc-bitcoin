@@ -11,7 +11,7 @@ export type JSONRPC = {
   jsonrpc?: string | number;
   id?: string | number;
   method: string;
-  params?: any;
+  params?: object;
 };
 
 export type Verbosity = { verbosity?: 0 | 1 | 2 };
@@ -91,6 +91,20 @@ export type PrioritiseTransactionParams = TxId & {
 
 export type HexData = {
   hexdata: string;
+};
+
+export type AddNodeParams = {
+  node: string;
+  command: "add" | "remove" | "onetry";
+};
+
+export type DisconnectNodeParams = { address: string } | { nodeid: number };
+
+export type SetBanParams = {
+  subnet: string;
+  command: "add" | "remove";
+  bantime?: number;
+  absolute?: boolean;
 };
 
 export class RPCClient extends RESTClient {
@@ -399,6 +413,105 @@ export class RPCClient extends RESTClient {
    */
   async submitheader({ hexdata }: HexData) {
     return this.rpc("submitheader", { hexdata });
+  }
+
+  /**
+   * @description Attempts to add or remove a node from the addnode list.
+   */
+  async addnode({ node, command }: AddNodeParams) {
+    return this.rpc("addnode", { node, command });
+  }
+
+  /**
+   * @description Clear all banned IPs.
+   */
+  async clearbanned() {
+    return this.rpc("clearbanned");
+  }
+
+  /**
+   * @description Immediately disconnects from the specified peer node.
+   */
+  async disconnectnode(params: DisconnectNodeParams) {
+    if ("address" in params) {
+      return this.rpc("disconnectnode", { address: params.address });
+    }
+    return this.rpc("disconnectnode", { nodeid: params.nodeid });
+  }
+
+  /**
+   * @description Returns information about the given added node, or all added nodes
+   */
+  async getaddednodeinfo({ node }: { node?: string } = {}) {
+    return this.rpc("getaddednodeinfo", { node });
+  }
+
+  /**
+   * @description Returns the number of connections to other nodes.
+   */
+  async getconnectioncount() {
+    return this.rpc("getconnectioncount");
+  }
+
+  /**
+   * @description Returns information about network traffic, including bytes in, bytes out, and current time.
+   */
+  async getnettotals() {
+    return this.rpc("getnettotals");
+  }
+
+  /**
+   * @description Returns an object containing various state info regarding P2P networking.
+   */
+  async getnetworkinfo() {
+    return this.rpc("getnetworkinfo");
+  }
+
+  /**
+   * @description Return known addresses which can potentially be used to find new nodes in the network
+   */
+  async getnodeaddresses({ count = 1 } = {}) {
+    return this.rpc("getnodeaddresses", { count });
+  }
+
+  /**
+   * @description Returns data about each connected network node as a json array of objects.
+   */
+  async getpeerinfo() {
+    return this.rpc("getpeerinfo");
+  }
+
+  /**
+   * @description List all banned IPs/Subnets.
+   */
+  async listbanned() {
+    return this.rpc("listbanned");
+  }
+
+  /**
+   * @description Requests that a ping be sent to all other nodes, to measure ping time.
+   */
+  async ping() {
+    return this.rpc("ping");
+  }
+
+  /**
+   * @description Attempts to add or remove an IP/Subnet from the banned list
+   */
+  async setban({
+    subnet,
+    command,
+    bantime = 0,
+    absolute = false
+  }: SetBanParams) {
+    return this.rpc("setban", { subnet, command, bantime, absolute });
+  }
+
+  /**
+   * @description Disable/enable all p2p network activity.
+   */
+  async setnetworkactive({ state }: { state: boolean }) {
+    return this.rpc("setnetworkactive", { state });
   }
 
   /**
