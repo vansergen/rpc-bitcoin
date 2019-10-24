@@ -1626,6 +1626,20 @@ suite("RPCClient", () => {
       const data = await client.deriveaddresses(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".estimatesmartfee()", async () => {
+      const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
+      const params = { conf_target: 2, estimate_mode };
+      const request = { params, method: "estimatesmartfee", id, jsonrpc };
+      const result = { feerate: 0.00001, blocks: 2 };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.estimatesmartfee(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
