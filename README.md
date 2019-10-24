@@ -272,6 +272,19 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.generate({ nblocks, maxtries }, wallet);
 ```
 
+- [`generatetoaddress`](https://bitcoin.org/en/developer-reference#generatetoaddress)
+
+```javascript
+const nblocks = 1;
+const maxtries = 10000;
+const address = "1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1";
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.generatetoaddress(
+  { nblocks, address, maxtries },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
