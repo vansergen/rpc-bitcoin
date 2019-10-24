@@ -1677,6 +1677,27 @@ suite("RPCClient", () => {
       const data = await client.signmessagewithprivkey(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".validateaddress()", async () => {
+      const params = { address: "tb1qmv634mfk34sks9z3tcwwncd9ug0why3a0pl4px" };
+      const request = { params, method: "validateaddress", id, jsonrpc };
+      const result = {
+        isvalid: true,
+        address: "tb1qmv634mfk34sks9z3tcwwncd9ug0why3a0pl4px",
+        scriptPubKey: "0014db351aed368d616814515e1ce9e1a5e21eeb923d",
+        isscript: false,
+        iswitness: true,
+        witness_version: 0,
+        witness_program: "db351aed368d616814515e1ce9e1a5e21eeb923d"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.validateaddress(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
