@@ -303,6 +303,14 @@ const result = await client.getblocktemplate({ template_request });
 const result = await client.getmininginfo();
 ```
 
+- [`getnetworkhashps`](https://bitcoin.org/en/developer-reference#getnetworkhashps)
+
+```javascript
+const nblocks = 100;
+const height = 100;
+const result = await client.getnetworkhashps({ nblocks, height });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
