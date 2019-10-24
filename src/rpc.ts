@@ -107,6 +107,12 @@ export type SetBanParams = {
   absolute?: boolean;
 };
 
+export type CreateMultiSigParams = {
+  nrequired: number;
+  keys: string[];
+  address_type?: "legacy" | "p2sh-segwit" | "bech32";
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -512,6 +518,17 @@ export class RPCClient extends RESTClient {
    */
   async setnetworkactive({ state }: { state: boolean }) {
     return this.rpc("setnetworkactive", { state });
+  }
+
+  /**
+   * @description Creates a multi-signature address with n signature of m keys required.
+   */
+  async createmultisig({
+    nrequired,
+    keys,
+    address_type = "legacy"
+  }: CreateMultiSigParams) {
+    return this.rpc("createmultisig", { nrequired, keys, address_type });
   }
 
   /**
