@@ -508,6 +508,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Disable/enable all p2p network activity.
+   */
+  async setnetworkactive({ state }: { state: boolean }) {
+    return this.rpc("setnetworkactive", { state });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
