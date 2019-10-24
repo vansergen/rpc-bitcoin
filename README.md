@@ -333,6 +333,16 @@ const hexdata = "hexEncodedBlockHeaderData";
 const result = await client.submitheader({ hexdata });
 ```
 
+### Network
+
+- [`addnode`](https://bitcoin.org/en/developer-reference#addnode)
+
+```javascript
+const node = "192.168.0.6:8333";
+const command = "onetry";
+const result = await client.addnode({ node, command });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
