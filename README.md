@@ -359,6 +359,13 @@ const nodeid = 3;
 result = await client.disconnectnode({ nodeid });
 ```
 
+- [`getaddednodeinfo`](https://bitcoin.org/en/developer-reference#getaddednodeinfo)
+
+```javascript
+const node = "192.168.0.201";
+const result = await client.getaddednodeinfo({ node });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
