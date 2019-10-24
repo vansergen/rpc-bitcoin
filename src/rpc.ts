@@ -63,6 +63,11 @@ export type HelpParams = {
   command?: string;
 };
 
+export type LoggingParams = {
+  include?: string[] | "all" | "none" | 0 | 1;
+  exclude?: string[] | "all" | "none" | 0 | 1;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -279,6 +284,13 @@ export class RPCClient extends RESTClient {
    */
   async help({ command }: HelpParams = {}) {
     return this.rpc("help", { command });
+  }
+
+  /**
+   * @description Gets and sets the logging configuration.
+   */
+  async logging({ include, exclude }: LoggingParams = {}) {
+    return this.rpc("logging", { include, exclude });
   }
 
   /**
