@@ -363,6 +363,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns the estimated network hashes per second based on the last `n` blocks.
+   */
+  async getnetworkhashps({ nblocks = 120, height = -1 } = {}) {
+    return this.rpc("getnetworkhashps", { nblocks, height });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
