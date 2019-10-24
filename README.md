@@ -326,6 +326,13 @@ const hexdata = "hexEncodedBlock";
 const result = await client.submitblock({ hexdata });
 ```
 
+- [`submitheader`](https://bitcoin.org/en/developer-reference#submitheader)
+
+```javascript
+const hexdata = "hexEncodedBlockHeaderData";
+const result = await client.submitheader({ hexdata });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
