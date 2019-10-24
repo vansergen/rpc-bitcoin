@@ -1392,6 +1392,32 @@ suite("RPCClient", () => {
       const data = await client.getnetworkinfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getnodeaddresses()", async () => {
+      const params = { count: 2 };
+      const request = { params, method: "getnodeaddresses", id, jsonrpc };
+      const result = [
+        {
+          time: 1569474479,
+          services: 1036,
+          address: "188.162.132.87",
+          port: 18333
+        },
+        {
+          time: 1569557642,
+          services: 1037,
+          address: "174.138.24.48",
+          port: 18333
+        }
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getnodeaddresses(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
