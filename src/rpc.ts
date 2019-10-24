@@ -118,6 +118,11 @@ export type DeriveAddressesParams = {
   range?: number | [number, number];
 };
 
+export type EstimateSmartFeeParams = {
+  conf_target: number;
+  estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -551,6 +556,13 @@ export class RPCClient extends RESTClient {
     estimate_mode = "CONSERVATIVE"
   }: EstimateSmartFeeParams) {
     return this.rpc("estimatesmartfee", { conf_target, estimate_mode });
+  }
+
+  /**
+   * @description Analyses a descriptor.
+   */
+  async getdescriptorinfo({ descriptor }: { descriptor: string }) {
+    return this.rpc("getdescriptorinfo", { descriptor });
   }
 
   /**
