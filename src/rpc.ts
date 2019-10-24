@@ -433,6 +433,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns information about the given added node, or all added nodes
+   */
+  async getaddednodeinfo({ node }: { node?: string } = {}) {
+    return this.rpc("getaddednodeinfo", { node });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
