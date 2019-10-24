@@ -1291,6 +1291,25 @@ suite("RPCClient", () => {
       const data = await client.disconnectnode(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getaddednodeinfo()", async () => {
+      const params = { node: "92.53.89.123:18333" };
+      const request = { params, method: "getaddednodeinfo", id, jsonrpc };
+      const result = [
+        {
+          addednode: "92.53.89.123:18333",
+          connected: true,
+          addresses: [{ address: "92.53.89.123:18333", connected: "outbound" }]
+        }
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getaddednodeinfo(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
