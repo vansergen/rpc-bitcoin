@@ -581,6 +581,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Return information about the given bitcoin address.
+   */
+  async validateaddress({ address }: { address: string }) {
+    return this.rpc("validateaddress", { address });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
