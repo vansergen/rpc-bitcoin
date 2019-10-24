@@ -1250,6 +1250,23 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Network", () => {
+    test(".addnode()", async () => {
+      const command: "onetry" = "onetry";
+      const params = { node: "192.168.0.6:8333", command };
+      const request = { params, method: "addnode", id, jsonrpc };
+      const result = null;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.addnode(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
