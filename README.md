@@ -311,6 +311,14 @@ const height = 100;
 const result = await client.getnetworkhashps({ nblocks, height });
 ```
 
+- [`prioritisetransaction`](https://bitcoin.org/en/developer-reference#prioritisetransaction)
+
+```javascript
+const txid = "9b0fc92260312ce44e74ef369f5c66bbb85848f2eddd5a7a1cde251e54ccfdd5";
+const fee_delta = 1000;
+const result = await client.prioritisetransaction({ txid, fee_delta });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
