@@ -982,6 +982,19 @@ suite("RPCClient", () => {
       const data = await client.logging(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".stop()", async () => {
+      const request = { params: {}, method: "stop", id, jsonrpc };
+      const result = "Bitcoin server stopping";
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.stop();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
