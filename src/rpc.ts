@@ -85,6 +85,10 @@ export type GetBlockTemplateParams = {
   };
 };
 
+export type PrioritiseTransactionParams = TxId & {
+  fee_delta: number;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -367,6 +371,16 @@ export class RPCClient extends RESTClient {
    */
   async getnetworkhashps({ nblocks = 120, height = -1 } = {}) {
     return this.rpc("getnetworkhashps", { nblocks, height });
+  }
+
+  /**
+   * @description Accepts the transaction into mined blocks at a higher (or lower) priority
+   */
+  async prioritisetransaction({
+    txid,
+    fee_delta
+  }: PrioritiseTransactionParams) {
+    return this.rpc("prioritisetransaction", { txid, fee_delta });
   }
 
   /**
