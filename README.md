@@ -391,6 +391,12 @@ const count = 8;
 const result = await client.getnodeaddresses({ count });
 ```
 
+- [`getpeerinfo`](https://bitcoin.org/en/developer-reference#getpeerinfo)
+
+```javascript
+const result = await client.getpeerinfo();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
