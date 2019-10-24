@@ -219,6 +219,15 @@ const proof =
 const result = await client.verifytxoutproof({ proof });
 ```
 
+### Control
+
+- [`getmemoryinfo`](https://bitcoin.org/en/developer-reference#getmemoryinfo)
+
+```javascript
+const mode = "mallocinfo";
+const result = await client.getmemoryinfo({ mode });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
