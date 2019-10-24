@@ -1265,6 +1265,19 @@ suite("RPCClient", () => {
       const data = await client.addnode(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".clearbanned()", async () => {
+      const request = { params: {}, method: "clearbanned", id, jsonrpc };
+      const result = null;
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.clearbanned();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
