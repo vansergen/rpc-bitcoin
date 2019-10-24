@@ -1010,6 +1010,101 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Generating", () => {
+    test(".generate()", async () => {
+      const params = { nblocks: 1, maxtries: 10000 };
+      const request = { params, method: "generate", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generate(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".generate() (multi-wallet)", async () => {
+      const params = { nblocks: 1, maxtries: 10000 };
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params, method: "generate", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generate(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".generate() (default wallet)", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const client = new RPCClient({ port, timeout, pass, wallet });
+      const params = { nblocks: 1, maxtries: 10000 };
+      const request = { params, method: "generate", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generate(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".generatetoaddress()", async () => {
+      const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
+      const params = { nblocks: 1, maxtries: 10000, address };
+      const request = { params, method: "generatetoaddress", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generatetoaddress(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".generatetoaddress() (multi-wallet)", async () => {
+      const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
+      const params = { nblocks: 1, maxtries: 10000, address };
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params, method: "generatetoaddress", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generatetoaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".generatetoaddress() (default wallet)", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const client = new RPCClient({ port, timeout, pass, wallet });
+      const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
+      const params = { nblocks: 1, maxtries: 10000, address };
+      const request = { params, method: "generatetoaddress", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generatetoaddress(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
