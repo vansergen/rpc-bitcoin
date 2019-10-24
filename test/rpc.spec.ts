@@ -1606,6 +1606,26 @@ suite("RPCClient", () => {
       const data = await client.createmultisig(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".deriveaddresses()", async () => {
+      const descriptor =
+        "wpkh([d34db33f/84'/0'/0']tpubD6NzVbkrYhZ4YTN7usjEzYmfu4JKqnfp9RCbDmdKH78vTyuwgQat8vRw5cX1YaZZvFfQrkHrM2XsyfA8cZE1thA3guTBfTkKqbhCDpcKFLG/0/*)#8gfuh6ex";
+      const range: [number, number] = [0, 2];
+      const params = { descriptor, range };
+      const request = { params, method: "deriveaddresses", id, jsonrpc };
+      const result = [
+        "tb1q7as9cz0t8rfng5f0xdklfgyp0x6ya0tu6ckaqs",
+        "tb1q0aducdmz77tfu4dhfez8ayycmp2pz6jwy85hhn",
+        "tb1qsdqewd8upv66txx48qssr0an5r3llaxtwqzytk"
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.deriveaddresses(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
