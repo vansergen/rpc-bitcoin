@@ -1418,6 +1418,138 @@ suite("RPCClient", () => {
       const data = await client.getnodeaddresses(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getpeerinfo()", async () => {
+      const request = { params: {}, method: "getpeerinfo", id, jsonrpc };
+      const result = [
+        {
+          id: 3,
+          addr: "89.163.139.151:18333",
+          addrlocal: "178.252.127.208:56815",
+          addrbind: "192.168.1.110:56815",
+          services: "000000000000040d",
+          relaytxes: true,
+          lastsend: 1571931713,
+          lastrecv: 1571931697,
+          bytessent: 98502,
+          bytesrecv: 395446,
+          conntime: 1571920343,
+          timeoffset: -3,
+          pingtime: 0.042976,
+          minping: 0.042912,
+          version: 70015,
+          subver: "/Satoshi:0.17.0/",
+          inbound: false,
+          addnode: false,
+          startingheight: 1583882,
+          banscore: 0,
+          synced_headers: 1583893,
+          synced_blocks: 1583893,
+          inflight: [],
+          whitelisted: false,
+          minfeefilter: 0.00001,
+          bytessent_per_msg: {
+            addr: 275,
+            feefilter: 32,
+            getaddr: 24,
+            getdata: 25990,
+            getheaders: 1085,
+            headers: 106,
+            inv: 60540,
+            ping: 3072,
+            pong: 3040,
+            sendcmpct: 99,
+            sendheaders: 24,
+            tx: 4065,
+            verack: 24,
+            version: 126
+          },
+          bytesrecv_per_msg: {
+            addr: 30192,
+            cmpctblock: 16205,
+            feefilter: 32,
+            getdata: 549,
+            getheaders: 1085,
+            headers: 212,
+            inv: 53955,
+            ping: 3040,
+            pong: 3072,
+            reject: 77,
+            sendcmpct: 66,
+            sendheaders: 24,
+            tx: 286787,
+            verack: 24,
+            version: 126
+          }
+        },
+        {
+          id: 5,
+          addr: "165.227.30.200:18333",
+          addrlocal: "178.252.127.208:56817",
+          addrbind: "192.168.1.110:56817",
+          services: "000000000000040d",
+          relaytxes: true,
+          lastsend: 1571931697,
+          lastrecv: 1571931711,
+          bytessent: 103195,
+          bytesrecv: 238387,
+          conntime: 1571920344,
+          timeoffset: -2,
+          pingtime: 0.174904,
+          minping: 0.174861,
+          version: 70015,
+          subver: "/Satoshi:0.18.0/",
+          inbound: false,
+          addnode: false,
+          startingheight: 1583882,
+          banscore: 0,
+          synced_headers: 1583893,
+          synced_blocks: 1583893,
+          inflight: [],
+          whitelisted: false,
+          minfeefilter: 0.00001,
+          bytessent_per_msg: {
+            addr: 55,
+            feefilter: 32,
+            getaddr: 24,
+            getdata: 15268,
+            getheaders: 1085,
+            headers: 636,
+            inv: 69856,
+            ping: 3072,
+            pong: 3040,
+            sendcmpct: 66,
+            sendheaders: 24,
+            tx: 9887,
+            verack: 24,
+            version: 126
+          },
+          bytesrecv_per_msg: {
+            addr: 30107,
+            feefilter: 32,
+            getdata: 1378,
+            getheaders: 1085,
+            headers: 1272,
+            inv: 47253,
+            ping: 3040,
+            pong: 3072,
+            reject: 77,
+            sendcmpct: 66,
+            sendheaders: 24,
+            tx: 150831,
+            verack: 24,
+            version: 126
+          }
+        }
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getpeerinfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
