@@ -1278,6 +1278,19 @@ suite("RPCClient", () => {
       const data = await client.clearbanned();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".disconnectnode()", async () => {
+      const params = { address: "92.53.89.123:18333" };
+      const request = { params, method: "disconnectnode", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.disconnectnode(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
