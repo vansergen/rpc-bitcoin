@@ -257,6 +257,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns an object containing information about memory usage.
+   */
+  async getmemoryinfo({ mode = "stats" } = {}) {
+    return this.rpc("getmemoryinfo", { mode });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
