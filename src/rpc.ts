@@ -93,6 +93,11 @@ export type HexData = {
   hexdata: string;
 };
 
+export type AddNodeParams = {
+  node: string;
+  command: "add" | "remove" | "onetry";
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -399,6 +404,13 @@ export class RPCClient extends RESTClient {
    */
   async submitheader({ hexdata }: HexData) {
     return this.rpc("submitheader", { hexdata });
+  }
+
+  /**
+   * @description Attempts to add or remove a node from the addnode list.
+   */
+  async addnode({ node, command }: AddNodeParams) {
+    return this.rpc("addnode", { node, command });
   }
 
   /**
