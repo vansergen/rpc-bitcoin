@@ -929,6 +929,21 @@ suite("RPCClient", () => {
       const data = await client.getrpcinfo();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".help()", async () => {
+      const params = { command: "getzmqnotifications" };
+      const request = { params, method: "help", id, jsonrpc };
+      const result =
+        'getzmqnotifications\n\nReturns information about the active ZeroMQ notifications.\n\nResult:\n[\n  {                        (json object)\n    "type": "pubhashtx",   (string) Type of notification\n    "address": "...",      (string) Address of the publisher\n    "hwm": n                 (numeric) Outbound message high water mark\n  },\n  ...\n]\n\nExamples:\n> bitcoin-cli getzmqnotifications \n> curl --user myusername --data-binary \'{"jsonrpc": "1.0", "id":"curltest", "method": "getzmqnotifications", "params": [] }\' -H \'content-type: text/plain;\' http://127.0.0.1:8332/\n';
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.help(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
