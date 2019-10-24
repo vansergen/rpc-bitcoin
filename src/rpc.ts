@@ -440,6 +440,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns the number of connections to other nodes.
+   */
+  async getconnectioncount() {
+    return this.rpc("getconnectioncount");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
