@@ -98,6 +98,8 @@ export type AddNodeParams = {
   command: "add" | "remove" | "onetry";
 };
 
+export type DisconnectNodeParams = { address: string } | { nodeid: number };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -418,6 +420,16 @@ export class RPCClient extends RESTClient {
    */
   async clearbanned() {
     return this.rpc("clearbanned");
+  }
+
+  /**
+   * @description Immediately disconnects from the specified peer node.
+   */
+  async disconnectnode(params: DisconnectNodeParams) {
+    if ("address" in params) {
+      return this.rpc("disconnectnode", { address: params.address });
+    }
+    return this.rpc("disconnectnode", { nodeid: params.nodeid });
   }
 
   /**
