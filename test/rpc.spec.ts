@@ -1344,6 +1344,54 @@ suite("RPCClient", () => {
       const data = await client.getnettotals();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getnetworkinfo()", async () => {
+      const request = { params: {}, method: "getnetworkinfo", id, jsonrpc };
+      const result = {
+        version: 180100,
+        subversion: "/Satoshi:0.18.1/",
+        protocolversion: 70015,
+        localservices: "000000000000040c",
+        localrelay: true,
+        timeoffset: -2,
+        networkactive: true,
+        connections: 9,
+        networks: [
+          {
+            name: "ipv4",
+            limited: false,
+            reachable: true,
+            proxy: "",
+            proxy_randomize_credentials: false
+          },
+          {
+            name: "ipv6",
+            limited: false,
+            reachable: true,
+            proxy: "",
+            proxy_randomize_credentials: false
+          },
+          {
+            name: "onion",
+            limited: true,
+            reachable: false,
+            proxy: "",
+            proxy_randomize_credentials: false
+          }
+        ],
+        relayfee: 0.00001,
+        incrementalfee: 0.00001,
+        localaddresses: [],
+        warnings: "Warning: unknown new rules activated (versionbit 28)"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getnetworkinfo();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
