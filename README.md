@@ -285,6 +285,18 @@ const result = await client.generatetoaddress(
 );
 ```
 
+### Mining
+
+- [`getblocktemplate`](https://bitcoin.org/en/developer-reference#getblocktemplate)
+
+```javascript
+const rules = ["segwit"];
+const mode = "template";
+const capabilities = ["serverlist", "proposal"];
+const template_request = { rules, mode, capabilities };
+const result = await client.getblocktemplate({ template_request });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
