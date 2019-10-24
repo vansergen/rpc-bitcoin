@@ -372,6 +372,12 @@ const result = await client.getaddednodeinfo({ node });
 const result = await client.getconnectioncount();
 ```
 
+- [`getnettotals`](https://bitcoin.org/en/developer-reference#getnettotals)
+
+```javascript
+const result = await client.getnettotals();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
