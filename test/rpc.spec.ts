@@ -1640,6 +1640,27 @@ suite("RPCClient", () => {
       const data = await client.estimatesmartfee(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getdescriptorinfo()", async () => {
+      const descriptor =
+        "wpkh([d34db33f/84h/0h/0h]0279be667ef9dcbbac55a06295Ce870b07029Bfcdb2dce28d959f2815b16f81798)";
+      const params = { descriptor };
+      const request = { params, method: "getdescriptorinfo", id, jsonrpc };
+      const result = {
+        descriptor:
+          "wpkh([d34db33f/84'/0'/0']0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798)#n9g43y4k",
+        isrange: false,
+        issolvable: true,
+        hasprivatekeys: false
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getdescriptorinfo(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
