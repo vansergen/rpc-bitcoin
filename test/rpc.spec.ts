@@ -1010,6 +1010,37 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Generating", () => {
+    test(".generate()", async () => {
+      const params = { nblocks: 1, maxtries: 10000 };
+      const request = { params, method: "generate", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generate(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".generate() (multi-wallet)", async () => {
+      const params = { nblocks: 1, maxtries: 10000 };
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params, method: "generate", id, jsonrpc };
+      const result: any[] = [];
+      const response = { result, error, id };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, response);
+      const data = await client.generate(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
