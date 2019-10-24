@@ -1320,6 +1320,30 @@ suite("RPCClient", () => {
       const data = await client.getconnectioncount();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getnettotals()", async () => {
+      const request = { params: {}, method: "getnettotals", id, jsonrpc };
+      const result = {
+        totalbytesrecv: 54576627,
+        totalbytessent: 1420766,
+        timemillis: 1571931082122,
+        uploadtarget: {
+          timeframe: 86400,
+          target: 0,
+          target_reached: false,
+          serve_historical_blocks: true,
+          bytes_left_in_cycle: 0,
+          time_left_in_cycle: 0
+        }
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getnettotals();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
