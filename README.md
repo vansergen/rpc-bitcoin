@@ -449,6 +449,14 @@ const range = [0, 2];
 const result = await client.deriveaddresses({ descriptor, range });
 ```
 
+- [`estimatesmartfee`](https://bitcoin.org/en/developer-reference#estimatesmartfee)
+
+```javascript
+const conf_target = 2;
+const estimate_mode = "ECONOMICAL";
+const result = await client.estimatesmartfee({ conf_target, estimate_mode });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
