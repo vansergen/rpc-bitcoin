@@ -403,6 +403,12 @@ const result = await client.getpeerinfo();
 const result = await client.listbanned();
 ```
 
+- [`ping`](https://bitcoin.org/en/developer-reference#ping)
+
+```javascript
+const result = await client.ping();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
