@@ -228,6 +228,12 @@ const mode = "mallocinfo";
 const result = await client.getmemoryinfo({ mode });
 ```
 
+- [`getrpcinfo`](https://bitcoin.org/en/developer-reference#getrpcinfo)
+
+```javascript
+const result = await client.getrpcinfo();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
