@@ -687,6 +687,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Decode a hex-encoded script.
+   */
+  async decodescript({ hexstring }: HexString) {
+    return this.rpc("decodescript", { hexstring });
+  }
+
+  /**
    * @description Finalize the inputs of a PSBT.
    */
   async finalizepsbt({ psbt, extract = false }: FinalizePsbtParams) {
