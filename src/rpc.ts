@@ -141,6 +141,23 @@ export type ConvertToPsbtParams = HexString & {
   iswitness?: boolean;
 };
 
+export type TransactionInput = {
+  txid: string;
+  vout: number;
+  sequence?: number;
+};
+
+export type TransactionOutput =
+  | { [address: string]: string | number }
+  | { data: string };
+
+export type CreateTransactionParams = {
+  inputs: TransactionInput[];
+  outputs: TransactionOutput[];
+  locktime?: number;
+  replaceable?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -567,6 +584,23 @@ export class RPCClient extends RESTClient {
       hexstring,
       permitsigdata,
       iswitness
+    });
+  }
+
+  /**
+   * @description Creates a transaction in the Partially Signed Transaction format.
+   */
+  async createpsbt({
+    inputs,
+    outputs,
+    locktime = 0,
+    replaceable = false
+  }: CreateTransactionParams) {
+    return this.rpc("createpsbt", {
+      inputs,
+      outputs,
+      locktime,
+      replaceable
     });
   }
 
