@@ -529,6 +529,16 @@ const iswitness = true;
 const result = await client.decoderawtransaction({ hexstring, iswitness });
 ```
 
+- [`getrawtransaction`](https://bitcoin.org/en/developer-reference#getrawtransaction)
+
+```javascript
+const txid = "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2";
+const verbose = true;
+const blockhash =
+  "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018";
+const result = await client.getrawtransaction({ txid, verbose, blockhash });
+```
+
 ### Util
 
 - [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
