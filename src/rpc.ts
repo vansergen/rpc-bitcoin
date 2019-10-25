@@ -542,6 +542,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Analyzes and provides information about the current status of a PSBT and its inputs
+   */
+  async analyzepsbt({ psbt }: { psbt: string }) {
+    return this.rpc("analyzepsbt", { psbt });
+  }
+
+  /**
    * @description Creates a multi-signature address with n signature of m keys required.
    */
   async createmultisig({
