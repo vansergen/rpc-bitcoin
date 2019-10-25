@@ -678,6 +678,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Finalize the inputs of a PSBT.
+   */
+  async finalizepsbt({ psbt, extract = false }: FinalizePsbtParams) {
+    return this.rpc("finalizepsbt", { psbt, extract });
+  }
+
+  /**
    * @description Return the raw transaction data.
    */
   async getrawtransaction({
