@@ -162,6 +162,22 @@ export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
 
 export type FinalizePsbtParams = { psbt: string; extract?: boolean };
 
+export type FundRawTransactionParams = HexString & {
+  options?: {
+    changeAddress?: string;
+    changePosition?: number;
+    change_type?: string;
+    includeWatching?: boolean;
+    lockUnspents?: boolean;
+    feeRate?: number | string;
+    subtractFeeFromOutputs?: number[];
+    replaceable?: boolean;
+    conf_target?: number;
+    estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
+  };
+  iswitness?: boolean;
+};
+
 export type GetRawTransactionParams = TxId & Verbose & { blockhash?: string };
 
 export type SendRawTransactionParams = HexString & { allowhighfees?: boolean };
@@ -698,6 +714,24 @@ export class RPCClient extends RESTClient {
    */
   async finalizepsbt({ psbt, extract = false }: FinalizePsbtParams) {
     return this.rpc("finalizepsbt", { psbt, extract });
+  }
+
+  /**
+   * @description Add inputs to a transaction until it has enough in value to meet its out value.
+   */
+  async fundrawtransaction(
+    { hexstring, options, iswitness }: FundRawTransactionParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "fundrawtransaction",
+      {
+        hexstring,
+        options,
+        iswitness
+      },
+      wallet || this.wallet
+    );
   }
 
   /**
