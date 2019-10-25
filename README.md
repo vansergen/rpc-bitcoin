@@ -568,6 +568,16 @@ const blockhash =
 const result = await client.getrawtransaction({ txid, verbose, blockhash });
 ```
 
+- [`joinpsbts`](https://bitcoin.org/en/developer-reference#joinpsbts)
+
+```javascript
+const txs = [
+  "cHNidP8BAFICAAAAAdVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////AdhHAwAAAAAAFgAUb3CRg7x2R4GIsjJfLuaS6MBDy48BAAAAAAAA",
+  "cHNidP8BAFICAAAAAWs2nFCyIbZPRlxerXXu2guE90c1aA2ur+ibcnP9j3X/AAAAAAD9////AaCGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAA"
+];
+const result = await client.joinpsbts({ txs });
+```
+
 - [`sendrawtransaction`](https://bitcoin.org/en/developer-reference#sendrawtransaction)
 
 ```javascript
