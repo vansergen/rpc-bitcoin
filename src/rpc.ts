@@ -742,6 +742,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Updates a PSBT with witness UTXOs retrieved from the UTXO set or the mempool.
+   */
+  async utxoupdatepsbt({ psbt }: { psbt: string }) {
+    return this.rpc("utxoupdatepsbt", { psbt });
+  }
+
+  /**
    * @description Creates a multi-signature address with n signature of m keys required.
    */
   async createmultisig({
