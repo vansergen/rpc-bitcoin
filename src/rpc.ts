@@ -705,6 +705,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Joins multiple distinct PSBTs with different inputs and outputs into one PSBT with inputs and outputs from all of the PSBTs.
+   */
+  async joinpsbts({ txs }: { txs: string[] }) {
+    return this.rpc("joinpsbts", { txs });
+  }
+
+  /**
    * @description Submits raw transaction (serialized, hex-encoded) to local node and network.
    */
   async sendrawtransaction({
