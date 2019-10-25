@@ -426,6 +426,238 @@ const state = false;
 const result = await client.setnetworkactive({ state });
 ```
 
+### Rawtransactions
+
+- [`analyzepsbt`](https://bitcoin.org/en/developer-reference#analyzepsbt)
+
+```javascript
+const psbt =
+  "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+const result = await client.analyzepsbt({ psbt });
+```
+
+- [`combinepsbt`](https://bitcoin.org/en/developer-reference#combinepsbt)
+
+```javascript
+const txs = [
+  "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAAA",
+  "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQABAR/HgTsAAAAAABYAFDNBVvuJV65T//o2rr6AhKSwDPt9AQhrAkcwRAIgWyFL8FdWh0kB8CbKL2GsVPQU2Wgb9E4YvOwJ9KLseMgCIHBdaP/zuYg7Y4cL5B+gjsOUB4PFss6+dnACpn/+U9UjASEDTi3KTyZW9vKWtxYxflo5B7l1PHSqn0GUlf8AsXkGfvQAAA=="
+];
+const result = await client.combinepsbt({ txs });
+```
+
+- [`combinerawtransaction`](https://bitcoin.org/en/developer-reference#combinerawtransaction)
+
+```javascript
+const txs = [
+  "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69000247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
+  "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20000000000"
+];
+const result = await client.combinerawtransaction({ txs });
+```
+
+- [`converttopsbt`](https://bitcoin.org/en/developer-reference#converttopsbt)
+
+```javascript
+const hexstring =
+  "020000000122647b4fc186385b15a01cc6cd6d7864399b4ff536f370f86ecc5e2f4281d7d50000000000ffffffff017b000000000000001976a914394e47d5a2d723e34b38b05e257c6ab69be3b59988ac00000000";
+const permitsigdata = true;
+const iswitness = true;
+const result = await client.converttopsbt({
+  hexstring,
+  permitsigdata,
+  iswitness
+});
+```
+
+- [`createpsbt`](https://bitcoin.org/en/developer-reference#createpsbt)
+
+```javascript
+const inputs = [
+  {
+    txid: "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+    vout: 1
+  },
+  {
+    txid: "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+    vout: 0
+  }
+];
+const outputs = [
+  {
+    tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+  },
+  {
+    tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+  }
+];
+const locktime = 1;
+const replaceable = true;
+const result = await client.createpsbt({
+  inputs,
+  outputs,
+  locktime,
+  replaceable
+});
+```
+
+- [`createrawtransaction`](https://bitcoin.org/en/developer-reference#createrawtransaction)
+
+```javascript
+const inputs = [
+  {
+    txid: "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+    vout: 1
+  },
+  {
+    txid: "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+    vout: 0
+  }
+];
+const outputs = [
+  {
+    tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+  },
+  {
+    tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+  }
+];
+const locktime = 1;
+const replaceable = true;
+const result = await client.createrawtransaction({
+  inputs,
+  outputs,
+  locktime,
+  replaceable
+});
+```
+
+- [`decodepsbt`](https://bitcoin.org/en/developer-reference#decodepsbt)
+
+```javascript
+const psbt =
+  "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+const result = await client.decodepsbt({ psbt });
+```
+
+- [`decoderawtransaction`](https://bitcoin.org/en/developer-reference#decoderawtransaction)
+
+```javascript
+const hexstring =
+  "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+const iswitness = true;
+const result = await client.decoderawtransaction({ hexstring, iswitness });
+```
+
+- [`decodescript`](https://bitcoin.org/en/developer-reference#decodescript)
+
+```javascript
+const hexstring =
+  "5221031e925dbe43ca87bce874f4fb77ac0d6bb2dc1a9db93868fa27611b687775bd0b2102ffb8b66ba266797f1e33e5d177a6f9c72839992ccf11e97837054a8d3a8284bc21025bf696347321a5276aad08dfefff19dd09d3717bfc2ce521060f4247d31c37b553ae";
+const result = await client.decodescript({ hexstring });
+```
+
+- [`finalizepsbt`](https://bitcoin.org/en/developer-reference#finalizepsbt)
+
+```javascript
+const psbt =
+  "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAEBH8eBOwAAAAAAFgAUM0FW+4lXrlP/+jauvoCEpLAM+30BCGsCRzBEAiBbIUvwV1aHSQHwJsovYaxU9BTZaBv0Thi87An0oux4yAIgcF1o//O5iDtjhwvkH6COw5QHg8Wyzr52cAKmf/5T1SMBIQNOLcpPJlb28pa3FjF+WjkHuXU8dKqfQZSV/wCxeQZ+9AAA";
+const extract = true;
+const result = await client.finalizepsbt({ psbt, extract });
+```
+
+- [`fundrawtransaction`](https://bitcoin.org/en/developer-reference#fundrawtransaction)
+
+```javascript
+const hexstring =
+  "020000000129455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffff0140420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000";
+const includeWatching = true;
+const feeRate = 0.0002;
+const replaceable = true;
+const changeAddress = "tb1q80h3kvp98fgkz293we3p75hs0aq4cecz3qtgkg";
+const wallet = "bitcoin-core-wallet.dat";
+const options = { includeWatching, feeRate, replaceable, changeAddress };
+const iswitness = true;
+const result = await client.fundrawtransaction(
+  {
+    hexstring,
+    options,
+    iswitness
+  },
+  wallet
+);
+```
+
+- [`getrawtransaction`](https://bitcoin.org/en/developer-reference#getrawtransaction)
+
+```javascript
+const txid = "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2";
+const verbose = true;
+const blockhash =
+  "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018";
+const result = await client.getrawtransaction({ txid, verbose, blockhash });
+```
+
+- [`joinpsbts`](https://bitcoin.org/en/developer-reference#joinpsbts)
+
+```javascript
+const txs = [
+  "cHNidP8BAFICAAAAAdVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////AdhHAwAAAAAAFgAUb3CRg7x2R4GIsjJfLuaS6MBDy48BAAAAAAAA",
+  "cHNidP8BAFICAAAAAWs2nFCyIbZPRlxerXXu2guE90c1aA2ur+ibcnP9j3X/AAAAAAD9////AaCGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAA"
+];
+const result = await client.joinpsbts({ txs });
+```
+
+- [`sendrawtransaction`](https://bitcoin.org/en/developer-reference#sendrawtransaction)
+
+```javascript
+const hexstring =
+  "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000";
+const allowhighfees = true;
+const result = await client.sendrawtransaction({ hexstring, allowhighfees });
+```
+
+- [`signrawtransactionwithkey`](https://bitcoin.org/en/developer-reference#signrawtransactionwithkey)
+
+```javascript
+const hexstring =
+  "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0000000000fdffffff6dd6a088fda2de4c1f25912f5c6f53fdafd54abf6557d888af5ceac704a26d050100000000fdffffff0200093d0000000000160014fc8e119e52776678cc05cab6b024eb77cea2f11620cc0400000000001600141ca68ece7a876e66d377c0a1bc5d45251513c20800000000";
+const privkeys = ["privkey1", "privkey2"];
+const prevtxs = [
+  {
+    txid: "cc21b8cb612f7b451e4283f08b3fa96ccdc141441697c499366f42514b3bdd15",
+    vout: 0,
+    scriptPubKey: "00141ca68ece7a876e66d377c0a1bc5d45251513c208",
+    amount: 0.001
+  }
+];
+const sighashtype = "ALL|ANYONECANPAY";
+const result = await client.signrawtransactionwithkey({
+  hexstring,
+  privkeys,
+  prevtxs,
+  sighashtype
+});
+```
+
+- [`testmempoolaccept`](https://bitcoin.org/en/developer-reference#testmempoolaccept)
+
+```javascript
+const rawtxs = [
+  "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000"
+];
+const allowhighfees = true;
+const result = await client.testmempoolaccept({ rawtxs, allowhighfees });
+```
+
+- [`utxoupdatepsbt`](https://bitcoin.org/en/developer-reference#utxoupdatepsbt)
+
+```javascript
+const psbt =
+  "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAAA";
+const result = await client.utxoupdatepsbt({ psbt });
+```
+
 ### Util
 
 - [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)

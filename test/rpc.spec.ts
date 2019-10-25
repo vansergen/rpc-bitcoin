@@ -1582,6 +1582,539 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Rawtransactions", () => {
+    test(".analyzepsbt()", async () => {
+      const psbt =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      const params = { psbt };
+      const request = { params, method: "analyzepsbt", id, jsonrpc };
+      const result = {
+        inputs: [
+          { has_utxo: false, is_final: false, next: "updater" },
+          { has_utxo: false, is_final: false, next: "updater" }
+        ],
+        next: "updater"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.analyzepsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".combinepsbt()", async () => {
+      const txs = [
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAAA",
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQABAR/HgTsAAAAAABYAFDNBVvuJV65T//o2rr6AhKSwDPt9AQhrAkcwRAIgWyFL8FdWh0kB8CbKL2GsVPQU2Wgb9E4YvOwJ9KLseMgCIHBdaP/zuYg7Y4cL5B+gjsOUB4PFss6+dnACpn/+U9UjASEDTi3KTyZW9vKWtxYxflo5B7l1PHSqn0GUlf8AsXkGfvQAAA=="
+      ];
+      const params = { txs };
+      const request = { params, method: "combinepsbt", id, jsonrpc };
+      const result =
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAEBH8eBOwAAAAAAFgAUM0FW+4lXrlP/+jauvoCEpLAM+30BCGsCRzBEAiBbIUvwV1aHSQHwJsovYaxU9BTZaBv0Thi87An0oux4yAIgcF1o//O5iDtjhwvkH6COw5QHg8Wyzr52cAKmf/5T1SMBIQNOLcpPJlb28pa3FjF+WjkHuXU8dKqfQZSV/wCxeQZ+9AAA";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.combinepsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".combinerawtransaction()", async () => {
+      const txs = [
+        "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69000247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
+        "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20000000000"
+      ];
+      const params = { txs };
+      const request = { params, method: "combinerawtransaction", id, jsonrpc };
+      const result =
+        "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.combinerawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".converttopsbt()", async () => {
+      const hexstring =
+        "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+      const permitsigdata = true;
+      const iswitness = true;
+      const params = { hexstring, permitsigdata, iswitness };
+      const request = { params, method: "converttopsbt", id, jsonrpc };
+      const result =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.converttopsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".createpsbt()", async () => {
+      const inputs = [
+        {
+          txid:
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          vout: 1
+        },
+        {
+          txid:
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+          vout: 0
+        }
+      ];
+      const out1: { [address: string]: number } = {
+        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+      };
+      const out2: { [address: string]: number } = {
+        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+      };
+      const outputs = [out1, out2];
+      const locktime = 1;
+      const replaceable = true;
+      const params = { inputs, outputs, locktime, replaceable };
+      const request = { params, method: "createpsbt", id, jsonrpc };
+      const result =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createpsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".createrawtransaction()", async () => {
+      const inputs = [
+        {
+          txid:
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          vout: 1
+        },
+        {
+          txid:
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+          vout: 0
+        }
+      ];
+      const out1: { [address: string]: number } = {
+        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+      };
+      const out2: { [address: string]: number } = {
+        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+      };
+      const outputs = [out1, out2];
+      const locktime = 1;
+      const replaceable = true;
+      const params = { inputs, outputs, locktime, replaceable };
+      const request = { params, method: "createrawtransaction", id, jsonrpc };
+      const result =
+        "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createrawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".decodepsbt()", async () => {
+      const psbt =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      const params = { psbt };
+      const request = { params, method: "decodepsbt", id, jsonrpc };
+      const result = {
+        tx: {
+          txid:
+            "22ff139b2aaa971e3d8ed94dc8a70d82097b59ddc8f35d0e744461e96a4e9f1d",
+          hash:
+            "22ff139b2aaa971e3d8ed94dc8a70d82097b59ddc8f35d0e744461e96a4e9f1d",
+          version: 2,
+          size: 154,
+          vsize: 154,
+          weight: 616,
+          locktime: 1,
+          vin: [
+            {
+              txid:
+                "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+              vout: 1,
+              scriptSig: { asm: "", hex: "" },
+              sequence: 4294967293
+            },
+            {
+              txid:
+                "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+              vout: 0,
+              scriptSig: { asm: "", hex: "" },
+              sequence: 4294967293
+            }
+          ],
+          vout: [
+            {
+              value: 0.00215,
+              n: 0,
+              scriptPubKey: {
+                asm: "0 6f709183bc76478188b2325f2ee692e8c043cb8f",
+                hex: "00146f709183bc76478188b2325f2ee692e8c043cb8f",
+                reqSigs: 1,
+                type: "witness_v0_keyhash",
+                addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"]
+              }
+            },
+            {
+              value: 0.001,
+              n: 1,
+              scriptPubKey: {
+                asm: "0 b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
+                hex: "0014b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
+                reqSigs: 1,
+                type: "witness_v0_keyhash",
+                addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"]
+              }
+            }
+          ]
+        },
+        unknown: {},
+        inputs: [{}, {}],
+        outputs: [{}, {}]
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.decodepsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".decoderawtransaction()", async () => {
+      const hexstring =
+        "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+      const iswitness = true;
+      const params = { hexstring, iswitness };
+      const request = { params, method: "decoderawtransaction", id, jsonrpc };
+      const result = {
+        txid:
+          "22ff139b2aaa971e3d8ed94dc8a70d82097b59ddc8f35d0e744461e96a4e9f1d",
+        hash:
+          "22ff139b2aaa971e3d8ed94dc8a70d82097b59ddc8f35d0e744461e96a4e9f1d",
+        version: 2,
+        size: 154,
+        vsize: 154,
+        weight: 616,
+        locktime: 1,
+        vin: [
+          {
+            txid:
+              "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+            vout: 1,
+            scriptSig: { asm: "", hex: "" },
+            sequence: 4294967293
+          },
+          {
+            txid:
+              "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+            vout: 0,
+            scriptSig: { asm: "", hex: "" },
+            sequence: 4294967293
+          }
+        ],
+        vout: [
+          {
+            value: 0.00215,
+            n: 0,
+            scriptPubKey: {
+              asm: "0 6f709183bc76478188b2325f2ee692e8c043cb8f",
+              hex: "00146f709183bc76478188b2325f2ee692e8c043cb8f",
+              reqSigs: 1,
+              type: "witness_v0_keyhash",
+              addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"]
+            }
+          },
+          {
+            value: 0.001,
+            n: 1,
+            scriptPubKey: {
+              asm: "0 b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
+              hex: "0014b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
+              reqSigs: 1,
+              type: "witness_v0_keyhash",
+              addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"]
+            }
+          }
+        ]
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.decoderawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".decodescript()", async () => {
+      const hexstring =
+        "5221031e925dbe43ca87bce874f4fb77ac0d6bb2dc1a9db93868fa27611b687775bd0b2102ffb8b66ba266797f1e33e5d177a6f9c72839992ccf11e97837054a8d3a8284bc21025bf696347321a5276aad08dfefff19dd09d3717bfc2ce521060f4247d31c37b553ae";
+      const params = { hexstring };
+      const request = { params, method: "decodescript", id, jsonrpc };
+      const result = {
+        asm:
+          "2 031e925dbe43ca87bce874f4fb77ac0d6bb2dc1a9db93868fa27611b687775bd0b 02ffb8b66ba266797f1e33e5d177a6f9c72839992ccf11e97837054a8d3a8284bc 025bf696347321a5276aad08dfefff19dd09d3717bfc2ce521060f4247d31c37b5 3 OP_CHECKMULTISIG",
+        reqSigs: 2,
+        type: "multisig",
+        addresses: [
+          "miY4Gn8gzbU7SMNzTqRMgU78FVaLCEUnrd",
+          "mkeLiKDk5MZX19e8P2CrKA2mwNgWLwzUoW",
+          "mucT5ReiLujp3bA1mRSud7eAF6aRfS3v3D"
+        ],
+        p2sh: "2NFnZXZPkTfKPmBbDY6EhmVZc4tNK3eyLcr",
+        segwit: {
+          asm:
+            "0 cc753b00fe0605f9f01bacd56c716c14d12676f40ec9e46e2de742b1d9175517",
+          hex:
+            "0020cc753b00fe0605f9f01bacd56c716c14d12676f40ec9e46e2de742b1d9175517",
+          reqSigs: 1,
+          type: "witness_v0_scripthash",
+          addresses: [
+            "tb1qe36nkq87qczlnuqm4n2kcutvzngjvah5pmy7gm3duaptrkgh25ts0p4m5w"
+          ],
+          "p2sh-segwit": "2Mzt4Uc77wz8rGk3Yad2kgJuj47ax5soMCJ"
+        }
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.decodescript(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".finalizepsbt()", async () => {
+      const psbt =
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAEBH8eBOwAAAAAAFgAUM0FW+4lXrlP/+jauvoCEpLAM+30BCGsCRzBEAiBbIUvwV1aHSQHwJsovYaxU9BTZaBv0Thi87An0oux4yAIgcF1o//O5iDtjhwvkH6COw5QHg8Wyzr52cAKmf/5T1SMBIQNOLcpPJlb28pa3FjF+WjkHuXU8dKqfQZSV/wCxeQZ+9AAA";
+      const extract = true;
+      const params = { psbt, extract };
+      const request = { params, method: "finalizepsbt", id, jsonrpc };
+      const result = {
+        hex:
+          "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000",
+        complete: true
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.finalizepsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".fundrawtransaction()", async () => {
+      const hexstring =
+        "020000000129455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffff0140420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000";
+      const replaceable = true;
+      const changeAddress = "tb1q80h3kvp98fgkz293we3p75hs0aq4cecz3qtgkg";
+      const options = { replaceable, changeAddress };
+      const iswitness = true;
+      const wallet = "wallet123.dat";
+      const params = { hexstring, options, iswitness };
+      const request = { params, method: "fundrawtransaction", id, jsonrpc };
+      const result = {
+        hex:
+          "020000000229455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffffa95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000fdffffff02d4c52d00000000001600143bef1b30253a516128b176621f52f07f415c670240420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000",
+        fee: 0.00000236,
+        changepos: 0
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.fundrawtransaction(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getrawtransaction()", async () => {
+      const txid =
+        "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2";
+      const verbose = true;
+      const blockhash =
+        "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018";
+      const params = { txid, verbose, blockhash };
+      const request = { params, method: "getrawtransaction", id, jsonrpc };
+      const result = {
+        in_active_chain: true,
+        txid:
+          "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2",
+        hash:
+          "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2",
+        version: 1,
+        size: 190,
+        vsize: 190,
+        weight: 760,
+        locktime: 0,
+        vin: [
+          {
+            txid:
+              "2250db8ac157f4523e18ec9521bfb3c3249752d112dab14d4742ddce4ceb3189",
+            vout: 1,
+            scriptSig: {
+              asm:
+                "3045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e2[ALL] 039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9",
+              hex:
+                "483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9"
+            },
+            sequence: 4294967295
+          }
+        ],
+        vout: [
+          {
+            value: 0.53015771,
+            n: 0,
+            scriptPubKey: {
+              asm:
+                "OP_HASH160 5629021f7668d4ec310ac5e99701a6d6cf95eb8f OP_EQUAL",
+              hex: "a9145629021f7668d4ec310ac5e99701a6d6cf95eb8f87",
+              reqSigs: 1,
+              type: "scripthash",
+              addresses: ["2N16oE62ZjAPup985dFBQYAuy5zpDraH7Hk"]
+            }
+          }
+        ],
+        hex:
+          "01000000018931eb4ccedd42474db1da12d1529724c3b3bf2195ec183e52f457c18adb5022010000006b483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9ffffffff01dbf428030000000017a9145629021f7668d4ec310ac5e99701a6d6cf95eb8f8700000000",
+        blockhash:
+          "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018",
+        confirmations: 3204,
+        time: 1570540739,
+        blocktime: 1570540739
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getrawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".joinpsbts()", async () => {
+      const txs = [
+        "cHNidP8BAFICAAAAAdVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////AdhHAwAAAAAAFgAUb3CRg7x2R4GIsjJfLuaS6MBDy48BAAAAAAAA",
+        "cHNidP8BAFICAAAAAWs2nFCyIbZPRlxerXXu2guE90c1aA2ur+ibcnP9j3X/AAAAAAD9////AaCGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAA"
+      ];
+      const params = { txs };
+      const request = { params, method: "joinpsbts", id, jsonrpc };
+      const result =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.joinpsbts(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".sendrawtransaction()", async () => {
+      const hexstring =
+        "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000";
+      const allowhighfees = true;
+      const params = { hexstring, allowhighfees };
+      const request = { params, method: "sendrawtransaction", id, jsonrpc };
+      const result =
+        "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.sendrawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".signrawtransactionwithkey()", async () => {
+      const hexstring =
+        "02000000029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e6900000000";
+      const privkeys = [
+        "cSo9pNKNPhPhebybLJaE2BdqAtYjMGJHpxujScKd2ZTrgxCD28r6",
+        "cQeGBYp4NiFj2L2d1ivgan4UMsba3oWQKiBf98tq1QXjPiKQMQeB"
+      ];
+      const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
+      const params = { hexstring, privkeys, sighashtype };
+      const request = {
+        params,
+        method: "signrawtransactionwithkey",
+        id,
+        jsonrpc
+      };
+      const result = {
+        hex:
+          "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
+        complete: true
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signrawtransactionwithkey(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".testmempoolaccept()", async () => {
+      const rawtxs = [
+        "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000"
+      ];
+      const allowhighfees = true;
+      const params = { rawtxs, allowhighfees };
+      const request = { params, method: "testmempoolaccept", id, jsonrpc };
+      const result = [
+        {
+          txid:
+            "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9",
+          allowed: true
+        }
+      ];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.testmempoolaccept(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".utxoupdatepsbt()", async () => {
+      const psbt =
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAAA";
+      const params = { psbt };
+      const request = { params, method: "utxoupdatepsbt", id, jsonrpc };
+      const result =
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAEBH8eBOwAAAAAAFgAUM0FW+4lXrlP/+jauvoCEpLAM+30AAA==";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.utxoupdatepsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Util", () => {
     test(".createmultisig()", async () => {
       const nrequired = 2;

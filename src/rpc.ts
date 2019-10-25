@@ -134,6 +134,80 @@ export type VerifyMessageParams = {
   message: string;
 };
 
+export type HexString = { hexstring: string };
+
+export type ConvertToPsbtParams = HexString & {
+  permitsigdata?: boolean;
+  iswitness?: boolean;
+};
+
+export type TransactionInput = {
+  txid: string;
+  vout: number;
+  sequence?: number;
+};
+
+export type TransactionOutput =
+  | { [address: string]: string | number }
+  | { data: string };
+
+export type CreateTransactionParams = {
+  inputs: TransactionInput[];
+  outputs: TransactionOutput[];
+  locktime?: number;
+  replaceable?: boolean;
+};
+
+export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
+
+export type FinalizePsbtParams = { psbt: string; extract?: boolean };
+
+export type FundRawTransactionParams = HexString & {
+  options?: {
+    changeAddress?: string;
+    changePosition?: number;
+    change_type?: string;
+    includeWatching?: boolean;
+    lockUnspents?: boolean;
+    feeRate?: number | string;
+    subtractFeeFromOutputs?: number[];
+    replaceable?: boolean;
+    conf_target?: number;
+    estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
+  };
+  iswitness?: boolean;
+};
+
+export type GetRawTransactionParams = TxId & Verbose & { blockhash?: string };
+
+export type SendRawTransactionParams = HexString & { allowhighfees?: boolean };
+
+export type PrevTx = {
+  txid: string;
+  vout: number;
+  scriptPubKey: string;
+  redeemScript?: string;
+  witnessScript?: string;
+  amount: number | string;
+};
+
+export type SignRawTransactionWithKeyParams = HexString & {
+  privkeys: string[];
+  prevtxs?: PrevTx[];
+  sighashtype?:
+    | "ALL"
+    | "NONE"
+    | "SINGLE"
+    | "ALL|ANYONECANPAY"
+    | "NONE|ANYONECANPAY"
+    | "SINGLE|ANYONECANPAY";
+};
+
+export type TestmemPoolAcceptParams = {
+  rawtxs: string[];
+  allowhighfees?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -539,6 +613,187 @@ export class RPCClient extends RESTClient {
    */
   async setnetworkactive({ state }: { state: boolean }) {
     return this.rpc("setnetworkactive", { state });
+  }
+
+  /**
+   * @description Analyzes and provides information about the current status of a PSBT and its inputs
+   */
+  async analyzepsbt({ psbt }: { psbt: string }) {
+    return this.rpc("analyzepsbt", { psbt });
+  }
+
+  /**
+   * @description Combine multiple partially signed Bitcoin transactions into one transaction.
+   */
+  async combinepsbt({ txs }: { txs: string[] }) {
+    return this.rpc("combinepsbt", { txs });
+  }
+
+  /**
+   * @description Combine multiple partially signed transactions into one transaction.
+   */
+  async combinerawtransaction({ txs }: { txs: string[] }) {
+    return this.rpc("combinerawtransaction", { txs });
+  }
+
+  /**
+   * @description Converts a network serialized transaction to a PSBT.
+   */
+  async converttopsbt({
+    hexstring,
+    permitsigdata = false,
+    iswitness
+  }: ConvertToPsbtParams) {
+    return this.rpc("converttopsbt", {
+      hexstring,
+      permitsigdata,
+      iswitness
+    });
+  }
+
+  /**
+   * @description Creates a transaction in the Partially Signed Transaction format.
+   */
+  async createpsbt({
+    inputs,
+    outputs,
+    locktime = 0,
+    replaceable = false
+  }: CreateTransactionParams) {
+    return this.rpc("createpsbt", {
+      inputs,
+      outputs,
+      locktime,
+      replaceable
+    });
+  }
+
+  /**
+   * @description Create a transaction spending the given inputs and creating new outputs.
+   */
+  async createrawtransaction({
+    inputs,
+    outputs,
+    locktime = 0,
+    replaceable = false
+  }: CreateTransactionParams) {
+    return this.rpc("createrawtransaction", {
+      inputs,
+      outputs,
+      locktime,
+      replaceable
+    });
+  }
+
+  /**
+   * @description Return a JSON object representing the serialized, base64-encoded partially signed Bitcoin transaction.
+   */
+  async decodepsbt({ psbt }: { psbt: string }) {
+    return this.rpc("decodepsbt", { psbt });
+  }
+
+  /**
+   * @description Return a JSON object representing the serialized, hex-encoded transaction.
+   */
+  async decoderawtransaction({
+    hexstring,
+    iswitness
+  }: DecodeRawTransactionParams) {
+    return this.rpc("decoderawtransaction", { hexstring, iswitness });
+  }
+
+  /**
+   * @description Decode a hex-encoded script.
+   */
+  async decodescript({ hexstring }: HexString) {
+    return this.rpc("decodescript", { hexstring });
+  }
+
+  /**
+   * @description Finalize the inputs of a PSBT.
+   */
+  async finalizepsbt({ psbt, extract = false }: FinalizePsbtParams) {
+    return this.rpc("finalizepsbt", { psbt, extract });
+  }
+
+  /**
+   * @description Add inputs to a transaction until it has enough in value to meet its out value.
+   */
+  async fundrawtransaction(
+    { hexstring, options, iswitness }: FundRawTransactionParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "fundrawtransaction",
+      {
+        hexstring,
+        options,
+        iswitness
+      },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Return the raw transaction data.
+   */
+  async getrawtransaction({
+    txid,
+    verbose = false,
+    blockhash
+  }: GetRawTransactionParams) {
+    return this.rpc("getrawtransaction", { txid, verbose, blockhash });
+  }
+
+  /**
+   * @description Joins multiple distinct PSBTs with different inputs and outputs into one PSBT with inputs and outputs from all of the PSBTs.
+   */
+  async joinpsbts({ txs }: { txs: string[] }) {
+    return this.rpc("joinpsbts", { txs });
+  }
+
+  /**
+   * @description Submits raw transaction (serialized, hex-encoded) to local node and network.
+   */
+  async sendrawtransaction({
+    hexstring,
+    allowhighfees = false
+  }: SendRawTransactionParams) {
+    return this.rpc("sendrawtransaction", { hexstring, allowhighfees });
+  }
+
+  /**
+   * @description Sign inputs for raw transaction
+   */
+  async signrawtransactionwithkey({
+    hexstring,
+    privkeys,
+    prevtxs,
+    sighashtype = "ALL"
+  }: SignRawTransactionWithKeyParams) {
+    return this.rpc("signrawtransactionwithkey", {
+      hexstring,
+      privkeys,
+      prevtxs,
+      sighashtype
+    });
+  }
+
+  /**
+   * @description Returns result of mempool acceptance tests indicating if raw transaction (serialized, hex-encoded) would be accepted by mempool.
+   */
+  async testmempoolaccept({
+    rawtxs,
+    allowhighfees = false
+  }: TestmemPoolAcceptParams) {
+    return this.rpc("testmempoolaccept", { rawtxs, allowhighfees });
+  }
+
+  /**
+   * @description Updates a PSBT with witness UTXOs retrieved from the UTXO set or the mempool.
+   */
+  async utxoupdatepsbt({ psbt }: { psbt: string }) {
+    return this.rpc("utxoupdatepsbt", { psbt });
   }
 
   /**
