@@ -134,6 +134,13 @@ export type VerifyMessageParams = {
   message: string;
 };
 
+export type HexString = { hexstring: string };
+
+export type ConvertToPsbtParams = HexString & {
+  permitsigdata?: boolean;
+  iswitness?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -546,6 +553,21 @@ export class RPCClient extends RESTClient {
    */
   async analyzepsbt({ psbt }: { psbt: string }) {
     return this.rpc("analyzepsbt", { psbt });
+  }
+
+  /**
+   * @description Converts a network serialized transaction to a PSBT.
+   */
+  async converttopsbt({
+    hexstring,
+    permitsigdata = false,
+    iswitness
+  }: ConvertToPsbtParams) {
+    return this.rpc("converttopsbt", {
+      hexstring,
+      permitsigdata,
+      iswitness
+    });
   }
 
   /**
