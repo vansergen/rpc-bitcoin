@@ -183,6 +183,11 @@ export type SignRawTransactionWithKeyParams = HexString & {
     | "SINGLE|ANYONECANPAY";
 };
 
+export type TestmemPoolAcceptParams = {
+  rawtxs: string[];
+  allowhighfees?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -710,6 +715,16 @@ export class RPCClient extends RESTClient {
       prevtxs,
       sighashtype
     });
+  }
+
+  /**
+   * @description Returns result of mempool acceptance tests indicating if raw transaction (serialized, hex-encoded) would be accepted by mempool.
+   */
+  async testmempoolaccept({
+    rawtxs,
+    allowhighfees = false
+  }: TestmemPoolAcceptParams) {
+    return this.rpc("testmempoolaccept", { rawtxs, allowhighfees });
   }
 
   /**
