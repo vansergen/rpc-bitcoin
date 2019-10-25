@@ -549,6 +549,14 @@ const iswitness = true;
 const result = await client.decoderawtransaction({ hexstring, iswitness });
 ```
 
+- [`decodescript`](https://bitcoin.org/en/developer-reference#decodescript)
+
+```javascript
+const hexstring =
+  "5221031e925dbe43ca87bce874f4fb77ac0d6bb2dc1a9db93868fa27611b687775bd0b2102ffb8b66ba266797f1e33e5d177a6f9c72839992ccf11e97837054a8d3a8284bc21025bf696347321a5276aad08dfefff19dd09d3717bfc2ce521060f4247d31c37b553ae";
+const result = await client.decodescript({ hexstring });
+```
+
 - [`finalizepsbt`](https://bitcoin.org/en/developer-reference#finalizepsbt)
 
 ```javascript
