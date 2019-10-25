@@ -436,6 +436,16 @@ const psbt =
 const result = await client.analyzepsbt({ psbt });
 ```
 
+- [`combinerawtransaction`](https://bitcoin.org/en/developer-reference#combinerawtransaction)
+
+```javascript
+const txs = [
+  "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69000247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
+  "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20000000000"
+];
+const result = await client.combinerawtransaction({ txs });
+```
+
 - [`converttopsbt`](https://bitcoin.org/en/developer-reference#converttopsbt)
 
 ```javascript
@@ -539,7 +549,7 @@ const blockhash =
 const result = await client.getrawtransaction({ txid, verbose, blockhash });
 ```
 
-- `signrawtransactionwithkey`
+- [`signrawtransactionwithkey`](https://bitcoin.org/en/developer-reference#signrawtransactionwithkey)
 
 ```javascript
 const hexstring =
