@@ -158,6 +158,10 @@ export type CreateTransactionParams = {
   replaceable?: boolean;
 };
 
+export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
+
+export type GetRawTransactionParams = TxId & Verbose & { blockhash?: string };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -636,6 +640,17 @@ export class RPCClient extends RESTClient {
     iswitness
   }: DecodeRawTransactionParams) {
     return this.rpc("decoderawtransaction", { hexstring, iswitness });
+  }
+
+  /**
+   * @description Return the raw transaction data.
+   */
+  async getrawtransaction({
+    txid,
+    verbose = false,
+    blockhash
+  }: GetRawTransactionParams) {
+    return this.rpc("getrawtransaction", { txid, verbose, blockhash });
   }
 
   /**
