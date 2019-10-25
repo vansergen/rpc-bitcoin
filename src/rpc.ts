@@ -598,6 +598,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Combine multiple partially signed Bitcoin transactions into one transaction.
+   */
+  async combinepsbt({ txs }: { txs: string[] }) {
+    return this.rpc("combinepsbt", { txs });
+  }
+
+  /**
    * @description Combine multiple partially signed transactions into one transaction.
    */
   async combinerawtransaction({ txs }: { txs: string[] }) {
