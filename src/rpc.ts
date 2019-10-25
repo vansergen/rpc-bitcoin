@@ -549,6 +549,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Return a JSON object representing the serialized, base64-encoded partially signed Bitcoin transaction.
+   */
+  async decodepsbt({ psbt }: { psbt: string }) {
+    return this.rpc("decodepsbt", { psbt });
+  }
+
+  /**
    * @description Creates a multi-signature address with n signature of m keys required.
    */
   async createmultisig({
