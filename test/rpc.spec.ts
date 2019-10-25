@@ -1922,6 +1922,31 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".fundrawtransaction()", async () => {
+      const hexstring =
+        "020000000129455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffff0140420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000";
+      const replaceable = true;
+      const changeAddress = "tb1q80h3kvp98fgkz293we3p75hs0aq4cecz3qtgkg";
+      const options = { replaceable, changeAddress };
+      const iswitness = true;
+      const wallet = "wallet123.dat";
+      const params = { hexstring, options, iswitness };
+      const request = { params, method: "fundrawtransaction", id, jsonrpc };
+      const result = {
+        hex:
+          "020000000229455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffffa95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000fdffffff02d4c52d00000000001600143bef1b30253a516128b176621f52f07f415c670240420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000",
+        fee: 0.00000236,
+        changepos: 0
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.fundrawtransaction(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".getrawtransaction()", async () => {
       const txid =
         "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2";
