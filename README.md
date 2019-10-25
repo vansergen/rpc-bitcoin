@@ -566,6 +566,28 @@ const extract = true;
 const result = await client.finalizepsbt({ psbt, extract });
 ```
 
+- [`fundrawtransaction`](https://bitcoin.org/en/developer-reference#fundrawtransaction)
+
+```javascript
+const hexstring =
+  "020000000129455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffff0140420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000";
+const includeWatching = true;
+const feeRate = 0.0002;
+const replaceable = true;
+const changeAddress = "tb1q80h3kvp98fgkz293we3p75hs0aq4cecz3qtgkg";
+const wallet = "bitcoin-core-wallet.dat";
+const options = { includeWatching, feeRate, replaceable, changeAddress };
+const iswitness = true;
+const result = await client.fundrawtransaction(
+  {
+    hexstring,
+    options,
+    iswitness
+  },
+  wallet
+);
+```
+
 - [`getrawtransaction`](https://bitcoin.org/en/developer-reference#getrawtransaction)
 
 ```javascript
