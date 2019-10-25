@@ -481,6 +481,37 @@ const result = await client.createpsbt({
 });
 ```
 
+- [`createrawtransaction`](https://bitcoin.org/en/developer-reference#createrawtransaction)
+
+```javascript
+const inputs = [
+  {
+    txid: "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+    vout: 1
+  },
+  {
+    txid: "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+    vout: 0
+  }
+];
+const outputs = [
+  {
+    tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+  },
+  {
+    tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+  }
+];
+const locktime = 1;
+const replaceable = true;
+const result = await client.createrawtransaction({
+  inputs,
+  outputs,
+  locktime,
+  replaceable
+});
+```
+
 - [`decodepsbt`](https://bitcoin.org/en/developer-reference#decodepsbt)
 
 ```javascript
