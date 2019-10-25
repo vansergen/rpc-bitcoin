@@ -1582,6 +1582,29 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Rawtransactions", () => {
+    test(".analyzepsbt()", async () => {
+      const psbt =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      const params = { psbt };
+      const request = { params, method: "analyzepsbt", id, jsonrpc };
+      const result = {
+        inputs: [
+          { has_utxo: false, is_final: false, next: "updater" },
+          { has_utxo: false, is_final: false, next: "updater" }
+        ],
+        next: "updater"
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.analyzepsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Util", () => {
     test(".createmultisig()", async () => {
       const nrequired = 2;
