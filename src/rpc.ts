@@ -605,6 +605,23 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Create a transaction spending the given inputs and creating new outputs.
+   */
+  async createrawtransaction({
+    inputs,
+    outputs,
+    locktime = 0,
+    replaceable = false
+  }: CreateTransactionParams) {
+    return this.rpc("createrawtransaction", {
+      inputs,
+      outputs,
+      locktime,
+      replaceable
+    });
+  }
+
+  /**
    * @description Return a JSON object representing the serialized, base64-encoded partially signed Bitcoin transaction.
    */
   async decodepsbt({ psbt }: { psbt: string }) {
