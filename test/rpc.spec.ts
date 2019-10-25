@@ -1622,6 +1622,41 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".createpsbt()", async () => {
+      const inputs = [
+        {
+          txid:
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          vout: 1
+        },
+        {
+          txid:
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+          vout: 0
+        }
+      ];
+      const out1: { [address: string]: number } = {
+        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+      };
+      const out2: { [address: string]: number } = {
+        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+      };
+      const outputs = [out1, out2];
+      const locktime = 1;
+      const replaceable = true;
+      const params = { inputs, outputs, locktime, replaceable };
+      const request = { params, method: "createpsbt", id, jsonrpc };
+      const result =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createpsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".decodepsbt()", async () => {
       const psbt =
         "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
