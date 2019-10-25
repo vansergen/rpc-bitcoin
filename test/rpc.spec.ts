@@ -1827,6 +1827,70 @@ suite("RPCClient", () => {
       const data = await client.decoderawtransaction(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getrawtransaction()", async () => {
+      const txid =
+        "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2";
+      const verbose = true;
+      const blockhash =
+        "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018";
+      const params = { txid, verbose, blockhash };
+      const request = { params, method: "getrawtransaction", id, jsonrpc };
+      const result = {
+        in_active_chain: true,
+        txid:
+          "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2",
+        hash:
+          "a32ddaed3387a2bc0bb9a4f90bc6e84e5589335b97142848ad144efd38420eb2",
+        version: 1,
+        size: 190,
+        vsize: 190,
+        weight: 760,
+        locktime: 0,
+        vin: [
+          {
+            txid:
+              "2250db8ac157f4523e18ec9521bfb3c3249752d112dab14d4742ddce4ceb3189",
+            vout: 1,
+            scriptSig: {
+              asm:
+                "3045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e2[ALL] 039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9",
+              hex:
+                "483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9"
+            },
+            sequence: 4294967295
+          }
+        ],
+        vout: [
+          {
+            value: 0.53015771,
+            n: 0,
+            scriptPubKey: {
+              asm:
+                "OP_HASH160 5629021f7668d4ec310ac5e99701a6d6cf95eb8f OP_EQUAL",
+              hex: "a9145629021f7668d4ec310ac5e99701a6d6cf95eb8f87",
+              reqSigs: 1,
+              type: "scripthash",
+              addresses: ["2N16oE62ZjAPup985dFBQYAuy5zpDraH7Hk"]
+            }
+          }
+        ],
+        hex:
+          "01000000018931eb4ccedd42474db1da12d1529724c3b3bf2195ec183e52f457c18adb5022010000006b483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9ffffffff01dbf428030000000017a9145629021f7668d4ec310ac5e99701a6d6cf95eb8f8700000000",
+        blockhash:
+          "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018",
+        confirmations: 3204,
+        time: 1570540739,
+        blocktime: 1570540739
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getrawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Util", () => {
