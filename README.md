@@ -436,6 +436,20 @@ const psbt =
 const result = await client.analyzepsbt({ psbt });
 ```
 
+- [`converttopsbt`](https://bitcoin.org/en/developer-reference#converttopsbt)
+
+```javascript
+const hexstring =
+  "020000000122647b4fc186385b15a01cc6cd6d7864399b4ff536f370f86ecc5e2f4281d7d50000000000ffffffff017b000000000000001976a914394e47d5a2d723e34b38b05e257c6ab69be3b59988ac00000000";
+const permitsigdata = true;
+const iswitness = true;
+const result = await client.converttopsbt({
+  hexstring,
+  permitsigdata,
+  iswitness
+});
+```
+
 - [`decodepsbt`](https://bitcoin.org/en/developer-reference#decodepsbt)
 
 ```javascript
