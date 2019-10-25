@@ -520,6 +520,15 @@ const psbt =
 const result = await client.decodepsbt({ psbt });
 ```
 
+- [`decoderawtransaction`](https://bitcoin.org/en/developer-reference#decoderawtransaction)
+
+```javascript
+const hexstring =
+  "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+const iswitness = true;
+const result = await client.decoderawtransaction({ hexstring, iswitness });
+```
+
 ### Util
 
 - [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
