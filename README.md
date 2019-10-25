@@ -539,6 +539,29 @@ const blockhash =
 const result = await client.getrawtransaction({ txid, verbose, blockhash });
 ```
 
+- `signrawtransactionwithkey`
+
+```javascript
+const hexstring =
+  "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0000000000fdffffff6dd6a088fda2de4c1f25912f5c6f53fdafd54abf6557d888af5ceac704a26d050100000000fdffffff0200093d0000000000160014fc8e119e52776678cc05cab6b024eb77cea2f11620cc0400000000001600141ca68ece7a876e66d377c0a1bc5d45251513c20800000000";
+const privkeys = ["privkey1", "privkey2"];
+const prevtxs = [
+  {
+    txid: "cc21b8cb612f7b451e4283f08b3fa96ccdc141441697c499366f42514b3bdd15",
+    vout: 0,
+    scriptPubKey: "00141ca68ece7a876e66d377c0a1bc5d45251513c208",
+    amount: 0.001
+  }
+];
+const sighashtype = "ALL|ANYONECANPAY";
+const result = await client.signrawtransactionwithkey({
+  hexstring,
+  privkeys,
+  prevtxs,
+  sighashtype
+});
+```
+
 ### Util
 
 - [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
