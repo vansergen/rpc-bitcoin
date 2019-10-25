@@ -598,6 +598,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Combine multiple partially signed transactions into one transaction.
+   */
+  async combinerawtransaction({ txs }: { txs: string[] }) {
+    return this.rpc("combinerawtransaction", { txs });
+  }
+
+  /**
    * @description Converts a network serialized transaction to a PSBT.
    */
   async converttopsbt({
