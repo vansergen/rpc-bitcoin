@@ -1604,6 +1604,24 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".converttopsbt()", async () => {
+      const hexstring =
+        "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+      const permitsigdata = true;
+      const iswitness = true;
+      const params = { hexstring, permitsigdata, iswitness };
+      const request = { params, method: "converttopsbt", id, jsonrpc };
+      const result =
+        "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.converttopsbt(params);
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".decodepsbt()", async () => {
       const psbt =
         "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
