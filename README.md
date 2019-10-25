@@ -610,6 +610,14 @@ const allowhighfees = true;
 const result = await client.testmempoolaccept({ rawtxs, allowhighfees });
 ```
 
+- [`utxoupdatepsbt`](https://bitcoin.org/en/developer-reference#utxoupdatepsbt)
+
+```javascript
+const psbt =
+  "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAAA";
+const result = await client.utxoupdatepsbt({ psbt });
+```
+
 ### Util
 
 - [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
