@@ -426,6 +426,16 @@ const state = false;
 const result = await client.setnetworkactive({ state });
 ```
 
+### Rawtransactions
+
+- [`analyzepsbt`](https://bitcoin.org/en/developer-reference#analyzepsbt)
+
+```javascript
+const psbt =
+  "cHNidP8BAJoCAAAAAtVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////azacULIhtk9GXF6tde7aC4T3RzVoDa6v6Jtyc/2Pdf8AAAAAAP3///8C2EcDAAAAAAAWABRvcJGDvHZHgYiyMl8u5pLowEPLj6CGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAAAAA=";
+const result = await client.analyzepsbt({ psbt });
+```
+
 ### Util
 
 - [`createmultisig`](https://bitcoin.org/en/developer-reference#createmultisig)
