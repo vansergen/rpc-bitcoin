@@ -1891,6 +1891,35 @@ suite("RPCClient", () => {
       const data = await client.getrawtransaction(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".signrawtransactionwithkey()", async () => {
+      const hexstring =
+        "02000000029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e6900000000";
+      const privkeys = [
+        "cSo9pNKNPhPhebybLJaE2BdqAtYjMGJHpxujScKd2ZTrgxCD28r6",
+        "cQeGBYp4NiFj2L2d1ivgan4UMsba3oWQKiBf98tq1QXjPiKQMQeB"
+      ];
+      const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
+      const params = { hexstring, privkeys, sighashtype };
+      const request = {
+        params,
+        method: "signrawtransactionwithkey",
+        id,
+        jsonrpc
+      };
+      const result = {
+        hex:
+          "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
+        complete: true
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signrawtransactionwithkey(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Util", () => {
