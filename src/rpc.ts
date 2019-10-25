@@ -160,7 +160,11 @@ export type CreateTransactionParams = {
 
 export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
 
+export type FinalizePsbtParams = { psbt: string; extract?: boolean };
+
 export type GetRawTransactionParams = TxId & Verbose & { blockhash?: string };
+
+export type SendRawTransactionParams = HexString & { allowhighfees?: boolean };
 
 export type PrevTx = {
   txid: string;
@@ -698,6 +702,16 @@ export class RPCClient extends RESTClient {
     blockhash
   }: GetRawTransactionParams) {
     return this.rpc("getrawtransaction", { txid, verbose, blockhash });
+  }
+
+  /**
+   * @description Submits raw transaction (serialized, hex-encoded) to local node and network.
+   */
+  async sendrawtransaction({
+    hexstring,
+    allowhighfees = false
+  }: SendRawTransactionParams) {
+    return this.rpc("sendrawtransaction", { hexstring, allowhighfees });
   }
 
   /**
