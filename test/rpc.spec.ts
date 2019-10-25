@@ -1761,6 +1761,72 @@ suite("RPCClient", () => {
       const data = await client.decodepsbt(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".decoderawtransaction()", async () => {
+      const hexstring =
+        "0200000002d552146118cdc257daac21cbc889188d58ff3788a8142d1ff3810bd589e26c7b0100000000fdffffff6b369c50b221b64f465c5ead75eeda0b84f74735680daeafe89b7273fd8f75ff0000000000fdffffff02d8470300000000001600146f709183bc76478188b2325f2ee692e8c043cb8fa086010000000000160014b7137dfed18ffe396fbe0b1678608cebdd45b1eb01000000";
+      const iswitness = true;
+      const params = { hexstring, iswitness };
+      const request = { params, method: "decoderawtransaction", id, jsonrpc };
+      const result = {
+        txid:
+          "22ff139b2aaa971e3d8ed94dc8a70d82097b59ddc8f35d0e744461e96a4e9f1d",
+        hash:
+          "22ff139b2aaa971e3d8ed94dc8a70d82097b59ddc8f35d0e744461e96a4e9f1d",
+        version: 2,
+        size: 154,
+        vsize: 154,
+        weight: 616,
+        locktime: 1,
+        vin: [
+          {
+            txid:
+              "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+            vout: 1,
+            scriptSig: { asm: "", hex: "" },
+            sequence: 4294967293
+          },
+          {
+            txid:
+              "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+            vout: 0,
+            scriptSig: { asm: "", hex: "" },
+            sequence: 4294967293
+          }
+        ],
+        vout: [
+          {
+            value: 0.00215,
+            n: 0,
+            scriptPubKey: {
+              asm: "0 6f709183bc76478188b2325f2ee692e8c043cb8f",
+              hex: "00146f709183bc76478188b2325f2ee692e8c043cb8f",
+              reqSigs: 1,
+              type: "witness_v0_keyhash",
+              addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"]
+            }
+          },
+          {
+            value: 0.001,
+            n: 1,
+            scriptPubKey: {
+              asm: "0 b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
+              hex: "0014b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
+              reqSigs: 1,
+              type: "witness_v0_keyhash",
+              addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"]
+            }
+          }
+        ]
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.decoderawtransaction(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Util", () => {
