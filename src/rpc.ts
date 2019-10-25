@@ -629,6 +629,16 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Return a JSON object representing the serialized, hex-encoded transaction.
+   */
+  async decoderawtransaction({
+    hexstring,
+    iswitness
+  }: DecodeRawTransactionParams) {
+    return this.rpc("decoderawtransaction", { hexstring, iswitness });
+  }
+
+  /**
    * @description Creates a multi-signature address with n signature of m keys required.
    */
   async createmultisig({
