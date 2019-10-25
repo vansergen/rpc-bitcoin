@@ -1864,6 +1864,44 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".decodescript()", async () => {
+      const hexstring =
+        "5221031e925dbe43ca87bce874f4fb77ac0d6bb2dc1a9db93868fa27611b687775bd0b2102ffb8b66ba266797f1e33e5d177a6f9c72839992ccf11e97837054a8d3a8284bc21025bf696347321a5276aad08dfefff19dd09d3717bfc2ce521060f4247d31c37b553ae";
+      const params = { hexstring };
+      const request = { params, method: "decodescript", id, jsonrpc };
+      const result = {
+        asm:
+          "2 031e925dbe43ca87bce874f4fb77ac0d6bb2dc1a9db93868fa27611b687775bd0b 02ffb8b66ba266797f1e33e5d177a6f9c72839992ccf11e97837054a8d3a8284bc 025bf696347321a5276aad08dfefff19dd09d3717bfc2ce521060f4247d31c37b5 3 OP_CHECKMULTISIG",
+        reqSigs: 2,
+        type: "multisig",
+        addresses: [
+          "miY4Gn8gzbU7SMNzTqRMgU78FVaLCEUnrd",
+          "mkeLiKDk5MZX19e8P2CrKA2mwNgWLwzUoW",
+          "mucT5ReiLujp3bA1mRSud7eAF6aRfS3v3D"
+        ],
+        p2sh: "2NFnZXZPkTfKPmBbDY6EhmVZc4tNK3eyLcr",
+        segwit: {
+          asm:
+            "0 cc753b00fe0605f9f01bacd56c716c14d12676f40ec9e46e2de742b1d9175517",
+          hex:
+            "0020cc753b00fe0605f9f01bacd56c716c14d12676f40ec9e46e2de742b1d9175517",
+          reqSigs: 1,
+          type: "witness_v0_scripthash",
+          addresses: [
+            "tb1qe36nkq87qczlnuqm4n2kcutvzngjvah5pmy7gm3duaptrkgh25ts0p4m5w"
+          ],
+          "p2sh-segwit": "2Mzt4Uc77wz8rGk3Yad2kgJuj47ax5soMCJ"
+        }
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.decodescript(params);
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".finalizepsbt()", async () => {
       const psbt =
         "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAEBH8eBOwAAAAAAFgAUM0FW+4lXrlP/+jauvoCEpLAM+30BCGsCRzBEAiBbIUvwV1aHSQHwJsovYaxU9BTZaBv0Thi87An0oux4yAIgcF1o//O5iDtjhwvkH6COw5QHg8Wyzr52cAKmf/5T1SMBIQNOLcpPJlb28pa3FjF+WjkHuXU8dKqfQZSV/wCxeQZ+9AAA";
