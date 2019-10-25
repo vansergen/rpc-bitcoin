@@ -162,6 +162,27 @@ export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
 
 export type GetRawTransactionParams = TxId & Verbose & { blockhash?: string };
 
+export type PrevTx = {
+  txid: string;
+  vout: number;
+  scriptPubKey: string;
+  redeemScript?: string;
+  witnessScript?: string;
+  amount: number | string;
+};
+
+export type SignRawTransactionWithKeyParams = HexString & {
+  privkeys: string[];
+  prevtxs?: PrevTx[];
+  sighashtype?:
+    | "ALL"
+    | "NONE"
+    | "SINGLE"
+    | "ALL|ANYONECANPAY"
+    | "NONE|ANYONECANPAY"
+    | "SINGLE|ANYONECANPAY";
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -651,6 +672,23 @@ export class RPCClient extends RESTClient {
     blockhash
   }: GetRawTransactionParams) {
     return this.rpc("getrawtransaction", { txid, verbose, blockhash });
+  }
+
+  /**
+   * @description Sign inputs for raw transaction
+   */
+  async signrawtransactionwithkey({
+    hexstring,
+    privkeys,
+    prevtxs,
+    sighashtype = "ALL"
+  }: SignRawTransactionWithKeyParams) {
+    return this.rpc("signrawtransactionwithkey", {
+      hexstring,
+      privkeys,
+      prevtxs,
+      sighashtype
+    });
   }
 
   /**
