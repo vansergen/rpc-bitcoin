@@ -856,6 +856,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Mark in-wallet transaction `txid` as abandoned
+   */
+  async abandontransaction({ txid }: TxId, wallet?: string) {
+    return this.rpc("abandontransaction", { txid }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
