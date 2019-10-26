@@ -2250,6 +2250,24 @@ suite("RPCClient", () => {
     });
   });
 
+  suite("Wallet", () => {
+    test(".abandontransaction()", async () => {
+      const txid =
+        "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
+      const params = { txid };
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params, method: "abandontransaction", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.abandontransaction(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
   suite("Zmq", () => {
     test(".getzmqnotifications()", async () => {
       const params = {};
