@@ -722,6 +722,16 @@ const signature =
 const result = await client.verifymessage({ address, message, signature });
 ```
 
+### Wallet
+
+- [`abandontransaction`](https://bitcoin.org/en/developer-reference#abandontransaction)
+
+```javascript
+const txid = "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.abandontransaction({ txid }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
