@@ -996,6 +996,14 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.listaddressgroupings(wallet);
 ```
 
+- [`listlabels`](https://bitcoin.org/en/developer-reference#listlabels)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const purpose = "receive";
+const result = await client.listlabels({ purpose }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
