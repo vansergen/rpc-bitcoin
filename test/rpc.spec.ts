@@ -2680,6 +2680,23 @@ suite("RPCClient", () => {
       const data = await client.importmulti(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".importprivkey()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const privkey = "cQnahvawMKvZXLWCdrBvXdvDoTHm4xeQq9iWqLC2JzmicFVd5Mdz";
+      const label = "Imported";
+      const rescan = false;
+      const params = { privkey, label, rescan };
+      const request = { params, method: "importprivkey", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importprivkey(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
