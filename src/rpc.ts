@@ -952,6 +952,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Encrypts the wallet with 'passphrase'.
+   */
+  async encryptwallet({ passphrase }: { passphrase: string }, wallet?: string) {
+    return this.rpc("encryptwallet", { passphrase }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
