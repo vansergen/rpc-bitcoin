@@ -2544,6 +2544,40 @@ suite("RPCClient", () => {
       const data = await client.getreceivedbylabel(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".gettransaction()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const txid =
+        "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95";
+      const include_watchonly = true;
+      const params = { txid, include_watchonly };
+      const request = { params, method: "gettransaction", id, jsonrpc };
+      const result = {
+        amount: 0,
+        fee: -0.00000141,
+        confirmations: 76,
+        blockhash:
+          "0000000000000165757641aa760f436f367abc72e40bcaa8e598cc44992db8f9",
+        blockindex: 54,
+        blocktime: 1572280467,
+        txid:
+          "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95",
+        walletconflicts: [],
+        time: 1572280467,
+        timereceived: 1572281743,
+        "bip125-replaceable": "no",
+        details: [],
+        hex:
+          "02000000000101a95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000feffffff02a086010000000000160014aacf5a9d6c52c5ffe8006182a72486baf2e8bf3333fb390000000000160014e87724699668d3abff7311cb18a62b0c8de1038502473044022026a9618c21c3eab177877c6f8f8890610ad0ac93b8e243c4ea32dadf52728dae02206817f8aaa7fabf728853415bdae7b4e2fc02fc72630cba23952224fad374bcc3012102a00a9973ab15acaac69b591dcebed3fcf44ab76950d962671391fd1c1c3f0015742c1800"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.gettransaction(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
