@@ -924,17 +924,16 @@ export class RPCClient extends RESTClient {
   /**
    * @description Creates and loads a new wallet.
    */
-  async createwallet(
-    {
+  async createwallet({
+    wallet_name,
+    disable_private_keys = false,
+    blank = false
+  }: CreateWalletParams) {
+    return this.rpc("createwallet", {
       wallet_name,
-      disable_private_keys = false,
-      blank = false
-    }: CreateWalletParams
-  ) {
-    return this.rpc(
-      "createwallet",
-      { wallet_name, disable_private_keys, blank }
-    );
+      disable_private_keys,
+      blank
+    });
   }
 
   /**
@@ -963,6 +962,13 @@ export class RPCClient extends RESTClient {
    */
   async getaddressesbylabel({ label }: { label: string }, wallet?: string) {
     return this.rpc("getaddressesbylabel", { label }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Return information about the given bitcoin address.
+   */
+  async getaddressinfo({ address }: { address: string }, wallet?: string) {
+    return this.rpc("getaddressinfo", { address }, wallet || this.wallet);
   }
 
   /**
