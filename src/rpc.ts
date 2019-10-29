@@ -267,6 +267,32 @@ export type ImportAddressParams = {
   p2sh?: boolean;
 };
 
+export type ImportMultiRequest = {
+  timestamp: number | "now";
+  internal?: boolean;
+  watchonly?: boolean;
+  label?: string;
+  keypool?: boolean;
+} & (
+  | {
+      desc: string;
+      range?: number | [number, number];
+    }
+  | {
+      scriptPubKey: { address: string } | string;
+      redeemscript?: string;
+      witnessscript?: string;
+      pubkeys?: string[];
+      keys?: string[];
+    });
+
+export type ImportMultiParams = {
+  requests: ImportMultiRequest[];
+  options?: {
+    rescan?: boolean;
+  };
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1117,6 +1143,17 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "importaddress",
       { address, label, rescan, p2sh },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Import addresses/scripts (with private or public keys, redeem script (P2SH)), optionally rescanning the blockchain from the earliest creation time of the imported scripts.
+   */
+  async importmulti({ requests, options }: ImportMultiParams, wallet?: string) {
+    return this.rpc(
+      "importmulti",
+      { requests, options },
       wallet || this.wallet
     );
   }
