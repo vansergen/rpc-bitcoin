@@ -847,6 +847,14 @@ const address_type = "bech32";
 const result = await client.getnewaddress({ label, address_type }, wallet);
 ```
 
+- [`getrawchangeaddress`](https://bitcoin.org/en/developer-reference#getrawchangeaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address_type = "bech32";
+const result = await client.getrawchangeaddress({ address_type }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
