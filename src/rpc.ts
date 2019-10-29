@@ -258,6 +258,8 @@ export type GetReceivedByLabelParams = {
   minconf?: number;
 };
 
+export type GetTransactionParams = TxId & { include_watchonly?: boolean };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1066,6 +1068,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "getreceivedbylabel",
       { label, minconf },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Get detailed information about in-wallet transaction `txid`
+   */
+  async gettransaction(
+    { txid, include_watchonly = false }: GetTransactionParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "gettransaction",
+      { txid, include_watchonly },
       wallet || this.wallet
     );
   }
