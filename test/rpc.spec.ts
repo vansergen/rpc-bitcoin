@@ -2783,6 +2783,21 @@ suite("RPCClient", () => {
       const data = await client.listaddressgroupings(wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listlabels()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const purpose: "receive" = "receive";
+      const params = { purpose };
+      const request = { params, method: "listlabels", id, jsonrpc };
+      const result = ["", "SomeLabel"];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listlabels(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
