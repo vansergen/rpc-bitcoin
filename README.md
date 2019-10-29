@@ -732,6 +732,13 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.abandontransaction({ txid }, wallet);
 ```
 
+- [`abortrescan`](https://bitcoin.org/en/developer-reference#abortrescan)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.abortrescan(wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
