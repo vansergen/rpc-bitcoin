@@ -2622,6 +2622,24 @@ suite("RPCClient", () => {
       const data = await client.getwalletinfo(wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".importaddress()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address = "tb1qk57dcv7rs2ap6k82xu58957qz6zherj4vm54lw";
+      const label = "ImportedAddress";
+      const rescan = false;
+      const p2sh = false;
+      const params = { address, label, rescan, p2sh };
+      const request = { params, method: "importaddress", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
