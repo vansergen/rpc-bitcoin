@@ -2392,6 +2392,22 @@ suite("RPCClient", () => {
       const data = await client.dumpwallet(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".encryptwallet()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+      const params = { passphrase };
+      const request = { params, method: "encryptwallet", id, jsonrpc };
+      const result =
+        "wallet encrypted; The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.encryptwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
