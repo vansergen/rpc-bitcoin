@@ -107,10 +107,12 @@ export type SetBanParams = {
   absolute?: boolean;
 };
 
+export type AddressType = "legacy" | "p2sh-segwit" | "bech32";
+
 export type CreateMultiSigParams = {
   nrequired: number;
   keys: string[];
-  address_type?: "legacy" | "p2sh-segwit" | "bech32";
+  address_type?: AddressType;
 };
 
 export type DeriveAddressesParams = {
@@ -144,9 +146,9 @@ export type ConvertToPsbtParams = HexString & {
   iswitness?: boolean;
 };
 
-export type TransactionInput = {
-  txid: string;
-  vout: number;
+export type BaseTransactionInput = { txid: string; vout: number };
+
+export type TransactionInput = BaseTransactionInput & {
   sequence?: number;
 };
 
@@ -154,10 +156,13 @@ export type TransactionOutput =
   | { [address: string]: string | number }
   | { data: string };
 
-export type CreateTransactionParams = {
+export type BaseCreateTransaction = {
   inputs: TransactionInput[];
   outputs: TransactionOutput[];
   locktime?: number;
+};
+
+export type CreateTransactionParams = BaseCreateTransaction & {
   replaceable?: boolean;
 };
 
@@ -914,6 +919,22 @@ export class RPCClient extends RESTClient {
    */
   async bumpfee({ txid, options }: BumpFeeParams, wallet?: string) {
     return this.rpc("bumpfee", { txid, options }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Creates and loads a new wallet.
+   */
+  async createwallet(
+    {
+      wallet_name,
+      disable_private_keys = false,
+      blank = false
+    }: CreateWalletParams
+  ) {
+    return this.rpc(
+      "createwallet",
+      { wallet_name, disable_private_keys, blank }
+    );
   }
 
   /**
