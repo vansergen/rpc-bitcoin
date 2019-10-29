@@ -776,6 +776,19 @@ const options = { totalFee, replaceable, estimate_mode };
 const result = await client.bumpfee({ txid, options }, wallet);
 ```
 
+- [`createwallet`](https://bitcoin.org/en/developer-reference#createwallet)
+
+```javascript
+const wallet_name = "bitcoin-core-wallet.dat";
+const disable_private_keys = true;
+const blank = true;
+const result = await client.createwallet({
+  wallet_name,
+  disable_private_keys,
+  blank
+});
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
