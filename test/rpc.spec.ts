@@ -2578,6 +2578,24 @@ suite("RPCClient", () => {
       const data = await client.gettransaction(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getunconfirmedbalance()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = {
+        params: {},
+        method: "getunconfirmedbalance",
+        id,
+        jsonrpc
+      };
+      const result = 0;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getunconfirmedbalance(wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
