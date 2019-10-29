@@ -222,11 +222,20 @@ export type AddMultiSigAddressParams = CreateMultiSigParams & Label;
 
 export type BumpFeeParams = {
   txid: string;
-  options?: EstimateMode & {
-    confTarget?: number;
-    totalFee?: number;
-    replaceable?: boolean;
-  };
+  options?: EstimateMode & { replaceable?: boolean } & (
+      | { confTarget?: number }
+      | { totalFee?: number });
+};
+
+export type CreateWalletParams = {
+  wallet_name: string;
+  disable_private_keys?: boolean;
+  blank?: boolean;
+};
+
+export type GetBalanceParams = {
+  minconf?: number;
+  include_watchonly?: boolean;
 };
 
 export class RPCClient extends RESTClient {
@@ -969,6 +978,20 @@ export class RPCClient extends RESTClient {
    */
   async getaddressinfo({ address }: { address: string }, wallet?: string) {
     return this.rpc("getaddressinfo", { address }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns the total available balance.
+   */
+  async getbalance(
+    { minconf, include_watchonly = false }: GetBalanceParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getbalance",
+      { minconf, include_watchonly },
+      wallet || this.wallet
+    );
   }
 
   /**
