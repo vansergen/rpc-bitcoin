@@ -813,6 +813,14 @@ const passphrase = "VerySecretPassphraseDoNotTellAnyone";
 const result = await client.encryptwallet({ passphrase }, wallet);
 ```
 
+- [`getaddressesbylabel`](https://bitcoin.org/en/developer-reference#getaddressesbylabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const result = await client.getaddressesbylabel({ label }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
