@@ -170,8 +170,8 @@ export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
 
 export type FinalizePsbtParams = { psbt: string; extract?: boolean };
 
-export type FundRawTransactionParams = HexString & {
-  options?: {
+export type BaseFundOptions = {
+  options?: EstimateMode & {
     changeAddress?: string;
     changePosition?: number;
     change_type?: string;
@@ -181,8 +181,11 @@ export type FundRawTransactionParams = HexString & {
     subtractFeeFromOutputs?: number[];
     replaceable?: boolean;
     conf_target?: number;
-    estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
   };
+};
+
+export type FundRawTransactionParams = HexString & {
+  options?: BaseFundOptions;
   iswitness?: boolean;
 };
 
@@ -199,17 +202,22 @@ export type PrevTx = {
   amount: number | string;
 };
 
-export type SignRawTransactionWithKeyParams = HexString & {
-  privkeys: string[];
+export type SigHashType =
+  | "ALL"
+  | "NONE"
+  | "SINGLE"
+  | "ALL|ANYONECANPAY"
+  | "NONE|ANYONECANPAY"
+  | "SINGLE|ANYONECANPAY";
+
+export type SignRawTransactionWithWalletParams = HexString & {
   prevtxs?: PrevTx[];
-  sighashtype?:
-    | "ALL"
-    | "NONE"
-    | "SINGLE"
-    | "ALL|ANYONECANPAY"
-    | "NONE|ANYONECANPAY"
-    | "SINGLE|ANYONECANPAY";
+  sighashtype?: SigHashType;
 };
+
+export type SignRawTransactionWithKeyParams = {
+  privkeys: string[];
+} & SignRawTransactionWithWalletParams;
 
 export type TestmemPoolAcceptParams = {
   rawtxs: string[];
@@ -237,6 +245,8 @@ export type GetBalanceParams = {
   minconf?: number;
   include_watchonly?: boolean;
 };
+
+export type GetNewAddressParams = { address_type?: AddressType } & Label;
 
 export class RPCClient extends RESTClient {
   wallet?: string;
@@ -990,6 +1000,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "getbalance",
       { minconf, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns a new Bitcoin address for receiving payments.
+   */
+  async getnewaddress(
+    { label = "", address_type }: GetNewAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getnewaddress",
+      { label, address_type },
       wallet || this.wallet
     );
   }
