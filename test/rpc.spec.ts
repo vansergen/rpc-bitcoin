@@ -2292,7 +2292,8 @@ suite("RPCClient", () => {
       const params = { nrequired, keys, label, address_type };
       const request = { params, method: "addmultisigaddress", id, jsonrpc };
       const result = {
-        address: "tb1qylfjvzx7a7wkntajyvek2wur2qnmt3gxqnevhjkw957fw0ggw9nqczpy6l",
+        address:
+          "tb1qylfjvzx7a7wkntajyvek2wur2qnmt3gxqnevhjkw957fw0ggw9nqczpy6l",
         redeemScript:
           "5221030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f2102ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e952ae"
       };
@@ -2331,7 +2332,8 @@ suite("RPCClient", () => {
       const params = { txid, options };
       const request = { params, method: "bumpfee", id, jsonrpc };
       const result = {
-        txid: "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+        txid:
+          "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
         origfee: 0.00000144,
         fee: 0.00000839,
         errors: []
@@ -2424,6 +2426,42 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, { result, error, id });
       const data = await client.getaddressesbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getaddressinfo()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address = "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj";
+      const params = { address };
+      const request = { params, method: "getaddressinfo", id, jsonrpc };
+      const result = {
+        address: "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj",
+        scriptPubKey: "00146c28062b4ad15fc642fa711617f4073648a2c93c",
+        ismine: true,
+        solvable: true,
+        desc:
+          "wpkh([2f8f8c1b/0'/0'/25']028f8e5afd6c3dd82e7fa75cd6558c35cc56d3c1403e6659a3ddec71cac6382a7d)#xgmuj4mj",
+        iswatchonly: false,
+        isscript: false,
+        iswitness: true,
+        witness_version: 0,
+        witness_program: "6c28062b4ad15fc642fa711617f4073648a2c93c",
+        pubkey:
+          "028f8e5afd6c3dd82e7fa75cd6558c35cc56d3c1403e6659a3ddec71cac6382a7d",
+        label: "SomeLabel",
+        ischange: false,
+        timestamp: 1570725096,
+        hdkeypath: "m/0'/0'/25'",
+        hdseedid: "d43760fda85e35a75e0bed11233185630f8d1279",
+        hdmasterfingerprint: "2f8f8c1b",
+        labels: [{ name: "SomeLabel", purpose: "receive" }]
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getaddressinfo(params, wallet);
       assert.deepStrictEqual(data, result);
     });
   });
