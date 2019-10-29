@@ -962,6 +962,17 @@ const result = await client.importprunedfunds(
 );
 ```
 
+- [`importpubkey`](https://bitcoin.org/en/developer-reference#importpubkey)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const pubkey =
+  "023ef8f5fa2a18c07d714d942e4aa933827df7d5fba43a513be22581fc0ce83207";
+const label = "SomeAddress";
+const rescan = false;
+const result = await client.importpubkey({ pubkey, label, rescan }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
