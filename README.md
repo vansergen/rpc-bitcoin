@@ -897,6 +897,20 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.getwalletinfo(wallet);
 ```
 
+- [`importaddress`](https://bitcoin.org/en/developer-reference#importaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qk57dcv7rs2ap6k82xu58957qz6zherj4vm54lw";
+const label = "ImportedAddress";
+const rescan = false;
+const p2sh = false;
+const result = await client.importaddress(
+  { address, label, rescan, p2sh },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
