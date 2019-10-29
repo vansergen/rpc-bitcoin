@@ -2763,6 +2763,26 @@ suite("RPCClient", () => {
       const data = await client.keypoolrefill(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listaddressgroupings()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const params = {};
+      const request = { params, method: "listaddressgroupings", id, jsonrpc };
+      const result = [
+        [
+          ["tb1q8hdflcavy6cqekcz89nyeknn0jgp6jrffchkru", 0],
+          ["tb1qd6kfch0myeleugs5egs9dwmn94zc0wjjaxhecw", 0, ""]
+        ],
+        [["tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5", 0, ""]]
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listaddressgroupings(wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
