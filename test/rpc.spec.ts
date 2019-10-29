@@ -2279,6 +2279,31 @@ suite("RPCClient", () => {
       const data = await client.abortrescan(wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".addmultisigaddress()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const nrequired = 2;
+      const keys = [
+        "030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f",
+        "02ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e9"
+      ];
+      const label = "NewMultiSigAddress";
+      const address_type: "bech32" = "bech32";
+      const params = { nrequired, keys, label, address_type };
+      const request = { params, method: "addmultisigaddress", id, jsonrpc };
+      const result = {
+        address: "tb1qylfjvzx7a7wkntajyvek2wur2qnmt3gxqnevhjkw957fw0ggw9nqczpy6l",
+        redeemScript:
+          "5221030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f2102ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e952ae"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.addmultisigaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
