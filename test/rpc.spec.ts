@@ -2715,6 +2715,24 @@ suite("RPCClient", () => {
       const data = await client.importprunedfunds(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".importpubkey()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const pubkey =
+        "023ef8f5fa2a18c07d714d942e4aa933827df7d5fba43a513be22581fc0ce83207";
+      const label = "SomeAddress";
+      const rescan = false;
+      const params = { pubkey, label, rescan };
+      const request = { params, method: "importpubkey", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importpubkey(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
