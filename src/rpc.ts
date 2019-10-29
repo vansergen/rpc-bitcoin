@@ -304,6 +304,12 @@ export type ImportPrunedFundsParams = {
   txoutproof: string;
 };
 
+export type ImportPubKeyParams = {
+  pubkey: string;
+  label?: string;
+  rescan?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1193,6 +1199,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "importprunedfunds",
       { rawtransaction, txoutproof },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Adds a public key (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
+   */
+  async importpubkey(
+    { pubkey, label = "", rescan = true }: ImportPubKeyParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importpubkey",
+      { pubkey, label, rescan },
       wallet || this.wallet
     );
   }
