@@ -981,6 +981,14 @@ const filename = "myWalletDump.dat";
 const result = await client.importwallet({ filename }, wallet);
 ```
 
+- [`keypoolrefill`](https://bitcoin.org/en/developer-reference#keypoolrefill)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const newsize = 123;
+const result = await client.keypoolrefill({ newsize }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
