@@ -938,6 +938,16 @@ const options = { rescan: false };
 const result = await client.importmulti({ requests, options }, wallet);
 ```
 
+- [`importprivkey`](https://bitcoin.org/en/developer-reference#importprivkey)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const privkey = "cQnahvawMKvZXLWCdrBvXdvDoTHm4xeQq9iWqLC2JzmicFVd5Mdz";
+const label = "Imported";
+const rescan = false;
+const result = await client.importprivkey({ privkey, label, rescan }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
