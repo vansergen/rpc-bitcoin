@@ -838,6 +838,15 @@ const include_watchonly = true;
 const result = await client.getbalance({ minconf, include_watchonly }, wallet);
 ```
 
+- [`getnewaddress`](https://bitcoin.org/en/developer-reference#getnewaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const address_type = "bech32";
+const result = await client.getnewaddress({ label, address_type }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
