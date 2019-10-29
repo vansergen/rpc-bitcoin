@@ -2487,13 +2487,28 @@ suite("RPCClient", () => {
       const address_type: "bech32" = "bech32";
       const params = { label, address_type };
       const request = { params, method: "getnewaddress", id, jsonrpc };
-      const result = 0.0000863;
+      const result = "tb1q522hdye3p7ftzwsk0y7v3svsnk7rpxpc9zx73q";
       nock(uri)
         .post("/wallet/" + wallet, request)
         .times(1)
         .basicAuth(auth)
         .reply(200, { result, error, id });
       const data = await client.getnewaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getrawchangeaddress()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address_type: "bech32" = "bech32";
+      const params = { address_type };
+      const request = { params, method: "getrawchangeaddress", id, jsonrpc };
+      const result = "tb1qrl0a2zrqjtc3rw6w8ccxp9g3g2lju8vqqsp07n";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getrawchangeaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
   });
