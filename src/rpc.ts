@@ -248,6 +248,11 @@ export type GetBalanceParams = {
 
 export type GetNewAddressParams = { address_type?: AddressType } & Label;
 
+export type GetReceivedByAddressParams = {
+  address: string;
+  minconf?: number;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1028,6 +1033,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "getrawchangeaddress",
       { address_type },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns the total amount received by the given address in transactions with at least minconf confirmations.
+   */
+  async getreceivedbyaddress(
+    { address, minconf = 1 }: GetReceivedByAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getreceivedbyaddress",
+      { address, minconf },
       wallet || this.wallet
     );
   }
