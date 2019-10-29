@@ -973,6 +973,14 @@ const rescan = false;
 const result = await client.importpubkey({ pubkey, label, rescan }, wallet);
 ```
 
+- [`importwallet`](https://bitcoin.org/en/developer-reference#importwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const filename = "myWalletDump.dat";
+const result = await client.importwallet({ filename }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
