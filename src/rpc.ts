@@ -253,6 +253,11 @@ export type GetReceivedByAddressParams = {
   minconf?: number;
 };
 
+export type GetReceivedByLabelParams = {
+  label: string;
+  minconf?: number;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1047,6 +1052,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "getreceivedbyaddress",
       { address, minconf },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns the total amount received by addresses with `label` in transactions with at least `minconf` confirmations.
+   */
+  async getreceivedbylabel(
+    { label, minconf = 1 }: GetReceivedByLabelParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getreceivedbylabel",
+      { label, minconf },
       wallet || this.wallet
     );
   }
