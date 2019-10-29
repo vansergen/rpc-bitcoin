@@ -118,9 +118,12 @@ export type DeriveAddressesParams = {
   range?: number | [number, number];
 };
 
-export type EstimateSmartFeeParams = {
-  conf_target: number;
+export type EstimateMode = {
   estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
+};
+
+export type EstimateSmartFeeParams = EstimateMode & {
+  conf_target: number;
 };
 
 export type SignMessageWithPrivKeyParams = {
@@ -211,6 +214,15 @@ export type TestmemPoolAcceptParams = {
 export type Label = { label?: string };
 
 export type AddMultiSigAddressParams = CreateMultiSigParams & Label;
+
+export type BumpFeeParams = {
+  txid: string;
+  options?: EstimateMode & {
+    confTarget?: number;
+    totalFee?: number;
+    replaceable?: boolean;
+  };
+};
 
 export class RPCClient extends RESTClient {
   wallet?: string;
@@ -895,6 +907,13 @@ export class RPCClient extends RESTClient {
     wallet?: string
   ) {
     return this.rpc("backupwallet", { destination }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Bumps the fee of an opt-in-RBF transaction T, replacing it with a new transaction B.
+   */
+  async bumpfee({ txid, options }: BumpFeeParams, wallet?: string) {
+    return this.rpc("bumpfee", { txid, options }, wallet || this.wallet);
   }
 
   /**
