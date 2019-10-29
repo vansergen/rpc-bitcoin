@@ -2266,6 +2266,19 @@ suite("RPCClient", () => {
       const data = await client.abandontransaction(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".abortrescan()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params: {}, method: "abortrescan", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.abortrescan(wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
