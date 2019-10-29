@@ -2319,6 +2319,31 @@ suite("RPCClient", () => {
       const data = await client.backupwallet(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".bumpfee()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const txid =
+        "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1";
+      const totalFee = 839;
+      const replaceable = true;
+      const estimate_mode: "CONSERVATIVE" = "CONSERVATIVE";
+      const options = { totalFee, replaceable, estimate_mode };
+      const params = { txid, options };
+      const request = { params, method: "bumpfee", id, jsonrpc };
+      const result = {
+        txid: "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+        origfee: 0.00000144,
+        fee: 0.00000839,
+        errors: []
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.bumpfee(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
