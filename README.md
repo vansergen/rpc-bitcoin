@@ -883,6 +883,13 @@ const include_watchonly = true;
 const result = await client.gettransaction({ txid, include_watchonly }, wallet);
 ```
 
+- [`getunconfirmedbalance`](https://bitcoin.org/en/developer-reference#getunconfirmedbalance)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.getunconfirmedbalance(wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
