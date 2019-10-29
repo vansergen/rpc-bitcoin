@@ -938,6 +938,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Reveals the private key corresponding to 'address'.
+   */
+  async dumpprivkey({ address }: { address: string }, wallet?: string) {
+    return this.rpc("dumpprivkey", { address }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
