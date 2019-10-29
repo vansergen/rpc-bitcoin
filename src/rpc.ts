@@ -863,6 +863,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Stops current wallet rescan triggered by an RPC call
+   */
+  async abortrescan(wallet?: string) {
+    return this.rpc("abortrescan", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
