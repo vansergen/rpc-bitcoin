@@ -208,6 +208,10 @@ export type TestmemPoolAcceptParams = {
   allowhighfees?: boolean;
 };
 
+export type Label = { label?: string };
+
+export type AddMultiSigAddressParams = CreateMultiSigParams & Label;
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -867,6 +871,20 @@ export class RPCClient extends RESTClient {
    */
   async abortrescan(wallet?: string) {
     return this.rpc("abortrescan", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Add a nrequired-to-sign multisignature address to the wallet.
+   */
+  async addmultisigaddress(
+    { nrequired, keys, label, address_type }: AddMultiSigAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "addmultisigaddress",
+      { nrequired, keys, label, address_type },
+      wallet || this.wallet
+    );
   }
 
   /**
