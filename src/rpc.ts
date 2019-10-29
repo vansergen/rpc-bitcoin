@@ -310,6 +310,8 @@ export type ImportPubKeyParams = {
   rescan?: boolean;
 };
 
+export type ListLabelsParams = { purpose: "receive" | "send" };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1239,6 +1241,13 @@ export class RPCClient extends RESTClient {
    */
   async listaddressgroupings(wallet?: string) {
     return this.rpc("listaddressgroupings", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns the list of all labels, or labels that are assigned to addresses with a specific purpose.
+   */
+  async listlabels({ purpose }: ListLabelsParams, wallet?: string) {
+    return this.rpc("listlabels", { purpose }, wallet || this.wallet);
   }
 
   /**
