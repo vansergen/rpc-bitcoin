@@ -874,6 +874,15 @@ const minconf = 6;
 const result = await client.getreceivedbylabel({ label, minconf }, wallet);
 ```
 
+- [`gettransaction`](https://bitcoin.org/en/developer-reference#gettransaction)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const txid = "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95";
+const include_watchonly = true;
+const result = await client.gettransaction({ txid, include_watchonly }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
