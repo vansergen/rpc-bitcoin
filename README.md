@@ -764,6 +764,18 @@ const destination = "D:/Crypto/wallets/myWalletBackup.dat";
 const result = await client.backupwallet({ destination }, wallet);
 ```
 
+- [`bumpfee`](https://bitcoin.org/en/developer-reference#bumpfee)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const txid = "txid";
+const totalFee = 0.00000839;
+const replaceable = true;
+const estimate_mode = "CONSERVATIVE";
+const options = { totalFee, replaceable, estimate_mode };
+const result = await client.bumpfee({ txid, options }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
