@@ -888,6 +888,16 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Safely copies current wallet file to destination.
+   */
+  async backupwallet(
+    { destination }: { destination: string },
+    wallet?: string
+  ) {
+    return this.rpc("backupwallet", { destination }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
