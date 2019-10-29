@@ -1019,6 +1019,20 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns a new Bitcoin address, for receiving change.
+   */
+  async getrawchangeaddress(
+    { address_type }: { address_type?: AddressType },
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getrawchangeaddress",
+      { address_type },
+      wallet || this.wallet
+    );
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
