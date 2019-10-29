@@ -959,6 +959,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns the list of addresses assigned the specified label.
+   */
+  async getaddressesbylabel({ label }: { label: string }, wallet?: string) {
+    return this.rpc("getaddressesbylabel", { label }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
