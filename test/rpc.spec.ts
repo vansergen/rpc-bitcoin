@@ -2596,6 +2596,32 @@ suite("RPCClient", () => {
       const data = await client.getunconfirmedbalance(wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getwalletinfo()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params: {}, method: "getwalletinfo", id, jsonrpc };
+      const result = {
+        walletname: "bitcoin-core-wallet.dat",
+        walletversion: 169900,
+        balance: 0.0421393,
+        unconfirmed_balance: 0,
+        immature_balance: 0,
+        txcount: 29,
+        keypoololdest: 1570725098,
+        keypoolsize: 1000,
+        keypoolsize_hd_internal: 999,
+        paytxfee: 0,
+        hdseedid: "d43760fda85e35a75e0bed11233185630f8d1279",
+        private_keys_enabled: true
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getwalletinfo(wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
