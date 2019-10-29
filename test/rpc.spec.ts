@@ -2408,6 +2408,24 @@ suite("RPCClient", () => {
       const data = await client.encryptwallet(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getaddressesbylabel()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const label = "SomeLabel";
+      const params = { label };
+      const request = { params, method: "getaddressesbylabel", id, jsonrpc };
+      const result = {
+        tb1qxwqd5gance6rk9xel5uwuxxdj79wfwgaxsrnn0: { purpose: "receive" },
+        tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj: { purpose: "receive" }
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getaddressesbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
