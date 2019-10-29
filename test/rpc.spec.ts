@@ -2733,6 +2733,21 @@ suite("RPCClient", () => {
       const data = await client.importpubkey(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".importwallet()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const filename = "myWalletDump.dat";
+      const params = { filename };
+      const request = { params, method: "importwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
