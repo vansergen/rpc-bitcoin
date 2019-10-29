@@ -2464,6 +2464,22 @@ suite("RPCClient", () => {
       const data = await client.getaddressinfo(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getbalance()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const minconf = 6;
+      const include_watchonly = true;
+      const params = { minconf, include_watchonly };
+      const request = { params, method: "getbalance", id, jsonrpc };
+      const result = 0.0000863;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getbalance(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
