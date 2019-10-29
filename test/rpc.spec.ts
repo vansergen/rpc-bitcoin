@@ -2511,6 +2511,23 @@ suite("RPCClient", () => {
       const data = await client.getrawchangeaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getreceivedbyaddress()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address =
+        "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n";
+      const minconf = 6;
+      const params = { address, minconf };
+      const request = { params, method: "getreceivedbyaddress", id, jsonrpc };
+      const result = 0.001;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getreceivedbyaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
