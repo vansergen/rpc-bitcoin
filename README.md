@@ -805,6 +805,14 @@ const filename = "myWalletDump.dat";
 const result = await client.dumpwallet({ filename }, wallet);
 ```
 
+- [`encryptwallet`](https://bitcoin.org/en/developer-reference#encryptwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+const result = await client.encryptwallet({ passphrase }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
