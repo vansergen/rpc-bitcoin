@@ -911,6 +911,33 @@ const result = await client.importaddress(
 );
 ```
 
+- [`importmulti`](https://bitcoin.org/en/developer-reference#importmulti)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const requests = [
+  {
+    desc:
+      "wpkh(tpubD6NzVbkrYhZ4Wk5MMULiQd4XkBe3KeG6GCUNrWcXu27PJwqFfHF7geuTPfPZcViUpV7ny6MHVnbvxdCSfkooFb7bBJiQgKXCVM58XZiVyHu/0/*)#9tk43hcd",
+    range: [2, 5],
+    internal: true,
+    watchonly: true,
+    timestamp: 0
+  },
+  {
+    scriptPubKey: { address: "tb1q0pjl9cy0t38uvyfs75t7av7ujrhs65xx0nfjmf" },
+    timestamp: "now"
+  },
+  {
+    scriptPubKey: { address: "tb1qxqt28qy3uvj8qeucm60dnrzty3cccx88hp9car" },
+    keys: ["cQfkAynVm54Je8mXYH6zkKKjug7ehheUeMx5jnWTvy94M73X2Vdj"],
+    timestamp: "now"
+  }
+];
+const options = { rescan: false };
+const result = await client.importmulti({ requests, options }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
