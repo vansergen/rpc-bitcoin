@@ -299,6 +299,11 @@ export type ImportPrivKeyParams = {
   rescan?: boolean;
 };
 
+export type ImportPrunedFundsParams = {
+  rawtransaction: string;
+  txoutproof: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1174,6 +1179,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "importprivkey",
       { privkey, label, rescan },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Imports funds without rescan. Corresponding address or script must previously be included in wallet.
+   */
+  async importprunedfunds(
+    { rawtransaction, txoutproof }: ImportPrunedFundsParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importprunedfunds",
+      { rawtransaction, txoutproof },
       wallet || this.wallet
     );
   }
