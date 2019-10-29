@@ -260,6 +260,13 @@ export type GetReceivedByLabelParams = {
 
 export type GetTransactionParams = TxId & { include_watchonly?: boolean };
 
+export type ImportAddressParams = {
+  address: string;
+  label?: string;
+  rescan?: boolean;
+  p2sh?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1098,6 +1105,20 @@ export class RPCClient extends RESTClient {
    */
   async getwalletinfo(wallet?: string) {
     return this.rpc("getwalletinfo", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Adds an address or script (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
+   */
+  async importaddress(
+    { address, label = "", rescan = true, p2sh = false }: ImportAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importaddress",
+      { address, label, rescan, p2sh },
+      wallet || this.wallet
+    );
   }
 
   /**
