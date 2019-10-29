@@ -293,6 +293,12 @@ export type ImportMultiParams = {
   };
 };
 
+export type ImportPrivKeyParams = {
+  privkey: string;
+  label?: string;
+  rescan?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1154,6 +1160,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "importmulti",
       { requests, options },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Adds a private key (as returned by `dumpprivkey`) to your wallet.
+   */
+  async importprivkey(
+    { privkey, label, rescan }: ImportPrivKeyParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importprivkey",
+      { privkey, label, rescan },
       wallet || this.wallet
     );
   }
