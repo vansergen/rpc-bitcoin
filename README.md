@@ -890,6 +890,13 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.getunconfirmedbalance(wallet);
 ```
 
+- [`getwalletinfo`](https://bitcoin.org/en/developer-reference#getwalletinfo)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.getwalletinfo(wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
