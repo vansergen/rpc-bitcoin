@@ -2375,6 +2375,23 @@ suite("RPCClient", () => {
       const data = await client.dumpprivkey(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".dumpwallet()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const filename = "myWalletDump.dat";
+      const params = { filename };
+      const request = { params, method: "dumpwallet", id, jsonrpc };
+      const result = {
+        filename: "D:\\Wallets\\Bitcoin Core\\myWalletDump.dat"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.dumpwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
