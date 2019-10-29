@@ -2360,6 +2360,21 @@ suite("RPCClient", () => {
       const data = await client.createwallet(params);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".dumpprivkey()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address = "tb1qaja4q2pq8neunch5lwhrg653kjyztreww23u82";
+      const params = { address };
+      const request = { params, method: "dumpprivkey", id, jsonrpc };
+      const result = "cP5xfMhFMPztvBc2UYusUuKU7yaSr1pS1k54gfPAHei6KPjgma2W";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.dumpprivkey(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
