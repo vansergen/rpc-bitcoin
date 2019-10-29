@@ -945,6 +945,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Dumps all wallet keys in a human-readable format to a server-side file.
+   */
+  async dumpwallet({ filename }: { filename: string }, wallet?: string) {
+    return this.rpc("dumpwallet", { filename }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
