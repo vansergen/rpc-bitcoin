@@ -865,6 +865,15 @@ const minconf = 6;
 const result = await client.getreceivedbyaddress({ address, minconf }, wallet);
 ```
 
+- [`getreceivedbylabel`](https://bitcoin.org/en/developer-reference#getreceivedbylabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const minconf = 6;
+const result = await client.getreceivedbylabel({ label, minconf }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
