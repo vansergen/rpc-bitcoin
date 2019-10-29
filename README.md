@@ -989,6 +989,13 @@ const newsize = 123;
 const result = await client.keypoolrefill({ newsize }, wallet);
 ```
 
+- [`listaddressgroupings`](https://bitcoin.org/en/developer-reference#listaddressgroupings)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.listaddressgroupings(wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
