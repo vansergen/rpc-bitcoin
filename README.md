@@ -739,6 +739,23 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.abortrescan(wallet);
 ```
 
+- [`addmultisigaddress`](https://bitcoin.org/en/developer-reference#addmultisigaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const nrequired = 2;
+const keys = [
+  "030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f",
+  "02ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e9"
+];
+const label = "NewMultiSigAddress";
+const address_type = "bech32";
+const result = await client.addmultisigaddress(
+  { nrequired, keys, label, address_type },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
