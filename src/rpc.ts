@@ -1225,6 +1225,16 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Fills the keypool.
+   */
+  async keypoolrefill(
+    { newsize = 100 }: { newsize?: number },
+    wallet?: string
+  ) {
+    return this.rpc("keypoolrefill", { newsize }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
