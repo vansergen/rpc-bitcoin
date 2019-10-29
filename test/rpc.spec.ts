@@ -2528,6 +2528,22 @@ suite("RPCClient", () => {
       const data = await client.getreceivedbyaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".getreceivedbylabel()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const label = "SomeLabel";
+      const minconf = 6;
+      const params = { label, minconf };
+      const request = { params, method: "getreceivedbylabel", id, jsonrpc };
+      const result = 0;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getreceivedbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
