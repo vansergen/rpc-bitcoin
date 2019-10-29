@@ -2640,6 +2640,46 @@ suite("RPCClient", () => {
       const data = await client.importaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".importmulti()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const timestamp: "now" = "now";
+      const range: [number, number] = [2, 5];
+      const requests = [
+        {
+          desc:
+            "wpkh(tpubD6NzVbkrYhZ4Wk5MMULiQd4XkBe3KeG6GCUNrWcXu27PJwqFfHF7geuTPfPZcViUpV7ny6MHVnbvxdCSfkooFb7bBJiQgKXCVM58XZiVyHu/0/*)#9tk43hcd",
+          range,
+          internal: true,
+          watchonly: true,
+          timestamp: 0
+        },
+        {
+          scriptPubKey: {
+            address: "tb1q0pjl9cy0t38uvyfs75t7av7ujrhs65xx0nfjmf"
+          },
+          timestamp
+        },
+        {
+          scriptPubKey: {
+            address: "tb1qxqt28qy3uvj8qeucm60dnrzty3cccx88hp9car"
+          },
+          keys: ["cQfkAynVm54Je8mXYH6zkKKjug7ehheUeMx5jnWTvy94M73X2Vdj"],
+          timestamp
+        }
+      ];
+      const options = { rescan: false };
+      const params = { requests, options };
+      const request = { params, method: "importmulti", id, jsonrpc };
+      const result = [{ success: true }, { success: true }, { success: true }];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importmulti(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
