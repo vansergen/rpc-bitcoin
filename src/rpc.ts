@@ -1235,6 +1235,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Lists groups of addresses which have had their common ownership made public by common use as inputs or as the resulting change in past transactions
+   */
+  async listaddressgroupings(wallet?: string) {
+    return this.rpc("listaddressgroupings", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
