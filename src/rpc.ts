@@ -1218,6 +1218,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Imports keys from a wallet dump file (see `dumpwallet`).
+   */
+  async importwallet({ filename }: { filename: string }, wallet?: string) {
+    return this.rpc("importwallet", { filename }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
