@@ -1094,6 +1094,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns an object containing various wallet state info.
+   */
+  async getwalletinfo(wallet?: string) {
+    return this.rpc("getwalletinfo", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
