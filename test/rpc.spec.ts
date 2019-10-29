@@ -2304,6 +2304,21 @@ suite("RPCClient", () => {
       const data = await client.addmultisigaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".backupwallet()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const destination = "D:/Crypto/wallets/myWalletBackup.dat";
+      const params = { destination };
+      const request = { params, method: "backupwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.backupwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
