@@ -2344,6 +2344,22 @@ suite("RPCClient", () => {
       const data = await client.bumpfee(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".createwallet()", async () => {
+      const wallet_name = "bitcoin-core-wallet.dat";
+      const disable_private_keys = true;
+      const blank = true;
+      const params = { wallet_name, disable_private_keys, blank };
+      const request = { params, method: "createwallet", id, jsonrpc };
+      const result = { name: "bitcoin-core-wallet.dat", warning: "" };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createwallet(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
