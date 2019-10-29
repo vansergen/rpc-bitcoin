@@ -756,6 +756,14 @@ const result = await client.addmultisigaddress(
 );
 ```
 
+- [`backupwallet`](https://bitcoin.org/en/developer-reference#backupwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const destination = "D:/Crypto/wallets/myWalletBackup.dat";
+const result = await client.backupwallet({ destination }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
