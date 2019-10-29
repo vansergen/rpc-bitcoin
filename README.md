@@ -797,6 +797,14 @@ const address = "tb1qkdvjgyk7y5fmekzs2sk6zep4rdcl7yell9drxm";
 const result = await client.dumpprivkey({ address }, wallet);
 ```
 
+- [`dumpwallet`](https://bitcoin.org/en/developer-reference#dumpwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const filename = "myWalletDump.dat";
+const result = await client.dumpwallet({ filename }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
