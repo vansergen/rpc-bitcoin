@@ -821,6 +821,14 @@ const label = "SomeLabel";
 const result = await client.getaddressesbylabel({ label }, wallet);
 ```
 
+- [`getaddressinfo`](https://bitcoin.org/en/developer-reference#getaddressinfo)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj";
+const result = await client.getaddressinfo({ address }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
