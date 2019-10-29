@@ -829,6 +829,15 @@ const address = "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj";
 const result = await client.getaddressinfo({ address }, wallet);
 ```
 
+- [`getbalance`](https://bitcoin.org/en/developer-reference#getbalance)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 6;
+const include_watchonly = true;
+const result = await client.getbalance({ minconf, include_watchonly }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
