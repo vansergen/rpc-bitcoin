@@ -1087,6 +1087,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns the server's total unconfirmed balance
+   */
+  async getunconfirmedbalance(wallet?: string) {
+    return this.rpc("getunconfirmedbalance", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
