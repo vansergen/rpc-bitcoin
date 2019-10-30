@@ -3319,6 +3319,22 @@ suite("RPCClient", () => {
       const data = await client.sethdseed(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".setlabel()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address = "tb1qfnavaywj2k45893p4p4lacqxylmuzmp6tnq42u";
+      const label = "SomeLabel";
+      const params = { address, label };
+      const request = { params, method: "setlabel", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.setlabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
