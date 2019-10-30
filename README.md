@@ -1265,6 +1265,39 @@ const wallet_name = "bitcoin-core-wallet.dat";
 const result = await client.unloadwallet({ wallet_name });
 ```
 
+- [`walletcreatefundedpsbt`](https://bitcoin.org/en/developer-reference#walletcreatefundedpsbt)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const inputs = [
+  {
+    txid: "5396f889b7118fc57f4bfb3397e12399d7f2b8ccd7f5a66bd33792f6ebe399e3",
+    vout: 0
+  }
+];
+const outputs = [
+  {
+    tb1qu7jphg0km5mrl7kx8txy3xuky9tlpvmxmehz8m: 0.001466
+  }
+];
+const locktime = 1;
+const options = {
+  changeAddress: "tb1qc0vz2vryuadyvcux09pswnl7ng2r9fzzd3cwnf",
+  changePosition: 1,
+  includeWatching: false,
+  lockUnspents: false,
+  subtractFeeFromOutputs: [],
+  replaceable: true,
+  conf_target: 20,
+  estimate_mode: "ECONOMICAL"
+};
+const bip32derivs = true;
+const result = await client.walletcreatefundedpsbt(
+  { inputs, outputs, locktime, options, bip32derivs },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
