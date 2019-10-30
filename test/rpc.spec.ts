@@ -3139,6 +3139,20 @@ suite("RPCClient", () => {
       const data = await client.listunspent(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listwalletdir()", async () => {
+      const request = { params: {}, method: "listwalletdir", id, jsonrpc };
+      const result = {
+        wallets: [{ name: "bitcoin-core-wallet.dat" }, { name: "" }]
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listwalletdir();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
