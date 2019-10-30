@@ -8,6 +8,7 @@ const pass = "rpcpassword";
 const auth = { user: "", pass };
 const uri = "http://localhost:" + port;
 const client = new RPCClient({ port, timeout, pass });
+const wallet = "bitcoin-core-wallet.dat";
 
 const id = "rpc-bitcoin";
 const jsonrpc = 1.0;
@@ -109,6 +110,62 @@ suite("RPCClient", () => {
       .reply(200, { result, error, id });
     const data = await client.rpc(method, params, wallet);
     assert.deepStrictEqual(data, result);
+  });
+
+  test(".rpc() (404 error)", async () => {
+    const method = "foo";
+    const params = { label: "newlabel", address_type: "bech32" };
+    const request = { params, method, id, jsonrpc };
+    const result = null;
+    const error = { code: -32601, message: "Method not found" };
+    nock(uri)
+      .post("/", request)
+      .times(1)
+      .basicAuth(auth)
+      .reply(404, { result, error, id });
+    try {
+      await client.rpc(method, params);
+    } catch (err) {
+      assert.deepStrictEqual(err, error);
+    }
+  });
+
+  test(".rpc() (500 error)", async () => {
+    const method = "foo";
+    const params = { label: "newlabel", address_type: "badtype" };
+    const request = { params, method, id, jsonrpc };
+    const result = null;
+    const error = { code: -5, message: "Unknown address type 'badtype'" };
+    nock(uri)
+      .post("/wallet/" + wallet, request)
+      .times(1)
+      .basicAuth(auth)
+      .reply(500, { result, error, id });
+    try {
+      await client.rpc(method, params, wallet);
+    } catch (err) {
+      assert.deepStrictEqual(err, error);
+    }
+  });
+
+  test(".rpc() (500 error) (with fullResponse)", async () => {
+    const client = new RPCClient({ port, timeout, pass, fullResponse: true });
+    const method = "foo";
+    const params = { label: "newlabel", address_type: "badtype" };
+    const request = { params, method, id, jsonrpc };
+    const result = null;
+    const error = { code: -5, message: "Unknown address type 'badtype'" };
+    const response = { result, error, id };
+    nock(uri)
+      .post("/wallet/" + wallet, request)
+      .times(1)
+      .basicAuth(auth)
+      .reply(500, response);
+    try {
+      await client.rpc(method, params, wallet);
+    } catch (err) {
+      assert.deepStrictEqual(err, response);
+    }
   });
 
   suite("Blockchain", () => {
@@ -987,7 +1044,6 @@ suite("RPCClient", () => {
 
     test(".generate() (multi-wallet)", async () => {
       const params = { nblocks: 1, maxtries: 10000 };
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generate", id, jsonrpc };
       const result: string[] = [];
       nock(uri)
@@ -1000,7 +1056,6 @@ suite("RPCClient", () => {
     });
 
     test(".generate() (default wallet)", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const client = new RPCClient({ port, timeout, pass, wallet });
       const params = { nblocks: 1, maxtries: 10000 };
       const request = { params, method: "generate", id, jsonrpc };
@@ -1031,7 +1086,6 @@ suite("RPCClient", () => {
     test(".generatetoaddress() (multi-wallet)", async () => {
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generatetoaddress", id, jsonrpc };
       const result: string[] = [];
       nock(uri)
@@ -1044,7 +1098,6 @@ suite("RPCClient", () => {
     });
 
     test(".generatetoaddress() (default wallet)", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const client = new RPCClient({ port, timeout, pass, wallet });
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
@@ -2255,7 +2308,6 @@ suite("RPCClient", () => {
       const txid =
         "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
       const params = { txid };
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "abandontransaction", id, jsonrpc };
       const result = null;
       nock(uri)
@@ -2268,7 +2320,6 @@ suite("RPCClient", () => {
     });
 
     test(".abortrescan()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params: {}, method: "abortrescan", id, jsonrpc };
       const result = true;
       nock(uri)
@@ -2281,7 +2332,6 @@ suite("RPCClient", () => {
     });
 
     test(".addmultisigaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const nrequired = 2;
       const keys = [
         "030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f",
@@ -2307,7 +2357,6 @@ suite("RPCClient", () => {
     });
 
     test(".backupwallet()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const destination = "D:/Crypto/wallets/myWalletBackup.dat";
       const params = { destination };
       const request = { params, method: "backupwallet", id, jsonrpc };
@@ -2322,7 +2371,6 @@ suite("RPCClient", () => {
     });
 
     test(".bumpfee()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const txid =
         "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1";
       const totalFee = 839;
@@ -2364,7 +2412,6 @@ suite("RPCClient", () => {
     });
 
     test(".dumpprivkey()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address = "tb1qaja4q2pq8neunch5lwhrg653kjyztreww23u82";
       const params = { address };
       const request = { params, method: "dumpprivkey", id, jsonrpc };
@@ -2379,7 +2426,6 @@ suite("RPCClient", () => {
     });
 
     test(".dumpwallet()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const filename = "myWalletDump.dat";
       const params = { filename };
       const request = { params, method: "dumpwallet", id, jsonrpc };
@@ -2396,7 +2442,6 @@ suite("RPCClient", () => {
     });
 
     test(".encryptwallet()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const passphrase = "VerySecretPassphraseDoNotTellAnyone";
       const params = { passphrase };
       const request = { params, method: "encryptwallet", id, jsonrpc };
@@ -2412,7 +2457,6 @@ suite("RPCClient", () => {
     });
 
     test(".getaddressesbylabel()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const label = "SomeLabel";
       const params = { label };
       const request = { params, method: "getaddressesbylabel", id, jsonrpc };
@@ -2430,7 +2474,6 @@ suite("RPCClient", () => {
     });
 
     test(".getaddressinfo()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address = "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj";
       const params = { address };
       const request = { params, method: "getaddressinfo", id, jsonrpc };
@@ -2466,7 +2509,6 @@ suite("RPCClient", () => {
     });
 
     test(".getbalance()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const minconf = 6;
       const include_watchonly = true;
       const params = { minconf, include_watchonly };
@@ -2482,7 +2524,6 @@ suite("RPCClient", () => {
     });
 
     test(".getnewaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const label = "SomeLabel";
       const address_type: "bech32" = "bech32";
       const params = { label, address_type };
@@ -2498,7 +2539,6 @@ suite("RPCClient", () => {
     });
 
     test(".getrawchangeaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address_type: "bech32" = "bech32";
       const params = { address_type };
       const request = { params, method: "getrawchangeaddress", id, jsonrpc };
@@ -2513,7 +2553,6 @@ suite("RPCClient", () => {
     });
 
     test(".getreceivedbyaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address =
         "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n";
       const minconf = 6;
@@ -2530,7 +2569,6 @@ suite("RPCClient", () => {
     });
 
     test(".getreceivedbylabel()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const label = "SomeLabel";
       const minconf = 6;
       const params = { label, minconf };
@@ -2546,7 +2584,6 @@ suite("RPCClient", () => {
     });
 
     test(".gettransaction()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const txid =
         "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95";
       const include_watchonly = true;
@@ -2580,7 +2617,6 @@ suite("RPCClient", () => {
     });
 
     test(".getunconfirmedbalance()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const request = {
         params: {},
         method: "getunconfirmedbalance",
@@ -2598,7 +2634,6 @@ suite("RPCClient", () => {
     });
 
     test(".getwalletinfo()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params: {}, method: "getwalletinfo", id, jsonrpc };
       const result = {
         walletname: "bitcoin-core-wallet.dat",
@@ -2624,7 +2659,6 @@ suite("RPCClient", () => {
     });
 
     test(".importaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address = "tb1qk57dcv7rs2ap6k82xu58957qz6zherj4vm54lw";
       const label = "ImportedAddress";
       const rescan = false;
@@ -2642,7 +2676,6 @@ suite("RPCClient", () => {
     });
 
     test(".importmulti()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const timestamp: "now" = "now";
       const range: [number, number] = [2, 5];
       const requests = [
@@ -2682,7 +2715,6 @@ suite("RPCClient", () => {
     });
 
     test(".importprivkey()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const privkey = "cQnahvawMKvZXLWCdrBvXdvDoTHm4xeQq9iWqLC2JzmicFVd5Mdz";
       const label = "Imported";
       const rescan = false;
@@ -2699,7 +2731,6 @@ suite("RPCClient", () => {
     });
 
     test(".importprunedfunds()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const rawtransaction =
         "0200000000010422647b4fc186385b15a01cc6cd6d7864399b4ff536f370f86ecc5e2f4281d7d50000000017160014013b2e1e130cd463f3be9fce311cfbf6f862d224fdffffffc61430e9a56a5ebba761828078c9a5f03571da6fbf40f4f87f7d72cbcbaf6f5e0000000000fdffffffe399e3ebf69237d36ba6f5d7ccb8f2d79923e19733fb4b7fc58f11b789f89653000000006a47304402204ea849bac52e0f76b7df9b196cad692cc8e253778c999d67627f2a9c487067e00220245e9446863037949dac77cb34f532376749507e6d499418fe51144c6e950725012103bb1add1e1e6093caa59f127ff3d477f8ac210f2ca1f8c81ff8c1602d9a5bacd0fdffffffd37c62273bfaeffee551ccaa1e06a6daa1e9d32248798821e33c6623ea17b9910000000000fdffffff022785400000000000160014740535b933895ac1caf3ba92976993f7fd9d2e99a086010000000000160014000243d945554d568a6858f5f243d9510258d75c0247304402207400692ba5ecfeda204468905b138c0f7e6cf2d02be119094864db1c48c21f7c022008ccad54fb2cdc107a96c8a56b3e80867e4cfa8c904e9a78f27f10fc8071fb430121026c9b6d74350725506d14613cabade7f447fb67eb416c8ef34323da77f7299c2302473044022024d43ee736fe458b739f32866c35a6dfe7ca352acd7b76a25472c4a8246a5ead022073db04ee5a894a6eb949ab56046416fd5090f44f65fe3a6ab68b4a5b540bb6b20121028ff8402568eea88e93d30b4b2e6c7125bdb894cbf27c87a2101e35e0b1f5ff2e000247304402205e9b129b0a0c2c0fb458c1f397d462fd4db46cf7fffd19dc9189e421f1f61fac0220424e8cbfa9a01160033cae4955bc44c6f958d3afc7ccc67aef0a23c5f95bf37e012102228f0d709aacaa24fb4712c8fca4b10c9f4cfb60dcaa4d34b58660080a8bd8435e1e1800";
       const txoutproof =
@@ -2717,7 +2748,6 @@ suite("RPCClient", () => {
     });
 
     test(".importpubkey()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const pubkey =
         "023ef8f5fa2a18c07d714d942e4aa933827df7d5fba43a513be22581fc0ce83207";
       const label = "SomeAddress";
@@ -2735,7 +2765,6 @@ suite("RPCClient", () => {
     });
 
     test(".importwallet()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const filename = "myWalletDump.dat";
       const params = { filename };
       const request = { params, method: "importwallet", id, jsonrpc };
@@ -2750,7 +2779,6 @@ suite("RPCClient", () => {
     });
 
     test(".keypoolrefill()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const newsize = 123;
       const params = { newsize };
       const request = { params, method: "keypoolrefill", id, jsonrpc };
@@ -2765,7 +2793,6 @@ suite("RPCClient", () => {
     });
 
     test(".listaddressgroupings()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const params = {};
       const request = { params, method: "listaddressgroupings", id, jsonrpc };
       const result = [
@@ -2785,7 +2812,6 @@ suite("RPCClient", () => {
     });
 
     test(".listlabels()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const purpose: "receive" = "receive";
       const params = { purpose };
       const request = { params, method: "listlabels", id, jsonrpc };
@@ -2800,7 +2826,6 @@ suite("RPCClient", () => {
     });
 
     test(".listlockunspent()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params: {}, method: "listlockunspent", id, jsonrpc };
       const result = [
         {
@@ -2824,7 +2849,6 @@ suite("RPCClient", () => {
     });
 
     test(".listreceivedbyaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const minconf = 6;
       const include_empty = false;
       const include_watchonly = false;
@@ -2857,7 +2881,6 @@ suite("RPCClient", () => {
     });
 
     test(".listreceivedbylabel()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const minconf = 6;
       const include_empty = true;
       const include_watchonly = true;
@@ -2883,7 +2906,6 @@ suite("RPCClient", () => {
     });
 
     test(".listsinceblock()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const blockhash =
         "00000000001ad9877c5a839c65371a18e1392a2be83378915e01342a368caaef";
       const target_confirmations = 6;
@@ -3015,7 +3037,6 @@ suite("RPCClient", () => {
     });
 
     test(".listtransactions()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const label = "SomeLabel";
       const count = 2;
       const skip = 4;
@@ -3074,7 +3095,6 @@ suite("RPCClient", () => {
     });
 
     test(".listunspent()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const minconf = 1;
       const maxconf = 4000;
       const addresses = [
@@ -3181,7 +3201,6 @@ suite("RPCClient", () => {
     });
 
     test(".lockunspent()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const unlock = false;
       const transactions = [
         {
@@ -3208,7 +3227,6 @@ suite("RPCClient", () => {
     });
 
     test(".removeprunedfunds()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const txid =
         "196fa2c24a793b0ddb7d13df967cbcd532d0124857d39cf76378ed8ddd31630a";
       const params = { txid };
@@ -3224,7 +3242,6 @@ suite("RPCClient", () => {
     });
 
     test(".rescanblockchain()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const start_height = 1566870;
       const stop_height = 1566970;
       const params = { start_height, stop_height };
@@ -3240,7 +3257,6 @@ suite("RPCClient", () => {
     });
 
     test(".sendmany()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const amounts = {
         tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
         tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003"
@@ -3273,7 +3289,6 @@ suite("RPCClient", () => {
     });
 
     test(".sendtoaddress()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address = "tb1qzvfvg6hfyf9kuzhmr2prtrnmxeqrt2pgapv89f";
       const amount = 0.0001;
       const comment = "SomePayment";
@@ -3305,7 +3320,6 @@ suite("RPCClient", () => {
     });
 
     test(".sethdseed()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const newkeypool = true;
       const seed = "cUFvQRAsGvyTVBPX5vowrghWmYXTvNw7nQvkKPtiACsdzRKWZM2P";
       const params = { newkeypool, seed };
@@ -3321,7 +3335,6 @@ suite("RPCClient", () => {
     });
 
     test(".setlabel()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address = "tb1qfnavaywj2k45893p4p4lacqxylmuzmp6tnq42u";
       const label = "SomeLabel";
       const params = { address, label };
@@ -3337,7 +3350,6 @@ suite("RPCClient", () => {
     });
 
     test(".settxfee()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const amount = 0.000011;
       const params = { amount };
       const request = { params, method: "settxfee", id, jsonrpc };
@@ -3352,7 +3364,6 @@ suite("RPCClient", () => {
     });
 
     test(".signmessage()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const address = "muQN4LGGwtD9bqPeCexKGpksvygnRAnTA3";
       const message = "Hello World!";
       const params = { address, message };
@@ -3369,7 +3380,6 @@ suite("RPCClient", () => {
     });
 
     test(".signrawtransactionwithwallet()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const hexstring =
         "02000000011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b100000000";
       const prevtxs = [
@@ -3430,7 +3440,6 @@ suite("RPCClient", () => {
     });
 
     test(".unloadwallet() (default wallet)", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const client = new RPCClient({ port, timeout, pass, wallet });
       const request = { params: {}, method: "unloadwallet", id, jsonrpc };
       const result = null;
@@ -3444,7 +3453,6 @@ suite("RPCClient", () => {
     });
 
     test(".walletcreatefundedpsbt()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const inputs = [
         {
           txid:
@@ -3494,7 +3502,6 @@ suite("RPCClient", () => {
     });
 
     test(".walletlock()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params: {}, method: "walletlock", id, jsonrpc };
       const result = null;
       nock(uri)
@@ -3507,7 +3514,6 @@ suite("RPCClient", () => {
     });
 
     test(".walletpassphrase()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const passphrase = "VerySecretPassphraseDoNotTellAnyone";
       const timeout = 600;
       const params = { passphrase, timeout };
@@ -3523,7 +3529,6 @@ suite("RPCClient", () => {
     });
 
     test(".walletpassphrasechange()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const oldpassphrase = "SecretPassphraseDoNotTellAnyone";
       const newpassphrase = "VerySecretPassphraseDoNotTellAnyone";
       const params = { oldpassphrase, newpassphrase };
@@ -3539,7 +3544,6 @@ suite("RPCClient", () => {
     });
 
     test(".walletprocesspsbt()", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const psbt =
         "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAAA";
       const sign = true;
