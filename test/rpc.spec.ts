@@ -3350,6 +3350,23 @@ suite("RPCClient", () => {
       const data = await client.settxfee(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".signmessage()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address = "muQN4LGGwtD9bqPeCexKGpksvygnRAnTA3";
+      const message = "Hello World!";
+      const params = { address, message };
+      const request = { params, method: "signmessage", id, jsonrpc };
+      const result =
+        "IMUNA/b71CYq7CLeLcGoKkPFMXFRpowXRlkCZ52TAEWwQPSSCC9HmqMcGnkjmavzKy1lqSAmGlKQI/tzcM3Xadc=";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signmessage(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
