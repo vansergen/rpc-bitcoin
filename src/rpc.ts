@@ -354,6 +354,11 @@ export type LockUnspentParams = {
   transactions?: BaseTransactionInput[];
 };
 
+export type RescanBlockchainParams = {
+  start_height?: number;
+  stop_height?: number;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1434,6 +1439,20 @@ export class RPCClient extends RESTClient {
    */
   async removeprunedfunds({ txid }: TxId, wallet?: string) {
     return this.rpc("removeprunedfunds", { txid }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Rescan the local blockchain for wallet related transactions.
+   */
+  async rescanblockchain(
+    { start_height = 0, stop_height }: RescanBlockchainParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "rescanblockchain",
+      { start_height, stop_height },
+      wallet || this.wallet
+    );
   }
 
   /**
