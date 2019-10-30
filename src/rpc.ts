@@ -349,6 +349,11 @@ export type ListUnspentParams = {
   };
 };
 
+export type LockUnspentParams = {
+  unlock: boolean;
+  transactions?: BaseTransactionInput[];
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1408,6 +1413,20 @@ export class RPCClient extends RESTClient {
    */
   async loadwallet({ filename }: { filename: string }) {
     return this.rpc("loadwallet", { filename });
+  }
+
+  /**
+   * @description Updates list of temporarily unspendable outputs.
+   */
+  async lockunspent(
+    { unlock, transactions }: LockUnspentParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "lockunspent",
+      { unlock, transactions },
+      wallet || this.wallet
+    );
   }
 
   /**
