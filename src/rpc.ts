@@ -1555,6 +1555,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Set the transaction fee per kB for this wallet.
+   */
+  async settxfee({ amount }: { amount: number | string }, wallet?: string) {
+    return this.rpc("settxfee", { amount }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
