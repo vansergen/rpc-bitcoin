@@ -394,6 +394,11 @@ export type WalletPassphraseParams = {
   timeout: number;
 };
 
+export type WalletPassphraseChangeParams = {
+  oldpassphrase: string;
+  newpassphrase: string;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1645,6 +1650,20 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "walletpassphrase",
       { passphrase, timeout },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Changes the wallet passphrase from `oldpassphrase` to `newpassphrase`.
+   */
+  async walletpassphrasechange(
+    { oldpassphrase, newpassphrase }: WalletPassphraseChangeParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletpassphrasechange",
+      { oldpassphrase, newpassphrase },
       wallet || this.wallet
     );
   }
