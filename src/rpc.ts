@@ -389,6 +389,11 @@ export type WalletCreateFundedPsbtParams = BaseCreateTransaction &
     bip32derivs?: boolean;
   };
 
+export type WalletPassphraseParams = {
+  passphrase: string;
+  timeout: number;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1628,6 +1633,20 @@ export class RPCClient extends RESTClient {
    */
   async walletlock(wallet?: string) {
     return this.rpc("walletlock", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Stores the wallet decryption key in memory for `timeout` seconds.
+   */
+  async walletpassphrase(
+    { passphrase, timeout }: WalletPassphraseParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletpassphrase",
+      { passphrase, timeout },
+      wallet || this.wallet
+    );
   }
 
   /**
