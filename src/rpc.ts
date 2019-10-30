@@ -359,6 +359,18 @@ export type RescanBlockchainParams = {
   stop_height?: number;
 };
 
+export type BaseSendParams = EstimateMode & {
+  comment?: string;
+  replaceable?: boolean;
+  conf_target?: number;
+};
+
+export type SendManyParams = BaseSendParams & {
+  amounts: { [address: string]: number | string };
+  minconf?: number;
+  subtractfeefrom?: string[];
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1451,6 +1463,36 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "rescanblockchain",
       { start_height, stop_height },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Send multiple times.
+   */
+  async sendmany(
+    {
+      amounts,
+      minconf = 1,
+      comment,
+      subtractfeefrom,
+      replaceable,
+      conf_target,
+      estimate_mode = "UNSET"
+    }: SendManyParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "sendmany",
+      {
+        amounts,
+        minconf,
+        comment,
+        subtractfeefrom,
+        replaceable,
+        conf_target,
+        estimate_mode
+      },
       wallet || this.wallet
     );
   }
