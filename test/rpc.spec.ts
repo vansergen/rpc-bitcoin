@@ -3153,6 +3153,18 @@ suite("RPCClient", () => {
       const data = await client.listwalletdir();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listwallets()", async () => {
+      const request = { params: {}, method: "listwallets", id, jsonrpc };
+      const result = ["", "wallet123.dat"];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listwallets();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
