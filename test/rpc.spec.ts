@@ -3271,6 +3271,38 @@ suite("RPCClient", () => {
       const data = await client.sendmany(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".sendtoaddress()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const address = "tb1qzvfvg6hfyf9kuzhmr2prtrnmxeqrt2pgapv89f";
+      const amount = 0.0001;
+      const comment = "SomePayment";
+      const comment_to = "Someone";
+      const subtractfeefromamount = true;
+      const replaceable = true;
+      const conf_target = 20;
+      const estimate_mode: "CONSERVATIVE" = "CONSERVATIVE";
+      const params = {
+        address,
+        amount,
+        comment,
+        comment_to,
+        subtractfeefromamount,
+        replaceable,
+        conf_target,
+        estimate_mode
+      };
+      const request = { params, method: "sendtoaddress", id, jsonrpc };
+      const result =
+        "aded742165201973dce8b13216669f4241851c26a566ae2deb1b5262570b94ba";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.sendtoaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
