@@ -3072,6 +3072,73 @@ suite("RPCClient", () => {
       const data = await client.listtransactions(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listunspent()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const minconf = 1;
+      const maxconf = 4000;
+      const addresses = [
+        "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
+        "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4"
+      ];
+      const include_unsafe = false;
+      const query_options = {
+        minimumAmount: 0.0001,
+        maximumAmount: 0.01,
+        maximumCount: 3,
+        minimumSumAmount: 10
+      };
+      const params = {
+        minconf,
+        maxconf,
+        addresses,
+        include_unsafe,
+        query_options
+      };
+      const request = { params, method: "listunspent", id, jsonrpc };
+      const result = [
+        {
+          txid:
+            "96b611869f716cd4b53ce2f9706a595885a86573ec2b6408ce41711578584529",
+          vout: 0,
+          address:
+            "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
+          label: "",
+          witnessScript:
+            "5221026544d2de6d868276cdfb8d2cdd020119162440fe98eac1add12fa354e7fef83821024a8638218164e64ac6ef560ebc18356a8773697aaeea37bc2c5707cca598b8c752ae",
+          scriptPubKey:
+            "002041669853ffa5e26fc6e7302ee3b91584b52d235ad6b105ef28f3140aac8fc620",
+          amount: 0.001,
+          confirmations: 422,
+          spendable: true,
+          solvable: true,
+          desc:
+            "wsh(multi(2,[2f8f8c1b/0'/0'/11']026544d2de6d868276cdfb8d2cdd020119162440fe98eac1add12fa354e7fef838,[2f8f8c1b/0'/0'/10']024a8638218164e64ac6ef560ebc18356a8773697aaeea37bc2c5707cca598b8c7))#v4j2pdsn",
+          safe: true
+        },
+        {
+          txid:
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+          vout: 0,
+          address: "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4",
+          scriptPubKey: "00143b1bebdfdeea72aef670f308e22ceb33047a8e21",
+          amount: 0.00314192,
+          confirmations: 615,
+          spendable: true,
+          solvable: true,
+          desc:
+            "wpkh([2f8f8c1b/0'/1'/0']023efde40c10ded46eeb2ccbe4ece98ccffc9921e6e2cbb82f21965b5563dc59a3)#vc3pfv5a",
+          safe: true
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listunspent(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
