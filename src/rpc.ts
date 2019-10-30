@@ -1430,6 +1430,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Deletes the specified transaction from the wallet.
+   */
+  async removeprunedfunds({ txid }: TxId, wallet?: string) {
+    return this.rpc("removeprunedfunds", { txid }, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
