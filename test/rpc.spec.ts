@@ -3537,6 +3537,29 @@ suite("RPCClient", () => {
       const data = await client.walletpassphrasechange(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".walletprocesspsbt()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const psbt =
+        "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAAA";
+      const sign = true;
+      const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
+      const bip32derivs = true;
+      const params = { psbt, sign, sighashtype, bip32derivs };
+      const request = { params, method: "walletprocesspsbt", id, jsonrpc };
+      const result = {
+        psbt:
+          "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAEBH1NHQAAAAAAAFgAUpOVc1oxzfkX57QvwzkDs8f75ppsBCGsCRzBEAiBCMoeFpGtSbsUWbGubHEmIvyDmKr9KHTB1nbuI9HgIsgIgLj4HuddO7hZ9F7FiqzGo+vLXkY0G2+3VGwgO5qp+LMCBIQKeXII7c4+9Decuri9xUBRtIRde/fOL2WLc6UnN9/qomwAiAgM4FaCpxCh+XmYDxo7+zZXN1BaI1l+HBJzFUnQBUFWfWhCl/jeMAAAAgAAAAIACAACAAA==",
+        complete: true
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletprocesspsbt(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
