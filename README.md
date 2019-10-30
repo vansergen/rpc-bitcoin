@@ -1202,6 +1202,15 @@ const result = await client.sendtoaddress(
 );
 ```
 
+- [`sethdseed`](https://bitcoin.org/en/developer-reference#sethdseed)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const newkeypool = true;
+const seed = "cUFvQRAsGvyTVBPX5vowrghWmYXTvNw7nQvkKPtiACsdzRKWZM2P";
+const result = await client.sethdseed({ newkeypool, seed }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
