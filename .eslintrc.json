@@ -4,6 +4,26 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    },
+    {
+      "files": ["./build/index.js"],
+      "rules": {
+        "no-prototype-builtins": "off"
+      }
+    },
+    {
+      "files": ["./build/**/*.js"],
+      "rules": {
+        "@typescript-eslint/camelcase": "off"
+      }
+    }
+  ],
   "env": {
     "node": true
   },
