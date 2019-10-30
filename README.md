@@ -1237,6 +1237,27 @@ const message = "Hello World!";
 const result = await client.signmessage({ address, message }, wallet);
 ```
 
+- [`signrawtransactionwithwallet`](https://bitcoin.org/en/developer-reference#signrawtransactionwithwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const hexstring =
+  "02000000011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b100000000";
+const prevtxs = [
+  {
+    txid: "7a3c07063b1407050836354f69a2667343b6d8389348551610d789f1ece96d1e",
+    vout: 0,
+    scriptPubKey: "0014c92776d7c9e5c7d74f9c8093335de1928862e8ac",
+    amount: 0.06924013
+  }
+];
+const sighashtype = "ALL|ANYONECANPAY";
+const result = await client.signrawtransactionwithwallet(
+  { hexstring, prevtxs, sighashtype },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
