@@ -1404,6 +1404,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Loads a wallet from a wallet file or directory.
+   */
+  async loadwallet({ filename }: { filename: string }) {
+    return this.rpc("loadwallet", { filename });
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
