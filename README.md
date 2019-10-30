@@ -1211,6 +1211,15 @@ const seed = "cUFvQRAsGvyTVBPX5vowrghWmYXTvNw7nQvkKPtiACsdzRKWZM2P";
 const result = await client.sethdseed({ newkeypool, seed }, wallet);
 ```
 
+- [`setlabel`](https://bitcoin.org/en/developer-reference#setlabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qcay50erzz8gaagge3jqeau0m8yav0kjgy8sxkp";
+const label = "SomeLabel";
+const result = await client.setlabel({ address, label }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
