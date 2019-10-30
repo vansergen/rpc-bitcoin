@@ -1175,6 +1175,33 @@ const result = await client.sendmany(
 );
 ```
 
+- [`sendtoaddress`](https://bitcoin.org/en/developer-reference#sendtoaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qzvfvg6hfyf9kuzhmr2prtrnmxeqrt2pgapv89f";
+const amount = 0.0001;
+const comment = "SomePayment";
+const comment_to = "Someone";
+const subtractfeefromamount = true;
+const replaceable = true;
+const conf_target = 20;
+const estimate_mode = "CONSERVATIVE";
+const result = await client.sendtoaddress(
+  {
+    address,
+    amount,
+    comment,
+    comment_to,
+    subtractfeefromamount,
+    replaceable,
+    conf_target,
+    estimate_mode
+  },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
