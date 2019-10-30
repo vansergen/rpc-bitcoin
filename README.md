@@ -1011,6 +1011,20 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.listlockunspent(wallet);
 ```
 
+- [`listreceivedbyaddress`](https://bitcoin.org/en/developer-reference#listreceivedbyaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 6;
+const include_empty = false;
+const include_watchonly = false;
+const address_filter = "tb1qyferlkpvr7v3r5ne7jh2avjuvnxkf08lqhpqe9";
+const result = await client.listreceivedbyaddress(
+  { minconf, include_empty, include_watchonly, address_filter },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
