@@ -1025,6 +1025,19 @@ const result = await client.listreceivedbyaddress(
 );
 ```
 
+- [`listreceivedbylabel`](https://bitcoin.org/en/developer-reference#listreceivedbylabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 6;
+const include_empty = true;
+const include_watchonly = true;
+const result = await client.listreceivedbylabel(
+  { minconf, include_empty, include_watchonly },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
