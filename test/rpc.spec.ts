@@ -3206,6 +3206,22 @@ suite("RPCClient", () => {
       const data = await client.lockunspent(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".removeprunedfunds()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const txid =
+        "196fa2c24a793b0ddb7d13df967cbcd532d0124857d39cf76378ed8ddd31630a";
+      const params = { txid };
+      const request = { params, method: "removeprunedfunds", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.removeprunedfunds(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
