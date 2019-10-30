@@ -1067,6 +1067,29 @@ const result = await client.listtransactions(
 );
 ```
 
+- [`listunspent`](https://bitcoin.org/en/developer-reference#listunspent)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 1;
+const maxconf = 100;
+const addresses = [
+  "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
+  "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4"
+];
+const include_unsafe = false;
+const query_options = {
+  minimumAmount: 0.0001,
+  maximumAmount: 0.01,
+  maximumCount: 2,
+  minimumSumAmount: 10
+};
+const result = await client.listunspent(
+  { minconf, maxconf, addresses, include_unsafe, query_options },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
