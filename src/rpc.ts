@@ -384,6 +384,11 @@ export type SetLabelParams = { address: string; label: string };
 
 export type SignMessageParams = { address: string; message: string };
 
+export type WalletCreateFundedPsbtParams = BaseCreateTransaction &
+  BaseFundOptions & {
+    bip32derivs?: boolean;
+  };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1591,11 +1596,31 @@ export class RPCClient extends RESTClient {
   /**
    * @description Unloads the wallet.
    */
-  async unloadwallet({ wallet_name }: { wallet_name?: string }) {
+  async unloadwallet({ wallet_name }: { wallet_name?: string } = {}) {
     if (typeof wallet_name !== "undefined") {
       return this.rpc("unloadwallet", { wallet_name });
     }
     return this.rpc("unloadwallet", undefined, this.wallet);
+  }
+
+  /**
+   * @description Creates and funds a transaction in the Partially Signed Transaction format.
+   */
+  async walletcreatefundedpsbt(
+    {
+      inputs,
+      outputs,
+      locktime = 0,
+      options,
+      bip32derivs = false
+    }: WalletCreateFundedPsbtParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletcreatefundedpsbt",
+      { inputs, outputs, locktime, options, bip32derivs },
+      wallet || this.wallet
+    );
   }
 
   /**
