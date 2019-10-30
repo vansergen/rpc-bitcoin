@@ -2822,6 +2822,39 @@ suite("RPCClient", () => {
       const data = await client.listlockunspent(wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listreceivedbyaddress()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const minconf = 6;
+      const include_empty = false;
+      const include_watchonly = false;
+      const address_filter = "tb1qyferlkpvr7v3r5ne7jh2avjuvnxkf08lqhpqe9";
+      const params = {
+        minconf,
+        include_empty,
+        include_watchonly,
+        address_filter
+      };
+      const request = { params, method: "listreceivedbyaddress", id, jsonrpc };
+      const result = [
+        {
+          address: "tb1qyferlkpvr7v3r5ne7jh2avjuvnxkf08lqhpqe9",
+          amount: 0.00001,
+          confirmations: 3739,
+          label: "",
+          txids: [
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5"
+          ]
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listreceivedbyaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
