@@ -322,6 +322,13 @@ export type ListReceivedByLabelParams = {
   include_watchonly?: boolean;
 };
 
+export type ListSinceBlockParams = {
+  blockhash?: string;
+  target_confirmations?: number;
+  include_watchonly?: boolean;
+  include_removed?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1300,6 +1307,25 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "listreceivedbylabel",
       { minconf, include_empty, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Get all transactions in blocks since block `blockhash`, or all transactions if omitted.
+   */
+  async listsinceblock(
+    {
+      blockhash,
+      target_confirmations = 1,
+      include_watchonly = false,
+      include_removed = true
+    }: ListSinceBlockParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listsinceblock",
+      { blockhash, target_confirmations, include_watchonly, include_removed },
       wallet || this.wallet
     );
   }
