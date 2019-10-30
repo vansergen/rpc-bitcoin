@@ -3013,6 +3013,65 @@ suite("RPCClient", () => {
       const data = await client.listsinceblock(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listtransactions()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const label = "SomeLabel";
+      const count = 2;
+      const skip = 4;
+      const include_watchonly = true;
+      const params = { label, count, skip, include_watchonly };
+      const request = { params, method: "listtransactions", id, jsonrpc };
+      const result = [
+        {
+          address: "tb1qsq6mexwpxf6q0w50422e9gj3qs5cdjq4x6eusz",
+          category: "send",
+          amount: -0.039,
+          label: "SomeLabel",
+          vout: 0,
+          fee: -0.00000647,
+          confirmations: 408,
+          blockhash:
+            "0000000000102f5b67e1b946d40354ddd93060db3220b5fda7e4aad013738e6b",
+          blockindex: 137,
+          blocktime: 1572031381,
+          txid:
+            "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9",
+          walletconflicts: [],
+          time: 1572030277,
+          timereceived: 1572030277,
+          "bip125-replaceable": "no",
+          abandoned: false
+        },
+        {
+          address: "tb1qtektjrzjl28dhh8hgftv4f66ukh566sm62vg27",
+          category: "send",
+          amount: -0.0009989,
+          label: "SomeLabel",
+          vout: 0,
+          fee: -0.0000011,
+          confirmations: 81,
+          blockhash:
+            "00000000000000559e344c0cacef0caf7b2a93d0bc0546285dcacd86d6d13e89",
+          blockindex: 45,
+          blocktime: 1572356089,
+          txid:
+            "2be2abd68218bbd0595f7a88fe11dc84d57942a5d888bd6223f95cf992adde75",
+          walletconflicts: [],
+          time: 1572355952,
+          timereceived: 1572355952,
+          "bip125-replaceable": "no",
+          abandoned: false
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listtransactions(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
