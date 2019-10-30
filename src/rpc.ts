@@ -1390,6 +1390,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns a list of wallets in the wallet directory.
+   */
+  async listwalletdir() {
+    return this.rpc("listwalletdir");
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
