@@ -1090,6 +1090,12 @@ const result = await client.listunspent(
 );
 ```
 
+- [`listwalletdir`](https://bitcoin.org/en/developer-reference#listwalletdir)
+
+```javascript
+const result = await client.listwalletdir();
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
