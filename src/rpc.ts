@@ -382,6 +382,8 @@ export type SetHDSeedParams = { newkeypool?: boolean; seed?: string };
 
 export type SetLabelParams = { address: string; label: string };
 
+export type SignMessageParams = { address: string; message: string };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1559,6 +1561,13 @@ export class RPCClient extends RESTClient {
    */
   async settxfee({ amount }: { amount: number | string }, wallet?: string) {
     return this.rpc("settxfee", { amount }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Sign a message with the private key of an address
+   */
+  async signmessage({ address, message }: SignMessageParams, wallet?: string) {
+    return this.rpc("signmessage", { address, message }, wallet || this.wallet);
   }
 
   /**
