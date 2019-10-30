@@ -1251,6 +1251,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns list of temporarily unspendable outputs.
+   */
+  async listlockunspent(wallet?: string) {
+    return this.rpc("listlockunspent", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
