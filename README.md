@@ -1314,6 +1314,18 @@ const timeout = 600;
 const result = await client.walletpassphrase({ passphrase, timeout }, wallet);
 ```
 
+- [`walletpassphrasechange`](https://bitcoin.org/en/developer-reference#walletpassphrasechange)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const oldpassphrase = "SecretPassphraseDoNotTellAnyone";
+const newpassphrase = "VerySecretPassphraseDoNotTellAnyone";
+const result = await client.walletpassphrasechange(
+  { oldpassphrase, newpassphrase },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
