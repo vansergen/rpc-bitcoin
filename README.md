@@ -1135,6 +1135,18 @@ const txid = "196fa2c24a793b0ddb7d13df967cbcd532d0124857d39cf76378ed8ddd31630a";
 const result = await client.removeprunedfunds({ txid }, wallet);
 ```
 
+- [`rescanblockchain`](https://bitcoin.org/en/developer-reference#rescanblockchain)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const start_height = 1566870;
+const stop_height = 1566970;
+const result = await client.rescanblockchain(
+  { start_height, stop_height },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
