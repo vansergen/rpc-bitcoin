@@ -1147,6 +1147,34 @@ const result = await client.rescanblockchain(
 );
 ```
 
+- [`sendmany`](https://bitcoin.org/en/developer-reference#sendmany)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const amounts = {
+  tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
+  tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003"
+};
+const minconf = 6;
+const comment = "SomeComment";
+const subtractfeefrom = ["tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237"];
+const replaceable = true;
+const conf_target = 20;
+const estimate_mode = "ECONOMICAL";
+const result = await client.sendmany(
+  {
+    amounts,
+    minconf,
+    comment,
+    subtractfeefrom,
+    replaceable,
+    conf_target,
+    estimate_mode
+  },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
