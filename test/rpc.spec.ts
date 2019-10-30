@@ -3492,6 +3492,19 @@ suite("RPCClient", () => {
       const data = await client.walletcreatefundedpsbt(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".walletlock()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params: {}, method: "walletlock", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletlock(wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
