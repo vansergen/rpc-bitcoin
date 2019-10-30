@@ -3165,6 +3165,20 @@ suite("RPCClient", () => {
       const data = await client.listwallets();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".loadwallet()", async () => {
+      const filename = "bitcoin-core-wallet.dat";
+      const params = { filename };
+      const request = { params, method: "loadwallet", id, jsonrpc };
+      const result = ["", "wallet123.dat"];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.loadwallet(params);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
