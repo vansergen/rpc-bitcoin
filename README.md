@@ -1053,6 +1053,20 @@ const result = await client.listsinceblock(
 );
 ```
 
+- [`listtransactions`](https://bitcoin.org/en/developer-reference#listtransactions)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const count = 5;
+const skip = 4;
+const include_watchonly = true;
+const result = await client.listtransactions(
+  { label, count, skip, include_watchonly },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
