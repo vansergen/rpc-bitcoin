@@ -336,6 +336,19 @@ export type ListTransactionsParams = {
   include_watchonly?: boolean;
 };
 
+export type ListUnspentParams = {
+  minconf?: number;
+  maxconf?: number;
+  addresses?: string[];
+  include_unsafe?: boolean;
+  query_options?: {
+    minimumAmount?: number | string;
+    maximumAmount?: number | string;
+    maximumCount?: number;
+    minimumSumAmount?: number | string;
+  };
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1352,6 +1365,26 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "listtransactions",
       { label, count, skip, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns array of unspent transaction outputs with between `minconf` and `maxconf` (inclusive) confirmations.
+   */
+  async listunspent(
+    {
+      minconf = 1,
+      maxconf = 9999999,
+      addresses,
+      include_unsafe = true,
+      query_options
+    }: ListUnspentParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listunspent",
+      { minconf, maxconf, addresses, include_unsafe, query_options },
       wallet || this.wallet
     );
   }
