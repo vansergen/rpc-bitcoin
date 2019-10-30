@@ -399,6 +399,13 @@ export type WalletPassphraseChangeParams = {
   newpassphrase: string;
 };
 
+export type WalletProcessPsbtParams = {
+  psbt: string;
+  sign?: boolean;
+  sighashtype?: SigHashType;
+  bip32derivs?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1664,6 +1671,25 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "walletpassphrasechange",
       { oldpassphrase, newpassphrase },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Update a PSBT with input information from our wallet and then sign inputs that we can sign for.
+   */
+  async walletprocesspsbt(
+    {
+      psbt,
+      sign = true,
+      sighashtype = "ALL",
+      bip32derivs = false
+    }: WalletProcessPsbtParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletprocesspsbt",
+      { psbt, sign, sighashtype, bip32derivs },
       wallet || this.wallet
     );
   }
