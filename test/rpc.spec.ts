@@ -2855,6 +2855,32 @@ suite("RPCClient", () => {
       const data = await client.listreceivedbyaddress(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listreceivedbylabel()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const minconf = 6;
+      const include_empty = true;
+      const include_watchonly = true;
+      const params = { minconf, include_empty, include_watchonly };
+      const request = { params, method: "listreceivedbylabel", id, jsonrpc };
+      const result = [
+        { amount: 0.18296788, confirmations: 73, label: "" },
+        {
+          involvesWatchonly: true,
+          amount: 0.00001234,
+          confirmations: 3835,
+          label: "MultiSig"
+        },
+        { amount: 0, confirmations: 0, label: "SomeLabel" }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listreceivedbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
