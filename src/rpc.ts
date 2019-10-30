@@ -1287,6 +1287,24 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description List received transactions by label.
+   */
+  async listreceivedbylabel(
+    {
+      minconf = 1,
+      include_empty = false,
+      include_watchonly = false
+    }: ListReceivedByLabelParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listreceivedbylabel",
+      { minconf, include_empty, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
