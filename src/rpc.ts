@@ -380,6 +380,8 @@ export type SendToAddressParams = BaseSendParams & {
 
 export type SetHDSeedParams = { newkeypool?: boolean; seed?: string };
 
+export type SetLabelParams = { address: string; label: string };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1543,6 +1545,13 @@ export class RPCClient extends RESTClient {
    */
   async sethdseed({ newkeypool, seed }: SetHDSeedParams, wallet?: string) {
     return this.rpc("sethdseed", { newkeypool, seed }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Sets the label associated with the given address.
+   */
+  async setlabel({ address, label }: SetLabelParams, wallet?: string) {
+    return this.rpc("setlabel", { address, label }, wallet || this.wallet);
   }
 
   /**
