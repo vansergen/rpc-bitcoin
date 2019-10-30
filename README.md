@@ -1305,6 +1305,15 @@ const wallet = "bitcoin-core-wallet.dat";
 const result = await client.walletlock(wallet);
 ```
 
+- [`walletpassphrase`](https://bitcoin.org/en/developer-reference#walletpassphrase)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+const timeout = 600;
+const result = await client.walletpassphrase({ passphrase, timeout }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
