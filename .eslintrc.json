@@ -10,6 +10,12 @@
       "rules": {
         "@typescript-eslint/no-var-requires": "off"
       }
+    },
+    {
+      "files": ["./build/index.js"],
+      "rules": {
+        "no-prototype-builtins": "off"
+      }
     }
   ],
   "env": {
