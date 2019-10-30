@@ -1258,6 +1258,13 @@ const result = await client.signrawtransactionwithwallet(
 );
 ```
 
+- [`unloadwallet`](https://bitcoin.org/en/developer-reference#unloadwallet)
+
+```javascript
+const wallet_name = "bitcoin-core-wallet.dat";
+const result = await client.unloadwallet({ wallet_name });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
