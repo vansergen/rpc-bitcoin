@@ -3335,6 +3335,21 @@ suite("RPCClient", () => {
       const data = await client.setlabel(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".settxfee()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const amount = 0.000011;
+      const params = { amount };
+      const request = { params, method: "settxfee", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.settxfee(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
