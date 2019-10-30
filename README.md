@@ -1102,6 +1102,13 @@ const result = await client.listwalletdir();
 const result = await client.listwallets();
 ```
 
+- [`loadwallet`](https://bitcoin.org/en/developer-reference#loadwallet)
+
+```javascript
+const filename = "myWallet.dat";
+const result = await client.loadwallet({ filename });
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
