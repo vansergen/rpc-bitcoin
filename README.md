@@ -1298,6 +1298,13 @@ const result = await client.walletcreatefundedpsbt(
 );
 ```
 
+- [`walletlock`](https://bitcoin.org/en/developer-reference#walletlock)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.walletlock(wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
