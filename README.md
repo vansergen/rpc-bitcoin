@@ -1326,6 +1326,21 @@ const result = await client.walletpassphrasechange(
 );
 ```
 
+- [`walletprocesspsbt`](https://bitcoin.org/en/developer-reference#walletprocesspsbt)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const psbt =
+  "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAAA";
+const sign = true;
+const sighashtype = "ALL|ANYONECANPAY";
+const bip32derivs = true;
+const result = await client.walletprocesspsbt(
+  { psbt, sign, sighashtype, bip32derivs },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
