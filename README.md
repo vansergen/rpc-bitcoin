@@ -1004,6 +1004,13 @@ const purpose = "receive";
 const result = await client.listlabels({ purpose }, wallet);
 ```
 
+- [`listlockunspent`](https://bitcoin.org/en/developer-reference#listlockunspent)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.listlockunspent(wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
