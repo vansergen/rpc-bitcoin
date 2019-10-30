@@ -1228,6 +1228,15 @@ const amount = 0.00002;
 const result = await client.settxfee({ amount }, wallet);
 ```
 
+- [`signmessage`](https://bitcoin.org/en/developer-reference#signmessage)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "muQN4LGGwtD9bqPeCexKGpksvygnRAnTA3";
+const message = "Hello World!";
+const result = await client.signmessage({ address, message }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
