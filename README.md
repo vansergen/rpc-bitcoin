@@ -1220,6 +1220,14 @@ const label = "SomeLabel";
 const result = await client.setlabel({ address, label }, wallet);
 ```
 
+- [`settxfee`](https://bitcoin.org/en/developer-reference#settxfee)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const amount = 0.00002;
+const result = await client.settxfee({ amount }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
