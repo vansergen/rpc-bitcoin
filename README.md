@@ -1127,6 +1127,14 @@ const transactions = [
 const result = await client.lockunspent({ unlock, transactions }, wallet);
 ```
 
+- [`removeprunedfunds`](https://bitcoin.org/en/developer-reference#removeprunedfunds)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const txid = "196fa2c24a793b0ddb7d13df967cbcd532d0124857d39cf76378ed8ddd31630a";
+const result = await client.removeprunedfunds({ txid }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
