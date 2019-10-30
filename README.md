@@ -1109,6 +1109,24 @@ const filename = "myWallet.dat";
 const result = await client.loadwallet({ filename });
 ```
 
+- [`lockunspent`](https://bitcoin.org/en/developer-reference#lockunspent)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const unlock = true;
+const transactions = [
+  {
+    txid: "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+    vout: 1
+  },
+  {
+    txid: "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
+    vout: 0
+  }
+];
+const result = await client.lockunspent({ unlock, transactions }, wallet);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
