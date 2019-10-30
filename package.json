@@ -11,9 +11,9 @@
   "scripts": {
     "build": "tsc",
     "install": "npm run build",
-    "prettier": "prettier -c *.{js,md,ts,json} **/*.{js,md,ts,json}",
+    "prettier": "prettier -c **/*.{js,md,ts,json}",
     "prettier-write": "npm run prettier -- --write",
-    "lint": "eslint --ext .ts ./",
+    "lint": "eslint --ext .ts,.js ./",
     "lint-fix": "npm run lint -- --fix",
     "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts"
   },
