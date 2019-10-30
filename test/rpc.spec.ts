@@ -3402,6 +3402,46 @@ suite("RPCClient", () => {
       const data = await client.signrawtransactionwithwallet(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".unloadwallet()", async () => {
+      const request = { params: {}, method: "unloadwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.unloadwallet();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".unloadwallet() (multi wallet)", async () => {
+      const wallet_name = "newWallet.dat";
+      const params = { wallet_name };
+      const request = { params, method: "unloadwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.unloadwallet(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".unloadwallet() (default wallet)", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const client = new RPCClient({ port, timeout, pass, wallet });
+      const request = { params: {}, method: "unloadwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.unloadwallet();
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
