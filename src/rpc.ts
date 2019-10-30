@@ -312,6 +312,16 @@ export type ImportPubKeyParams = {
 
 export type ListLabelsParams = { purpose: "receive" | "send" };
 
+export type ListReceivedByAddressParams = ListReceivedByLabelParams & {
+  address_filter?: string;
+};
+
+export type ListReceivedByLabelParams = {
+  minconf?: number;
+  include_empty?: boolean;
+  include_watchonly?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1255,6 +1265,25 @@ export class RPCClient extends RESTClient {
    */
   async listlockunspent(wallet?: string) {
     return this.rpc("listlockunspent", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description List balances by receiving address.
+   */
+  async listreceivedbyaddress(
+    {
+      minconf = 1,
+      include_empty = false,
+      include_watchonly = false,
+      address_filter
+    }: ListReceivedByAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listreceivedbyaddress",
+      { minconf, include_empty, include_watchonly, address_filter },
+      wallet || this.wallet
+    );
   }
 
   /**
