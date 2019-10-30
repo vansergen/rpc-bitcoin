@@ -329,6 +329,13 @@ export type ListSinceBlockParams = {
   include_removed?: boolean;
 };
 
+export type ListTransactionsParams = {
+  label?: string;
+  count?: number;
+  skip?: number;
+  include_watchonly?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1326,6 +1333,25 @@ export class RPCClient extends RESTClient {
     return this.rpc(
       "listsinceblock",
       { blockhash, target_confirmations, include_watchonly, include_removed },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns up to `count` most recent transactions skipping the first `skip` transactions.
+   */
+  async listtransactions(
+    {
+      label,
+      count = 10,
+      skip = 0,
+      include_watchonly = false
+    }: ListTransactionsParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listtransactions",
+      { label, count, skip, include_watchonly },
       wallet || this.wallet
     );
   }
