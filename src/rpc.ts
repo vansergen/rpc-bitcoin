@@ -371,6 +371,13 @@ export type SendManyParams = BaseSendParams & {
   subtractfeefrom?: string[];
 };
 
+export type SendToAddressParams = BaseSendParams & {
+  address: string;
+  amount: string | number;
+  comment_to?: string;
+  subtractfeefromamount?: boolean;
+};
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1489,6 +1496,38 @@ export class RPCClient extends RESTClient {
         minconf,
         comment,
         subtractfeefrom,
+        replaceable,
+        conf_target,
+        estimate_mode
+      },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Send an amount to a given address.
+   */
+  async sendtoaddress(
+    {
+      address,
+      amount,
+      comment,
+      comment_to,
+      subtractfeefromamount = false,
+      replaceable,
+      conf_target,
+      estimate_mode = "UNSET"
+    }: SendToAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "sendtoaddress",
+      {
+        address,
+        amount,
+        comment,
+        comment_to,
+        subtractfeefromamount,
         replaceable,
         conf_target,
         estimate_mode
