@@ -1038,6 +1038,21 @@ const result = await client.listreceivedbylabel(
 );
 ```
 
+- [`listsinceblock`](https://bitcoin.org/en/developer-reference#listsinceblock)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const blockhash =
+  "00000000001ad9877c5a839c65371a18e1392a2be83378915e01342a368caaef";
+const target_confirmations = 6;
+const include_watchonly = true;
+const include_removed = false;
+const result = await client.listsinceblock(
+  { blockhash, target_confirmations, include_watchonly, include_removed },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)
