@@ -16,6 +16,12 @@
       "rules": {
         "no-prototype-builtins": "off"
       }
+    },
+    {
+      "files": ["./build/**/*.js"],
+      "rules": {
+        "@typescript-eslint/camelcase": "off"
+      }
     }
   ],
   "env": {
