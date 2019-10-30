@@ -3442,6 +3442,56 @@ suite("RPCClient", () => {
       const data = await client.unloadwallet();
       assert.deepStrictEqual(data, result);
     });
+
+    test(".walletcreatefundedpsbt()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const inputs = [
+        {
+          txid:
+            "5396f889b7118fc57f4bfb3397e12399d7f2b8ccd7f5a66bd33792f6ebe399e3",
+          vout: 0
+        }
+      ];
+      const outputs = [
+        {
+          tb1qu7jphg0km5mrl7kx8txy3xuky9tlpvmxmehz8m: 0.001466
+        }
+      ];
+      const locktime = 1;
+      const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
+      const options = {
+        changeAddress: "tb1qc0vz2vryuadyvcux09pswnl7ng2r9fzzd3cwnf",
+        changePosition: 1,
+        includeWatching: false,
+        lockUnspents: false,
+        subtractFeeFromOutputs: [],
+        replaceable: true,
+        conf_target: 20,
+        estimate_mode
+      };
+      const bip32derivs = true;
+      const params = {
+        inputs,
+        outputs,
+        locktime,
+        options,
+        bip32derivs
+      };
+      const request = { params, method: "walletcreatefundedpsbt", id, jsonrpc };
+      const result = {
+        psbt:
+          "cHNidP8BAFICAAAAAeOZ4+v2kjfTa6b118y48teZI+GXM/tLf8WPEbeJ+JZTAAAAAAD9////Aag8AgAAAAAAFgAU56QbofbdNj/6xjrMSJuWIVfws2YBAAAAAAEA4QEAAAAB7KfSdMCo0aVk+cIkbmlgddOFp+1riB5jCVwBZ0Cgaq4BAAAAakcwRAIgAeAUrBBpoUPgr8A4ysywkv0B8WdgsxfNhAvFpbw/Ki0CIE8GFYALdKLWw2jdwVfLiMFFsy024Toj7Po0/ds/35XCASEDr3vX6YlRh/pfO+KjhQRMg9cfwiFHITID8mKFdFu1gBv/////Asw9AgAAAAAAGXapFIujKvHonUGL+2VSyu2XWvBQ7l63iKxfx5AAAAAAABl2qRQYJu+2OZ47eXi0rxco8eAHp2y2PoisAAAAACIGA7sa3R4eYJPKpZ8Sf/PUd/isIQ8sofjIH/jBYC2aW6zQEPnXKHwAAACAAAAAgAIAAIAAIgIC6aO2I6xv+jeXEqj2kFvHlIt21Rso0GDglJsE2UOs36wQJaaBjQAAAIAAAACABQAAgAA=",
+        fee: 0.00000292,
+        changepos: -1
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletcreatefundedpsbt(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
