@@ -419,9 +419,7 @@ export class RPCClient extends RESTClient {
   }: RPCIniOptions) {
     super({ ...options, auth: { user, pass }, uri: "/" });
     this.fullResponse = fullResponse ? true : false;
-    if (wallet) {
-      this.wallet = wallet;
-    }
+    this.wallet = typeof wallet === "string" ? wallet : undefined;
   }
 
   async batch(body: JSONRPC | JSONRPC[], uri = "/") {
@@ -429,7 +427,7 @@ export class RPCClient extends RESTClient {
   }
 
   async rpc(method: string, params = {}, wallet?: string) {
-    const uri = !wallet ? "/" : "wallet/" + wallet;
+    const uri = typeof wallet === "undefined" ? "/" : "wallet/" + wallet;
     const body = { method, params, jsonrpc: 1.0, id: "rpc-bitcoin" };
     const response = await this.batch(body, uri);
     return this.fullResponse ? response : response.result;
