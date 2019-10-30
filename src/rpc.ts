@@ -1624,6 +1624,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Removes the wallet encryption key from memory, locking the wallet.
+   */
+  async walletlock(wallet?: string) {
+    return this.rpc("walletlock", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
