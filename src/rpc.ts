@@ -378,6 +378,8 @@ export type SendToAddressParams = BaseSendParams & {
   subtractfeefromamount?: boolean;
 };
 
+export type SetHDSeedParams = { newkeypool?: boolean; seed?: string };
+
 export class RPCClient extends RESTClient {
   wallet?: string;
   fullResponse?: boolean;
@@ -1534,6 +1536,13 @@ export class RPCClient extends RESTClient {
       },
       wallet || this.wallet
     );
+  }
+
+  /**
+   * @description Set or generate a new HD wallet seed.
+   */
+  async sethdseed({ newkeypool, seed }: SetHDSeedParams, wallet?: string) {
+    return this.rpc("sethdseed", { newkeypool, seed }, wallet || this.wallet);
   }
 
   /**
