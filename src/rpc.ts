@@ -1571,6 +1571,24 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Sign inputs for raw transaction
+   */
+  async signrawtransactionwithwallet(
+    {
+      hexstring,
+      prevtxs,
+      sighashtype = "ALL"
+    }: SignRawTransactionWithWalletParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "signrawtransactionwithwallet",
+      { hexstring, prevtxs, sighashtype },
+      wallet || this.wallet
+    );
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
