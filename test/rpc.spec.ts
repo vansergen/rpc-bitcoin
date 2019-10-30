@@ -2881,6 +2881,138 @@ suite("RPCClient", () => {
       const data = await client.listreceivedbylabel(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listsinceblock()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const blockhash =
+        "00000000001ad9877c5a839c65371a18e1392a2be83378915e01342a368caaef";
+      const target_confirmations = 6;
+      const include_watchonly = true;
+      const include_removed = false;
+      const params = {
+        blockhash,
+        target_confirmations,
+        include_watchonly,
+        include_removed
+      };
+      const request = { params, method: "listsinceblock", id, jsonrpc };
+      const result = {
+        transactions: [
+          {
+            address: "mmHGoznJqAjpokaBNpNYc35o8D3hZhkgkY",
+            category: "send",
+            amount: -0.0001,
+            label: "",
+            vout: 1,
+            fee: -0.00000839,
+            confirmations: 80,
+            blockhash:
+              "0000000000006b542e808cfbbb3bcfb32ae1ca2e44c79bbca2a5e68bcae1fbfd",
+            blockindex: 64,
+            blocktime: 1572357316,
+            txid:
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+            walletconflicts: [
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1"
+            ],
+            time: 1572356102,
+            timereceived: 1572356102,
+            "bip125-replaceable": "no",
+            replaces_txid:
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
+            abandoned: false
+          },
+          {
+            address: "tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5",
+            category: "send",
+            amount: -0.00001,
+            label: "",
+            vout: 0,
+            fee: -0.00000141,
+            confirmations: 76,
+            blockhash:
+              "000000000021e0f4b5e16a972fc29cc75b046c18af7c90491056810e55e5dd25",
+            blockindex: 215,
+            blocktime: 1572361706,
+            txid:
+              "237859c44d45b8d6631883064542d697958cc17a023459967bd1308b81246b45",
+            walletconflicts: [],
+            time: 1572360790,
+            timereceived: 1572360790,
+            "bip125-replaceable": "no",
+            abandoned: false
+          },
+          {
+            address: "tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5",
+            category: "receive",
+            amount: 0.00001,
+            label: "",
+            vout: 0,
+            confirmations: 76,
+            blockhash:
+              "000000000021e0f4b5e16a972fc29cc75b046c18af7c90491056810e55e5dd25",
+            blockindex: 215,
+            blocktime: 1572361706,
+            txid:
+              "237859c44d45b8d6631883064542d697958cc17a023459967bd1308b81246b45",
+            walletconflicts: [],
+            time: 1572360790,
+            timereceived: 1572360790,
+            "bip125-replaceable": "no"
+          },
+          {
+            address: "tb1qtektjrzjl28dhh8hgftv4f66ukh566sm62vg27",
+            category: "send",
+            amount: -0.0009989,
+            label: "",
+            vout: 0,
+            fee: -0.0000011,
+            confirmations: 81,
+            blockhash:
+              "00000000000000559e344c0cacef0caf7b2a93d0bc0546285dcacd86d6d13e89",
+            blockindex: 45,
+            blocktime: 1572356089,
+            txid:
+              "2be2abd68218bbd0595f7a88fe11dc84d57942a5d888bd6223f95cf992adde75",
+            walletconflicts: [],
+            time: 1572355952,
+            timereceived: 1572355952,
+            "bip125-replaceable": "no",
+            abandoned: false
+          },
+          {
+            address: "mmHGoznJqAjpokaBNpNYc35o8D3hZhkgkY",
+            category: "send",
+            amount: -0.0001,
+            label: "",
+            vout: 1,
+            fee: -0.00000144,
+            confirmations: -80,
+            trusted: false,
+            txid:
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
+            walletconflicts: [
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d"
+            ],
+            time: 1572356081,
+            timereceived: 1572356081,
+            "bip125-replaceable": "yes",
+            replaced_by_txid:
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+            abandoned: false
+          }
+        ],
+        lastblock:
+          "0000000000000063d9b6e5d9ca6692dec30afab32615b0717ac88f39bc199339"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listsinceblock(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
