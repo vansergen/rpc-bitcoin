@@ -2798,6 +2798,30 @@ suite("RPCClient", () => {
       const data = await client.listlabels(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".listlockunspent()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const request = { params: {}, method: "listlockunspent", id, jsonrpc };
+      const result = [
+        {
+          txid:
+            "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
+          vout: 0
+        },
+        {
+          txid:
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          vout: 1
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listlockunspent(wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
