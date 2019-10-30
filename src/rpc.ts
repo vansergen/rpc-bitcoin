@@ -1589,6 +1589,16 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Unloads the wallet.
+   */
+  async unloadwallet({ wallet_name }: { wallet_name?: string }) {
+    if (typeof wallet_name !== "undefined") {
+      return this.rpc("unloadwallet", { wallet_name });
+    }
+    return this.rpc("unloadwallet", undefined, this.wallet);
+  }
+
+  /**
    * @description Returns information about the active ZeroMQ notifications.
    */
   async getzmqnotifications() {
