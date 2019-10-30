@@ -3367,6 +3367,41 @@ suite("RPCClient", () => {
       const data = await client.signmessage(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".signrawtransactionwithwallet()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const hexstring =
+        "02000000011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b100000000";
+      const prevtxs = [
+        {
+          txid:
+            "7a3c07063b1407050836354f69a2667343b6d8389348551610d789f1ece96d1e",
+          vout: 0,
+          scriptPubKey: "0014c92776d7c9e5c7d74f9c8093335de1928862e8ac",
+          amount: 0.06924013
+        }
+      ];
+      const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
+      const params = { hexstring, prevtxs, sighashtype };
+      const request = {
+        params,
+        method: "signrawtransactionwithwallet",
+        id,
+        jsonrpc
+      };
+      const result = {
+        hex:
+          "020000000001011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b102473044022035b072acf1e166e9d20999adbd40fd4fe6d76947cc395b1450e96a5e5c3d677602203622d8827e5c4396bbdd390fd29d7a93992273e5028a4c8a76329af45496848d812103bcde895db85d99e39b1eb4689671798c689435b6e131891aad026aed31f4a8f700000000",
+        complete: true
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signrawtransactionwithwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
