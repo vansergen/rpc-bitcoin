@@ -3238,6 +3238,39 @@ suite("RPCClient", () => {
       const data = await client.rescanblockchain(params, wallet);
       assert.deepStrictEqual(data, result);
     });
+
+    test(".sendmany()", async () => {
+      const wallet = "bitcoin-core-wallet.dat";
+      const amounts = {
+        tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
+        tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003"
+      };
+      const minconf = 6;
+      const comment = "SomeComment";
+      const subtractfeefrom = ["tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237"];
+      const replaceable = true;
+      const conf_target = 20;
+      const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
+      const params = {
+        amounts,
+        minconf,
+        comment,
+        subtractfeefrom,
+        replaceable,
+        conf_target,
+        estimate_mode
+      };
+      const request = { params, method: "sendmany", id, jsonrpc };
+      const result =
+        "42f917140aae060fb88acac3dc63dcee5a72b0f367ba155c56b790c1fea20b59";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.sendmany(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
   });
 
   suite("Zmq", () => {
