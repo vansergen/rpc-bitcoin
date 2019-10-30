@@ -32,7 +32,19 @@
           "fee_delta",
           "address_type",
           "estimate_mode",
-          "conf_target"
+          "conf_target",
+          "wallet_name",
+          "disable_private_keys",
+          "include_watchonly",
+          "address_filter",
+          "target_confirmations",
+          "comment_to",
+          "stop_height",
+          "start_height",
+          "query_options",
+          "include_unsafe",
+          "include_removed",
+          "include_empty"
         ]
       }
     ]

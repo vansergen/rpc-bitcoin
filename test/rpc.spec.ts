@@ -8,6 +8,7 @@ const pass = "rpcpassword";
 const auth = { user: "", pass };
 const uri = "http://localhost:" + port;
 const client = new RPCClient({ port, timeout, pass });
+const wallet = "bitcoin-core-wallet.dat";
 
 const id = "rpc-bitcoin";
 const jsonrpc = 1.0;
@@ -109,6 +110,62 @@ suite("RPCClient", () => {
       .reply(200, { result, error, id });
     const data = await client.rpc(method, params, wallet);
     assert.deepStrictEqual(data, result);
+  });
+
+  test(".rpc() (404 error)", async () => {
+    const method = "foo";
+    const params = { label: "newlabel", address_type: "bech32" };
+    const request = { params, method, id, jsonrpc };
+    const result = null;
+    const error = { code: -32601, message: "Method not found" };
+    nock(uri)
+      .post("/", request)
+      .times(1)
+      .basicAuth(auth)
+      .reply(404, { result, error, id });
+    try {
+      await client.rpc(method, params);
+    } catch (err) {
+      assert.deepStrictEqual(err, error);
+    }
+  });
+
+  test(".rpc() (500 error)", async () => {
+    const method = "foo";
+    const params = { label: "newlabel", address_type: "badtype" };
+    const request = { params, method, id, jsonrpc };
+    const result = null;
+    const error = { code: -5, message: "Unknown address type 'badtype'" };
+    nock(uri)
+      .post("/wallet/" + wallet, request)
+      .times(1)
+      .basicAuth(auth)
+      .reply(500, { result, error, id });
+    try {
+      await client.rpc(method, params, wallet);
+    } catch (err) {
+      assert.deepStrictEqual(err, error);
+    }
+  });
+
+  test(".rpc() (500 error) (with fullResponse)", async () => {
+    const client = new RPCClient({ port, timeout, pass, fullResponse: true });
+    const method = "foo";
+    const params = { label: "newlabel", address_type: "badtype" };
+    const request = { params, method, id, jsonrpc };
+    const result = null;
+    const error = { code: -5, message: "Unknown address type 'badtype'" };
+    const response = { result, error, id };
+    nock(uri)
+      .post("/wallet/" + wallet, request)
+      .times(1)
+      .basicAuth(auth)
+      .reply(500, response);
+    try {
+      await client.rpc(method, params, wallet);
+    } catch (err) {
+      assert.deepStrictEqual(err, response);
+    }
   });
 
   suite("Blockchain", () => {
@@ -987,7 +1044,6 @@ suite("RPCClient", () => {
 
     test(".generate() (multi-wallet)", async () => {
       const params = { nblocks: 1, maxtries: 10000 };
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generate", id, jsonrpc };
       const result: string[] = [];
       nock(uri)
@@ -1000,7 +1056,6 @@ suite("RPCClient", () => {
     });
 
     test(".generate() (default wallet)", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const client = new RPCClient({ port, timeout, pass, wallet });
       const params = { nblocks: 1, maxtries: 10000 };
       const request = { params, method: "generate", id, jsonrpc };
@@ -1031,7 +1086,6 @@ suite("RPCClient", () => {
     test(".generatetoaddress() (multi-wallet)", async () => {
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
-      const wallet = "bitcoin-core-wallet.dat";
       const request = { params, method: "generatetoaddress", id, jsonrpc };
       const result: string[] = [];
       nock(uri)
@@ -1044,7 +1098,6 @@ suite("RPCClient", () => {
     });
 
     test(".generatetoaddress() (default wallet)", async () => {
-      const wallet = "bitcoin-core-wallet.dat";
       const client = new RPCClient({ port, timeout, pass, wallet });
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
@@ -2246,6 +2299,1269 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, { result, error, id });
       const data = await client.verifymessage(params);
+      assert.deepStrictEqual(data, result);
+    });
+  });
+
+  suite("Wallet", () => {
+    test(".abandontransaction()", async () => {
+      const txid =
+        "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
+      const params = { txid };
+      const request = { params, method: "abandontransaction", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.abandontransaction(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".abortrescan()", async () => {
+      const request = { params: {}, method: "abortrescan", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.abortrescan(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".addmultisigaddress()", async () => {
+      const nrequired = 2;
+      const keys = [
+        "030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f",
+        "02ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e9"
+      ];
+      const label = "NewMultiSigAddress";
+      const address_type: "bech32" = "bech32";
+      const params = { nrequired, keys, label, address_type };
+      const request = { params, method: "addmultisigaddress", id, jsonrpc };
+      const result = {
+        address:
+          "tb1qylfjvzx7a7wkntajyvek2wur2qnmt3gxqnevhjkw957fw0ggw9nqczpy6l",
+        redeemScript:
+          "5221030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f2102ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e952ae"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.addmultisigaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".backupwallet()", async () => {
+      const destination = "D:/Crypto/wallets/myWalletBackup.dat";
+      const params = { destination };
+      const request = { params, method: "backupwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.backupwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".bumpfee()", async () => {
+      const txid =
+        "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1";
+      const totalFee = 839;
+      const replaceable = true;
+      const estimate_mode: "CONSERVATIVE" = "CONSERVATIVE";
+      const options = { totalFee, replaceable, estimate_mode };
+      const params = { txid, options };
+      const request = { params, method: "bumpfee", id, jsonrpc };
+      const result = {
+        txid:
+          "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+        origfee: 0.00000144,
+        fee: 0.00000839,
+        errors: []
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.bumpfee(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".createwallet()", async () => {
+      const wallet_name = "bitcoin-core-wallet.dat";
+      const disable_private_keys = true;
+      const blank = true;
+      const params = { wallet_name, disable_private_keys, blank };
+      const request = { params, method: "createwallet", id, jsonrpc };
+      const result = { name: "bitcoin-core-wallet.dat", warning: "" };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.createwallet(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".dumpprivkey()", async () => {
+      const address = "tb1qaja4q2pq8neunch5lwhrg653kjyztreww23u82";
+      const params = { address };
+      const request = { params, method: "dumpprivkey", id, jsonrpc };
+      const result = "cP5xfMhFMPztvBc2UYusUuKU7yaSr1pS1k54gfPAHei6KPjgma2W";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.dumpprivkey(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".dumpwallet()", async () => {
+      const filename = "myWalletDump.dat";
+      const params = { filename };
+      const request = { params, method: "dumpwallet", id, jsonrpc };
+      const result = {
+        filename: "D:\\Wallets\\Bitcoin Core\\myWalletDump.dat"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.dumpwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".encryptwallet()", async () => {
+      const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+      const params = { passphrase };
+      const request = { params, method: "encryptwallet", id, jsonrpc };
+      const result =
+        "wallet encrypted; The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.encryptwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getaddressesbylabel()", async () => {
+      const label = "SomeLabel";
+      const params = { label };
+      const request = { params, method: "getaddressesbylabel", id, jsonrpc };
+      const result = {
+        tb1qxwqd5gance6rk9xel5uwuxxdj79wfwgaxsrnn0: { purpose: "receive" },
+        tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj: { purpose: "receive" }
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getaddressesbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getaddressinfo()", async () => {
+      const address = "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj";
+      const params = { address };
+      const request = { params, method: "getaddressinfo", id, jsonrpc };
+      const result = {
+        address: "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj",
+        scriptPubKey: "00146c28062b4ad15fc642fa711617f4073648a2c93c",
+        ismine: true,
+        solvable: true,
+        desc:
+          "wpkh([2f8f8c1b/0'/0'/25']028f8e5afd6c3dd82e7fa75cd6558c35cc56d3c1403e6659a3ddec71cac6382a7d)#xgmuj4mj",
+        iswatchonly: false,
+        isscript: false,
+        iswitness: true,
+        witness_version: 0,
+        witness_program: "6c28062b4ad15fc642fa711617f4073648a2c93c",
+        pubkey:
+          "028f8e5afd6c3dd82e7fa75cd6558c35cc56d3c1403e6659a3ddec71cac6382a7d",
+        label: "SomeLabel",
+        ischange: false,
+        timestamp: 1570725096,
+        hdkeypath: "m/0'/0'/25'",
+        hdseedid: "d43760fda85e35a75e0bed11233185630f8d1279",
+        hdmasterfingerprint: "2f8f8c1b",
+        labels: [{ name: "SomeLabel", purpose: "receive" }]
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getaddressinfo(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getbalance()", async () => {
+      const minconf = 6;
+      const include_watchonly = true;
+      const params = { minconf, include_watchonly };
+      const request = { params, method: "getbalance", id, jsonrpc };
+      const result = 0.0000863;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getbalance(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getnewaddress()", async () => {
+      const label = "SomeLabel";
+      const address_type: "bech32" = "bech32";
+      const params = { label, address_type };
+      const request = { params, method: "getnewaddress", id, jsonrpc };
+      const result = "tb1q522hdye3p7ftzwsk0y7v3svsnk7rpxpc9zx73q";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getnewaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getrawchangeaddress()", async () => {
+      const address_type: "bech32" = "bech32";
+      const params = { address_type };
+      const request = { params, method: "getrawchangeaddress", id, jsonrpc };
+      const result = "tb1qrl0a2zrqjtc3rw6w8ccxp9g3g2lju8vqqsp07n";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getrawchangeaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getreceivedbyaddress()", async () => {
+      const address =
+        "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n";
+      const minconf = 6;
+      const params = { address, minconf };
+      const request = { params, method: "getreceivedbyaddress", id, jsonrpc };
+      const result = 0.001;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getreceivedbyaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getreceivedbylabel()", async () => {
+      const label = "SomeLabel";
+      const minconf = 6;
+      const params = { label, minconf };
+      const request = { params, method: "getreceivedbylabel", id, jsonrpc };
+      const result = 0;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getreceivedbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".gettransaction()", async () => {
+      const txid =
+        "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95";
+      const include_watchonly = true;
+      const params = { txid, include_watchonly };
+      const request = { params, method: "gettransaction", id, jsonrpc };
+      const result = {
+        amount: 0,
+        fee: -0.00000141,
+        confirmations: 76,
+        blockhash:
+          "0000000000000165757641aa760f436f367abc72e40bcaa8e598cc44992db8f9",
+        blockindex: 54,
+        blocktime: 1572280467,
+        txid:
+          "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95",
+        walletconflicts: [],
+        time: 1572280467,
+        timereceived: 1572281743,
+        "bip125-replaceable": "no",
+        details: [],
+        hex:
+          "02000000000101a95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000feffffff02a086010000000000160014aacf5a9d6c52c5ffe8006182a72486baf2e8bf3333fb390000000000160014e87724699668d3abff7311cb18a62b0c8de1038502473044022026a9618c21c3eab177877c6f8f8890610ad0ac93b8e243c4ea32dadf52728dae02206817f8aaa7fabf728853415bdae7b4e2fc02fc72630cba23952224fad374bcc3012102a00a9973ab15acaac69b591dcebed3fcf44ab76950d962671391fd1c1c3f0015742c1800"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.gettransaction(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getunconfirmedbalance()", async () => {
+      const request = {
+        params: {},
+        method: "getunconfirmedbalance",
+        id,
+        jsonrpc
+      };
+      const result = 0;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getunconfirmedbalance(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getwalletinfo()", async () => {
+      const request = { params: {}, method: "getwalletinfo", id, jsonrpc };
+      const result = {
+        walletname: "bitcoin-core-wallet.dat",
+        walletversion: 169900,
+        balance: 0.0421393,
+        unconfirmed_balance: 0,
+        immature_balance: 0,
+        txcount: 29,
+        keypoololdest: 1570725098,
+        keypoolsize: 1000,
+        keypoolsize_hd_internal: 999,
+        paytxfee: 0,
+        hdseedid: "d43760fda85e35a75e0bed11233185630f8d1279",
+        private_keys_enabled: true
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getwalletinfo(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".importaddress()", async () => {
+      const address = "tb1qk57dcv7rs2ap6k82xu58957qz6zherj4vm54lw";
+      const label = "ImportedAddress";
+      const rescan = false;
+      const p2sh = false;
+      const params = { address, label, rescan, p2sh };
+      const request = { params, method: "importaddress", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".importmulti()", async () => {
+      const timestamp: "now" = "now";
+      const range: [number, number] = [2, 5];
+      const requests = [
+        {
+          desc:
+            "wpkh(tpubD6NzVbkrYhZ4Wk5MMULiQd4XkBe3KeG6GCUNrWcXu27PJwqFfHF7geuTPfPZcViUpV7ny6MHVnbvxdCSfkooFb7bBJiQgKXCVM58XZiVyHu/0/*)#9tk43hcd",
+          range,
+          internal: true,
+          watchonly: true,
+          timestamp: 0
+        },
+        {
+          scriptPubKey: {
+            address: "tb1q0pjl9cy0t38uvyfs75t7av7ujrhs65xx0nfjmf"
+          },
+          timestamp
+        },
+        {
+          scriptPubKey: {
+            address: "tb1qxqt28qy3uvj8qeucm60dnrzty3cccx88hp9car"
+          },
+          keys: ["cQfkAynVm54Je8mXYH6zkKKjug7ehheUeMx5jnWTvy94M73X2Vdj"],
+          timestamp
+        }
+      ];
+      const options = { rescan: false };
+      const params = { requests, options };
+      const request = { params, method: "importmulti", id, jsonrpc };
+      const result = [{ success: true }, { success: true }, { success: true }];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importmulti(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".importprivkey()", async () => {
+      const privkey = "cQnahvawMKvZXLWCdrBvXdvDoTHm4xeQq9iWqLC2JzmicFVd5Mdz";
+      const label = "Imported";
+      const rescan = false;
+      const params = { privkey, label, rescan };
+      const request = { params, method: "importprivkey", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importprivkey(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".importprunedfunds()", async () => {
+      const rawtransaction =
+        "0200000000010422647b4fc186385b15a01cc6cd6d7864399b4ff536f370f86ecc5e2f4281d7d50000000017160014013b2e1e130cd463f3be9fce311cfbf6f862d224fdffffffc61430e9a56a5ebba761828078c9a5f03571da6fbf40f4f87f7d72cbcbaf6f5e0000000000fdffffffe399e3ebf69237d36ba6f5d7ccb8f2d79923e19733fb4b7fc58f11b789f89653000000006a47304402204ea849bac52e0f76b7df9b196cad692cc8e253778c999d67627f2a9c487067e00220245e9446863037949dac77cb34f532376749507e6d499418fe51144c6e950725012103bb1add1e1e6093caa59f127ff3d477f8ac210f2ca1f8c81ff8c1602d9a5bacd0fdffffffd37c62273bfaeffee551ccaa1e06a6daa1e9d32248798821e33c6623ea17b9910000000000fdffffff022785400000000000160014740535b933895ac1caf3ba92976993f7fd9d2e99a086010000000000160014000243d945554d568a6858f5f243d9510258d75c0247304402207400692ba5ecfeda204468905b138c0f7e6cf2d02be119094864db1c48c21f7c022008ccad54fb2cdc107a96c8a56b3e80867e4cfa8c904e9a78f27f10fc8071fb430121026c9b6d74350725506d14613cabade7f447fb67eb416c8ef34323da77f7299c2302473044022024d43ee736fe458b739f32866c35a6dfe7ca352acd7b76a25472c4a8246a5ead022073db04ee5a894a6eb949ab56046416fd5090f44f65fe3a6ab68b4a5b540bb6b20121028ff8402568eea88e93d30b4b2e6c7125bdb894cbf27c87a2101e35e0b1f5ff2e000247304402205e9b129b0a0c2c0fb458c1f397d462fd4db46cf7fffd19dc9189e421f1f61fac0220424e8cbfa9a01160033cae4955bc44c6f958d3afc7ccc67aef0a23c5f95bf37e012102228f0d709aacaa24fb4712c8fca4b10c9f4cfb60dcaa4d34b58660080a8bd8435e1e1800";
+      const txoutproof =
+        "000040205853c9a97816b63b9bb539f7b4cfb8c8a36ee0d9b6e1c59df102000000000000ab93331e4cae84da202131b6418e61e30095a81108edb09376ad7d02768d72c348ff9a5d74c4031a712e7b5614000000040cce7e642af08fd68ddcf0b7630ad88c4110c91fcdb7f792f6253bef56181bf201d52b2f5696dd23973b09dd34c2447aadeeb31ada2ff4b1d88d238c8cb2081a0a6331dd8ded7863f79cd3574812d032d5bc7c96df137ddb0d3b794ac2a26f199b66a00a8b8376f3bd0b1c7f9827b403242976d1dc16ed8bc6ec7e11c1f028bf02dd00";
+      const params = { rawtransaction, txoutproof };
+      const request = { params, method: "importprunedfunds", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importprunedfunds(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".importpubkey()", async () => {
+      const pubkey =
+        "023ef8f5fa2a18c07d714d942e4aa933827df7d5fba43a513be22581fc0ce83207";
+      const label = "SomeAddress";
+      const rescan = false;
+      const params = { pubkey, label, rescan };
+      const request = { params, method: "importpubkey", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importpubkey(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".importwallet()", async () => {
+      const filename = "myWalletDump.dat";
+      const params = { filename };
+      const request = { params, method: "importwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.importwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".keypoolrefill()", async () => {
+      const newsize = 123;
+      const params = { newsize };
+      const request = { params, method: "keypoolrefill", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.keypoolrefill(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listaddressgroupings()", async () => {
+      const params = {};
+      const request = { params, method: "listaddressgroupings", id, jsonrpc };
+      const result = [
+        [
+          ["tb1q8hdflcavy6cqekcz89nyeknn0jgp6jrffchkru", 0],
+          ["tb1qd6kfch0myeleugs5egs9dwmn94zc0wjjaxhecw", 0, ""]
+        ],
+        [["tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5", 0, ""]]
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listaddressgroupings(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listlabels()", async () => {
+      const purpose: "receive" = "receive";
+      const params = { purpose };
+      const request = { params, method: "listlabels", id, jsonrpc };
+      const result = ["", "SomeLabel"];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listlabels(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listlockunspent()", async () => {
+      const request = { params: {}, method: "listlockunspent", id, jsonrpc };
+      const result = [
+        {
+          txid:
+            "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
+          vout: 0
+        },
+        {
+          txid:
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          vout: 1
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listlockunspent(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listreceivedbyaddress()", async () => {
+      const minconf = 6;
+      const include_empty = false;
+      const include_watchonly = false;
+      const address_filter = "tb1qyferlkpvr7v3r5ne7jh2avjuvnxkf08lqhpqe9";
+      const params = {
+        minconf,
+        include_empty,
+        include_watchonly,
+        address_filter
+      };
+      const request = { params, method: "listreceivedbyaddress", id, jsonrpc };
+      const result = [
+        {
+          address: "tb1qyferlkpvr7v3r5ne7jh2avjuvnxkf08lqhpqe9",
+          amount: 0.00001,
+          confirmations: 3739,
+          label: "",
+          txids: [
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5"
+          ]
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listreceivedbyaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listreceivedbylabel()", async () => {
+      const minconf = 6;
+      const include_empty = true;
+      const include_watchonly = true;
+      const params = { minconf, include_empty, include_watchonly };
+      const request = { params, method: "listreceivedbylabel", id, jsonrpc };
+      const result = [
+        { amount: 0.18296788, confirmations: 73, label: "" },
+        {
+          involvesWatchonly: true,
+          amount: 0.00001234,
+          confirmations: 3835,
+          label: "MultiSig"
+        },
+        { amount: 0, confirmations: 0, label: "SomeLabel" }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listreceivedbylabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listsinceblock()", async () => {
+      const blockhash =
+        "00000000001ad9877c5a839c65371a18e1392a2be83378915e01342a368caaef";
+      const target_confirmations = 6;
+      const include_watchonly = true;
+      const include_removed = false;
+      const params = {
+        blockhash,
+        target_confirmations,
+        include_watchonly,
+        include_removed
+      };
+      const request = { params, method: "listsinceblock", id, jsonrpc };
+      const result = {
+        transactions: [
+          {
+            address: "mmHGoznJqAjpokaBNpNYc35o8D3hZhkgkY",
+            category: "send",
+            amount: -0.0001,
+            label: "",
+            vout: 1,
+            fee: -0.00000839,
+            confirmations: 80,
+            blockhash:
+              "0000000000006b542e808cfbbb3bcfb32ae1ca2e44c79bbca2a5e68bcae1fbfd",
+            blockindex: 64,
+            blocktime: 1572357316,
+            txid:
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+            walletconflicts: [
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1"
+            ],
+            time: 1572356102,
+            timereceived: 1572356102,
+            "bip125-replaceable": "no",
+            replaces_txid:
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
+            abandoned: false
+          },
+          {
+            address: "tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5",
+            category: "send",
+            amount: -0.00001,
+            label: "",
+            vout: 0,
+            fee: -0.00000141,
+            confirmations: 76,
+            blockhash:
+              "000000000021e0f4b5e16a972fc29cc75b046c18af7c90491056810e55e5dd25",
+            blockindex: 215,
+            blocktime: 1572361706,
+            txid:
+              "237859c44d45b8d6631883064542d697958cc17a023459967bd1308b81246b45",
+            walletconflicts: [],
+            time: 1572360790,
+            timereceived: 1572360790,
+            "bip125-replaceable": "no",
+            abandoned: false
+          },
+          {
+            address: "tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5",
+            category: "receive",
+            amount: 0.00001,
+            label: "",
+            vout: 0,
+            confirmations: 76,
+            blockhash:
+              "000000000021e0f4b5e16a972fc29cc75b046c18af7c90491056810e55e5dd25",
+            blockindex: 215,
+            blocktime: 1572361706,
+            txid:
+              "237859c44d45b8d6631883064542d697958cc17a023459967bd1308b81246b45",
+            walletconflicts: [],
+            time: 1572360790,
+            timereceived: 1572360790,
+            "bip125-replaceable": "no"
+          },
+          {
+            address: "tb1qtektjrzjl28dhh8hgftv4f66ukh566sm62vg27",
+            category: "send",
+            amount: -0.0009989,
+            label: "",
+            vout: 0,
+            fee: -0.0000011,
+            confirmations: 81,
+            blockhash:
+              "00000000000000559e344c0cacef0caf7b2a93d0bc0546285dcacd86d6d13e89",
+            blockindex: 45,
+            blocktime: 1572356089,
+            txid:
+              "2be2abd68218bbd0595f7a88fe11dc84d57942a5d888bd6223f95cf992adde75",
+            walletconflicts: [],
+            time: 1572355952,
+            timereceived: 1572355952,
+            "bip125-replaceable": "no",
+            abandoned: false
+          },
+          {
+            address: "mmHGoznJqAjpokaBNpNYc35o8D3hZhkgkY",
+            category: "send",
+            amount: -0.0001,
+            label: "",
+            vout: 1,
+            fee: -0.00000144,
+            confirmations: -80,
+            trusted: false,
+            txid:
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
+            walletconflicts: [
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d"
+            ],
+            time: 1572356081,
+            timereceived: 1572356081,
+            "bip125-replaceable": "yes",
+            replaced_by_txid:
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
+            abandoned: false
+          }
+        ],
+        lastblock:
+          "0000000000000063d9b6e5d9ca6692dec30afab32615b0717ac88f39bc199339"
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listsinceblock(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listtransactions()", async () => {
+      const label = "SomeLabel";
+      const count = 2;
+      const skip = 4;
+      const include_watchonly = true;
+      const params = { label, count, skip, include_watchonly };
+      const request = { params, method: "listtransactions", id, jsonrpc };
+      const result = [
+        {
+          address: "tb1qsq6mexwpxf6q0w50422e9gj3qs5cdjq4x6eusz",
+          category: "send",
+          amount: -0.039,
+          label: "SomeLabel",
+          vout: 0,
+          fee: -0.00000647,
+          confirmations: 408,
+          blockhash:
+            "0000000000102f5b67e1b946d40354ddd93060db3220b5fda7e4aad013738e6b",
+          blockindex: 137,
+          blocktime: 1572031381,
+          txid:
+            "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9",
+          walletconflicts: [],
+          time: 1572030277,
+          timereceived: 1572030277,
+          "bip125-replaceable": "no",
+          abandoned: false
+        },
+        {
+          address: "tb1qtektjrzjl28dhh8hgftv4f66ukh566sm62vg27",
+          category: "send",
+          amount: -0.0009989,
+          label: "SomeLabel",
+          vout: 0,
+          fee: -0.0000011,
+          confirmations: 81,
+          blockhash:
+            "00000000000000559e344c0cacef0caf7b2a93d0bc0546285dcacd86d6d13e89",
+          blockindex: 45,
+          blocktime: 1572356089,
+          txid:
+            "2be2abd68218bbd0595f7a88fe11dc84d57942a5d888bd6223f95cf992adde75",
+          walletconflicts: [],
+          time: 1572355952,
+          timereceived: 1572355952,
+          "bip125-replaceable": "no",
+          abandoned: false
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listtransactions(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listunspent()", async () => {
+      const minconf = 1;
+      const maxconf = 4000;
+      const addresses = [
+        "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
+        "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4"
+      ];
+      const include_unsafe = false;
+      const query_options = {
+        minimumAmount: 0.0001,
+        maximumAmount: 0.01,
+        maximumCount: 3,
+        minimumSumAmount: 10
+      };
+      const params = {
+        minconf,
+        maxconf,
+        addresses,
+        include_unsafe,
+        query_options
+      };
+      const request = { params, method: "listunspent", id, jsonrpc };
+      const result = [
+        {
+          txid:
+            "96b611869f716cd4b53ce2f9706a595885a86573ec2b6408ce41711578584529",
+          vout: 0,
+          address:
+            "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
+          label: "",
+          witnessScript:
+            "5221026544d2de6d868276cdfb8d2cdd020119162440fe98eac1add12fa354e7fef83821024a8638218164e64ac6ef560ebc18356a8773697aaeea37bc2c5707cca598b8c752ae",
+          scriptPubKey:
+            "002041669853ffa5e26fc6e7302ee3b91584b52d235ad6b105ef28f3140aac8fc620",
+          amount: 0.001,
+          confirmations: 422,
+          spendable: true,
+          solvable: true,
+          desc:
+            "wsh(multi(2,[2f8f8c1b/0'/0'/11']026544d2de6d868276cdfb8d2cdd020119162440fe98eac1add12fa354e7fef838,[2f8f8c1b/0'/0'/10']024a8638218164e64ac6ef560ebc18356a8773697aaeea37bc2c5707cca598b8c7))#v4j2pdsn",
+          safe: true
+        },
+        {
+          txid:
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
+          vout: 0,
+          address: "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4",
+          scriptPubKey: "00143b1bebdfdeea72aef670f308e22ceb33047a8e21",
+          amount: 0.00314192,
+          confirmations: 615,
+          spendable: true,
+          solvable: true,
+          desc:
+            "wpkh([2f8f8c1b/0'/1'/0']023efde40c10ded46eeb2ccbe4ece98ccffc9921e6e2cbb82f21965b5563dc59a3)#vc3pfv5a",
+          safe: true
+        }
+      ];
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listunspent(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listwalletdir()", async () => {
+      const request = { params: {}, method: "listwalletdir", id, jsonrpc };
+      const result = {
+        wallets: [{ name: "bitcoin-core-wallet.dat" }, { name: "" }]
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listwalletdir();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".listwallets()", async () => {
+      const request = { params: {}, method: "listwallets", id, jsonrpc };
+      const result = ["", "wallet123.dat"];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.listwallets();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".loadwallet()", async () => {
+      const filename = "bitcoin-core-wallet.dat";
+      const params = { filename };
+      const request = { params, method: "loadwallet", id, jsonrpc };
+      const result = ["", "wallet123.dat"];
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.loadwallet(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".lockunspent()", async () => {
+      const unlock = false;
+      const transactions = [
+        {
+          txid:
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          vout: 1
+        },
+        {
+          txid:
+            "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
+          vout: 0
+        }
+      ];
+      const params = { unlock, transactions };
+      const request = { params, method: "lockunspent", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.lockunspent(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".removeprunedfunds()", async () => {
+      const txid =
+        "196fa2c24a793b0ddb7d13df967cbcd532d0124857d39cf76378ed8ddd31630a";
+      const params = { txid };
+      const request = { params, method: "removeprunedfunds", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.removeprunedfunds(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".rescanblockchain()", async () => {
+      const start_height = 1566870;
+      const stop_height = 1566970;
+      const params = { start_height, stop_height };
+      const request = { params, method: "rescanblockchain", id, jsonrpc };
+      const result = { start_height: 1566870, stop_height: 1566970 };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.rescanblockchain(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".sendmany()", async () => {
+      const amounts = {
+        tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
+        tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003"
+      };
+      const minconf = 6;
+      const comment = "SomeComment";
+      const subtractfeefrom = ["tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237"];
+      const replaceable = true;
+      const conf_target = 20;
+      const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
+      const params = {
+        amounts,
+        minconf,
+        comment,
+        subtractfeefrom,
+        replaceable,
+        conf_target,
+        estimate_mode
+      };
+      const request = { params, method: "sendmany", id, jsonrpc };
+      const result =
+        "42f917140aae060fb88acac3dc63dcee5a72b0f367ba155c56b790c1fea20b59";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.sendmany(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".sendtoaddress()", async () => {
+      const address = "tb1qzvfvg6hfyf9kuzhmr2prtrnmxeqrt2pgapv89f";
+      const amount = 0.0001;
+      const comment = "SomePayment";
+      const comment_to = "Someone";
+      const subtractfeefromamount = true;
+      const replaceable = true;
+      const conf_target = 20;
+      const estimate_mode: "CONSERVATIVE" = "CONSERVATIVE";
+      const params = {
+        address,
+        amount,
+        comment,
+        comment_to,
+        subtractfeefromamount,
+        replaceable,
+        conf_target,
+        estimate_mode
+      };
+      const request = { params, method: "sendtoaddress", id, jsonrpc };
+      const result =
+        "aded742165201973dce8b13216669f4241851c26a566ae2deb1b5262570b94ba";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.sendtoaddress(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".sethdseed()", async () => {
+      const newkeypool = true;
+      const seed = "cUFvQRAsGvyTVBPX5vowrghWmYXTvNw7nQvkKPtiACsdzRKWZM2P";
+      const params = { newkeypool, seed };
+      const request = { params, method: "sethdseed", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.sethdseed(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".setlabel()", async () => {
+      const address = "tb1qfnavaywj2k45893p4p4lacqxylmuzmp6tnq42u";
+      const label = "SomeLabel";
+      const params = { address, label };
+      const request = { params, method: "setlabel", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.setlabel(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".settxfee()", async () => {
+      const amount = 0.000011;
+      const params = { amount };
+      const request = { params, method: "settxfee", id, jsonrpc };
+      const result = true;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.settxfee(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".signmessage()", async () => {
+      const address = "muQN4LGGwtD9bqPeCexKGpksvygnRAnTA3";
+      const message = "Hello World!";
+      const params = { address, message };
+      const request = { params, method: "signmessage", id, jsonrpc };
+      const result =
+        "IMUNA/b71CYq7CLeLcGoKkPFMXFRpowXRlkCZ52TAEWwQPSSCC9HmqMcGnkjmavzKy1lqSAmGlKQI/tzcM3Xadc=";
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signmessage(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".signrawtransactionwithwallet()", async () => {
+      const hexstring =
+        "02000000011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b100000000";
+      const prevtxs = [
+        {
+          txid:
+            "7a3c07063b1407050836354f69a2667343b6d8389348551610d789f1ece96d1e",
+          vout: 0,
+          scriptPubKey: "0014c92776d7c9e5c7d74f9c8093335de1928862e8ac",
+          amount: 0.06924013
+        }
+      ];
+      const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
+      const params = { hexstring, prevtxs, sighashtype };
+      const request = {
+        params,
+        method: "signrawtransactionwithwallet",
+        id,
+        jsonrpc
+      };
+      const result = {
+        hex:
+          "020000000001011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b102473044022035b072acf1e166e9d20999adbd40fd4fe6d76947cc395b1450e96a5e5c3d677602203622d8827e5c4396bbdd390fd29d7a93992273e5028a4c8a76329af45496848d812103bcde895db85d99e39b1eb4689671798c689435b6e131891aad026aed31f4a8f700000000",
+        complete: true
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.signrawtransactionwithwallet(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".unloadwallet()", async () => {
+      const request = { params: {}, method: "unloadwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.unloadwallet();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".unloadwallet() (multi wallet)", async () => {
+      const wallet_name = "newWallet.dat";
+      const params = { wallet_name };
+      const request = { params, method: "unloadwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.unloadwallet(params);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".unloadwallet() (default wallet)", async () => {
+      const client = new RPCClient({ port, timeout, pass, wallet });
+      const request = { params: {}, method: "unloadwallet", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.unloadwallet();
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".walletcreatefundedpsbt()", async () => {
+      const inputs = [
+        {
+          txid:
+            "5396f889b7118fc57f4bfb3397e12399d7f2b8ccd7f5a66bd33792f6ebe399e3",
+          vout: 0
+        }
+      ];
+      const outputs = [
+        {
+          tb1qu7jphg0km5mrl7kx8txy3xuky9tlpvmxmehz8m: 0.001466
+        }
+      ];
+      const locktime = 1;
+      const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
+      const options = {
+        changeAddress: "tb1qc0vz2vryuadyvcux09pswnl7ng2r9fzzd3cwnf",
+        changePosition: 1,
+        includeWatching: false,
+        lockUnspents: false,
+        subtractFeeFromOutputs: [],
+        replaceable: true,
+        conf_target: 20,
+        estimate_mode
+      };
+      const bip32derivs = true;
+      const params = {
+        inputs,
+        outputs,
+        locktime,
+        options,
+        bip32derivs
+      };
+      const request = { params, method: "walletcreatefundedpsbt", id, jsonrpc };
+      const result = {
+        psbt:
+          "cHNidP8BAFICAAAAAeOZ4+v2kjfTa6b118y48teZI+GXM/tLf8WPEbeJ+JZTAAAAAAD9////Aag8AgAAAAAAFgAU56QbofbdNj/6xjrMSJuWIVfws2YBAAAAAAEA4QEAAAAB7KfSdMCo0aVk+cIkbmlgddOFp+1riB5jCVwBZ0Cgaq4BAAAAakcwRAIgAeAUrBBpoUPgr8A4ysywkv0B8WdgsxfNhAvFpbw/Ki0CIE8GFYALdKLWw2jdwVfLiMFFsy024Toj7Po0/ds/35XCASEDr3vX6YlRh/pfO+KjhQRMg9cfwiFHITID8mKFdFu1gBv/////Asw9AgAAAAAAGXapFIujKvHonUGL+2VSyu2XWvBQ7l63iKxfx5AAAAAAABl2qRQYJu+2OZ47eXi0rxco8eAHp2y2PoisAAAAACIGA7sa3R4eYJPKpZ8Sf/PUd/isIQ8sofjIH/jBYC2aW6zQEPnXKHwAAACAAAAAgAIAAIAAIgIC6aO2I6xv+jeXEqj2kFvHlIt21Rso0GDglJsE2UOs36wQJaaBjQAAAIAAAACABQAAgAA=",
+        fee: 0.00000292,
+        changepos: -1
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletcreatefundedpsbt(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".walletlock()", async () => {
+      const request = { params: {}, method: "walletlock", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletlock(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".walletpassphrase()", async () => {
+      const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+      const timeout = 600;
+      const params = { passphrase, timeout };
+      const request = { params, method: "walletpassphrase", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletpassphrase(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".walletpassphrasechange()", async () => {
+      const oldpassphrase = "SecretPassphraseDoNotTellAnyone";
+      const newpassphrase = "VerySecretPassphraseDoNotTellAnyone";
+      const params = { oldpassphrase, newpassphrase };
+      const request = { params, method: "walletpassphrasechange", id, jsonrpc };
+      const result = null;
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletpassphrasechange(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".walletprocesspsbt()", async () => {
+      const psbt =
+        "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAAA";
+      const sign = true;
+      const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
+      const bip32derivs = true;
+      const params = { psbt, sign, sighashtype, bip32derivs };
+      const request = { params, method: "walletprocesspsbt", id, jsonrpc };
+      const result = {
+        psbt:
+          "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAEBH1NHQAAAAAAAFgAUpOVc1oxzfkX57QvwzkDs8f75ppsBCGsCRzBEAiBCMoeFpGtSbsUWbGubHEmIvyDmKr9KHTB1nbuI9HgIsgIgLj4HuddO7hZ9F7FiqzGo+vLXkY0G2+3VGwgO5qp+LMCBIQKeXII7c4+9Decuri9xUBRtIRde/fOL2WLc6UnN9/qomwAiAgM4FaCpxCh+XmYDxo7+zZXN1BaI1l+HBJzFUnQBUFWfWhCl/jeMAAAAgAAAAIACAACAAA==",
+        complete: true
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.walletprocesspsbt(params, wallet);
       assert.deepStrictEqual(data, result);
     });
   });

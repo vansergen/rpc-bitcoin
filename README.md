@@ -722,6 +722,625 @@ const signature =
 const result = await client.verifymessage({ address, message, signature });
 ```
 
+### Wallet
+
+- [`abandontransaction`](https://bitcoin.org/en/developer-reference#abandontransaction)
+
+```javascript
+const txid = "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.abandontransaction({ txid }, wallet);
+```
+
+- [`abortrescan`](https://bitcoin.org/en/developer-reference#abortrescan)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.abortrescan(wallet);
+```
+
+- [`addmultisigaddress`](https://bitcoin.org/en/developer-reference#addmultisigaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const nrequired = 2;
+const keys = [
+  "030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f",
+  "02ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e9"
+];
+const label = "NewMultiSigAddress";
+const address_type = "bech32";
+const result = await client.addmultisigaddress(
+  { nrequired, keys, label, address_type },
+  wallet
+);
+```
+
+- [`backupwallet`](https://bitcoin.org/en/developer-reference#backupwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const destination = "D:/Crypto/wallets/myWalletBackup.dat";
+const result = await client.backupwallet({ destination }, wallet);
+```
+
+- [`bumpfee`](https://bitcoin.org/en/developer-reference#bumpfee)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const txid = "txid";
+const totalFee = 0.00000839;
+const replaceable = true;
+const estimate_mode = "CONSERVATIVE";
+const options = { totalFee, replaceable, estimate_mode };
+const result = await client.bumpfee({ txid, options }, wallet);
+```
+
+- [`createwallet`](https://bitcoin.org/en/developer-reference#createwallet)
+
+```javascript
+const wallet_name = "bitcoin-core-wallet.dat";
+const disable_private_keys = true;
+const blank = true;
+const result = await client.createwallet({
+  wallet_name,
+  disable_private_keys,
+  blank
+});
+```
+
+- [`dumpprivkey`](https://bitcoin.org/en/developer-reference#dumpprivkey)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qkdvjgyk7y5fmekzs2sk6zep4rdcl7yell9drxm";
+const result = await client.dumpprivkey({ address }, wallet);
+```
+
+- [`dumpwallet`](https://bitcoin.org/en/developer-reference#dumpwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const filename = "myWalletDump.dat";
+const result = await client.dumpwallet({ filename }, wallet);
+```
+
+- [`encryptwallet`](https://bitcoin.org/en/developer-reference#encryptwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+const result = await client.encryptwallet({ passphrase }, wallet);
+```
+
+- [`getaddressesbylabel`](https://bitcoin.org/en/developer-reference#getaddressesbylabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const result = await client.getaddressesbylabel({ label }, wallet);
+```
+
+- [`getaddressinfo`](https://bitcoin.org/en/developer-reference#getaddressinfo)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj";
+const result = await client.getaddressinfo({ address }, wallet);
+```
+
+- [`getbalance`](https://bitcoin.org/en/developer-reference#getbalance)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 6;
+const include_watchonly = true;
+const result = await client.getbalance({ minconf, include_watchonly }, wallet);
+```
+
+- [`getnewaddress`](https://bitcoin.org/en/developer-reference#getnewaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const address_type = "bech32";
+const result = await client.getnewaddress({ label, address_type }, wallet);
+```
+
+- [`getrawchangeaddress`](https://bitcoin.org/en/developer-reference#getrawchangeaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address_type = "bech32";
+const result = await client.getrawchangeaddress({ address_type }, wallet);
+```
+
+- [`getreceivedbyaddress`](https://bitcoin.org/en/developer-reference#getreceivedbyaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address =
+  "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n";
+const minconf = 6;
+const result = await client.getreceivedbyaddress({ address, minconf }, wallet);
+```
+
+- [`getreceivedbylabel`](https://bitcoin.org/en/developer-reference#getreceivedbylabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const minconf = 6;
+const result = await client.getreceivedbylabel({ label, minconf }, wallet);
+```
+
+- [`gettransaction`](https://bitcoin.org/en/developer-reference#gettransaction)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const txid = "2c06449191f86594ceb059363da55e6587963fc8d801fdecf73f9a42d64dfe95";
+const include_watchonly = true;
+const result = await client.gettransaction({ txid, include_watchonly }, wallet);
+```
+
+- [`getunconfirmedbalance`](https://bitcoin.org/en/developer-reference#getunconfirmedbalance)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.getunconfirmedbalance(wallet);
+```
+
+- [`getwalletinfo`](https://bitcoin.org/en/developer-reference#getwalletinfo)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.getwalletinfo(wallet);
+```
+
+- [`importaddress`](https://bitcoin.org/en/developer-reference#importaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qk57dcv7rs2ap6k82xu58957qz6zherj4vm54lw";
+const label = "ImportedAddress";
+const rescan = false;
+const p2sh = false;
+const result = await client.importaddress(
+  { address, label, rescan, p2sh },
+  wallet
+);
+```
+
+- [`importmulti`](https://bitcoin.org/en/developer-reference#importmulti)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const requests = [
+  {
+    desc:
+      "wpkh(tpubD6NzVbkrYhZ4Wk5MMULiQd4XkBe3KeG6GCUNrWcXu27PJwqFfHF7geuTPfPZcViUpV7ny6MHVnbvxdCSfkooFb7bBJiQgKXCVM58XZiVyHu/0/*)#9tk43hcd",
+    range: [2, 5],
+    internal: true,
+    watchonly: true,
+    timestamp: 0
+  },
+  {
+    scriptPubKey: { address: "tb1q0pjl9cy0t38uvyfs75t7av7ujrhs65xx0nfjmf" },
+    timestamp: "now"
+  },
+  {
+    scriptPubKey: { address: "tb1qxqt28qy3uvj8qeucm60dnrzty3cccx88hp9car" },
+    keys: ["cQfkAynVm54Je8mXYH6zkKKjug7ehheUeMx5jnWTvy94M73X2Vdj"],
+    timestamp: "now"
+  }
+];
+const options = { rescan: false };
+const result = await client.importmulti({ requests, options }, wallet);
+```
+
+- [`importprivkey`](https://bitcoin.org/en/developer-reference#importprivkey)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const privkey = "cQnahvawMKvZXLWCdrBvXdvDoTHm4xeQq9iWqLC2JzmicFVd5Mdz";
+const label = "Imported";
+const rescan = false;
+const result = await client.importprivkey({ privkey, label, rescan }, wallet);
+```
+
+- [`importprunedfunds`](https://bitcoin.org/en/developer-reference#importprunedfunds)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const rawtransaction =
+  "0200000000010422647b4fc186385b15a01cc6cd6d7864399b4ff536f370f86ecc5e2f4281d7d50000000017160014013b2e1e130cd463f3be9fce311cfbf6f862d224fdffffffc61430e9a56a5ebba761828078c9a5f03571da6fbf40f4f87f7d72cbcbaf6f5e0000000000fdffffffe399e3ebf69237d36ba6f5d7ccb8f2d79923e19733fb4b7fc58f11b789f89653000000006a47304402204ea849bac52e0f76b7df9b196cad692cc8e253778c999d67627f2a9c487067e00220245e9446863037949dac77cb34f532376749507e6d499418fe51144c6e950725012103bb1add1e1e6093caa59f127ff3d477f8ac210f2ca1f8c81ff8c1602d9a5bacd0fdffffffd37c62273bfaeffee551ccaa1e06a6daa1e9d32248798821e33c6623ea17b9910000000000fdffffff022785400000000000160014740535b933895ac1caf3ba92976993f7fd9d2e99a086010000000000160014000243d945554d568a6858f5f243d9510258d75c0247304402207400692ba5ecfeda204468905b138c0f7e6cf2d02be119094864db1c48c21f7c022008ccad54fb2cdc107a96c8a56b3e80867e4cfa8c904e9a78f27f10fc8071fb430121026c9b6d74350725506d14613cabade7f447fb67eb416c8ef34323da77f7299c2302473044022024d43ee736fe458b739f32866c35a6dfe7ca352acd7b76a25472c4a8246a5ead022073db04ee5a894a6eb949ab56046416fd5090f44f65fe3a6ab68b4a5b540bb6b20121028ff8402568eea88e93d30b4b2e6c7125bdb894cbf27c87a2101e35e0b1f5ff2e000247304402205e9b129b0a0c2c0fb458c1f397d462fd4db46cf7fffd19dc9189e421f1f61fac0220424e8cbfa9a01160033cae4955bc44c6f958d3afc7ccc67aef0a23c5f95bf37e012102228f0d709aacaa24fb4712c8fca4b10c9f4cfb60dcaa4d34b58660080a8bd8435e1e1800";
+const txoutproof =
+  "000040205853c9a97816b63b9bb539f7b4cfb8c8a36ee0d9b6e1c59df102000000000000ab93331e4cae84da202131b6418e61e30095a81108edb09376ad7d02768d72c348ff9a5d74c4031a712e7b5614000000040cce7e642af08fd68ddcf0b7630ad88c4110c91fcdb7f792f6253bef56181bf201d52b2f5696dd23973b09dd34c2447aadeeb31ada2ff4b1d88d238c8cb2081a0a6331dd8ded7863f79cd3574812d032d5bc7c96df137ddb0d3b794ac2a26f199b66a00a8b8376f3bd0b1c7f9827b403242976d1dc16ed8bc6ec7e11c1f028bf02dd00";
+const result = await client.importprunedfunds(
+  { rawtransaction, txoutproof },
+  wallet
+);
+```
+
+- [`importpubkey`](https://bitcoin.org/en/developer-reference#importpubkey)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const pubkey =
+  "023ef8f5fa2a18c07d714d942e4aa933827df7d5fba43a513be22581fc0ce83207";
+const label = "SomeAddress";
+const rescan = false;
+const result = await client.importpubkey({ pubkey, label, rescan }, wallet);
+```
+
+- [`importwallet`](https://bitcoin.org/en/developer-reference#importwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const filename = "myWalletDump.dat";
+const result = await client.importwallet({ filename }, wallet);
+```
+
+- [`keypoolrefill`](https://bitcoin.org/en/developer-reference#keypoolrefill)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const newsize = 123;
+const result = await client.keypoolrefill({ newsize }, wallet);
+```
+
+- [`listaddressgroupings`](https://bitcoin.org/en/developer-reference#listaddressgroupings)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.listaddressgroupings(wallet);
+```
+
+- [`listlabels`](https://bitcoin.org/en/developer-reference#listlabels)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const purpose = "receive";
+const result = await client.listlabels({ purpose }, wallet);
+```
+
+- [`listlockunspent`](https://bitcoin.org/en/developer-reference#listlockunspent)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.listlockunspent(wallet);
+```
+
+- [`listreceivedbyaddress`](https://bitcoin.org/en/developer-reference#listreceivedbyaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 6;
+const include_empty = false;
+const include_watchonly = false;
+const address_filter = "tb1qyferlkpvr7v3r5ne7jh2avjuvnxkf08lqhpqe9";
+const result = await client.listreceivedbyaddress(
+  { minconf, include_empty, include_watchonly, address_filter },
+  wallet
+);
+```
+
+- [`listreceivedbylabel`](https://bitcoin.org/en/developer-reference#listreceivedbylabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 6;
+const include_empty = true;
+const include_watchonly = true;
+const result = await client.listreceivedbylabel(
+  { minconf, include_empty, include_watchonly },
+  wallet
+);
+```
+
+- [`listsinceblock`](https://bitcoin.org/en/developer-reference#listsinceblock)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const blockhash =
+  "00000000001ad9877c5a839c65371a18e1392a2be83378915e01342a368caaef";
+const target_confirmations = 6;
+const include_watchonly = true;
+const include_removed = false;
+const result = await client.listsinceblock(
+  { blockhash, target_confirmations, include_watchonly, include_removed },
+  wallet
+);
+```
+
+- [`listtransactions`](https://bitcoin.org/en/developer-reference#listtransactions)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const label = "SomeLabel";
+const count = 5;
+const skip = 4;
+const include_watchonly = true;
+const result = await client.listtransactions(
+  { label, count, skip, include_watchonly },
+  wallet
+);
+```
+
+- [`listunspent`](https://bitcoin.org/en/developer-reference#listunspent)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const minconf = 1;
+const maxconf = 100;
+const addresses = [
+  "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
+  "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4"
+];
+const include_unsafe = false;
+const query_options = {
+  minimumAmount: 0.0001,
+  maximumAmount: 0.01,
+  maximumCount: 2,
+  minimumSumAmount: 10
+};
+const result = await client.listunspent(
+  { minconf, maxconf, addresses, include_unsafe, query_options },
+  wallet
+);
+```
+
+- [`listwalletdir`](https://bitcoin.org/en/developer-reference#listwalletdir)
+
+```javascript
+const result = await client.listwalletdir();
+```
+
+- [`listwallets`](https://bitcoin.org/en/developer-reference#listwallets)
+
+```javascript
+const result = await client.listwallets();
+```
+
+- [`loadwallet`](https://bitcoin.org/en/developer-reference#loadwallet)
+
+```javascript
+const filename = "myWallet.dat";
+const result = await client.loadwallet({ filename });
+```
+
+- [`lockunspent`](https://bitcoin.org/en/developer-reference#lockunspent)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const unlock = true;
+const transactions = [
+  {
+    txid: "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+    vout: 1
+  },
+  {
+    txid: "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
+    vout: 0
+  }
+];
+const result = await client.lockunspent({ unlock, transactions }, wallet);
+```
+
+- [`removeprunedfunds`](https://bitcoin.org/en/developer-reference#removeprunedfunds)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const txid = "196fa2c24a793b0ddb7d13df967cbcd532d0124857d39cf76378ed8ddd31630a";
+const result = await client.removeprunedfunds({ txid }, wallet);
+```
+
+- [`rescanblockchain`](https://bitcoin.org/en/developer-reference#rescanblockchain)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const start_height = 1566870;
+const stop_height = 1566970;
+const result = await client.rescanblockchain(
+  { start_height, stop_height },
+  wallet
+);
+```
+
+- [`sendmany`](https://bitcoin.org/en/developer-reference#sendmany)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const amounts = {
+  tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
+  tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003"
+};
+const minconf = 6;
+const comment = "SomeComment";
+const subtractfeefrom = ["tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237"];
+const replaceable = true;
+const conf_target = 20;
+const estimate_mode = "ECONOMICAL";
+const result = await client.sendmany(
+  {
+    amounts,
+    minconf,
+    comment,
+    subtractfeefrom,
+    replaceable,
+    conf_target,
+    estimate_mode
+  },
+  wallet
+);
+```
+
+- [`sendtoaddress`](https://bitcoin.org/en/developer-reference#sendtoaddress)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qzvfvg6hfyf9kuzhmr2prtrnmxeqrt2pgapv89f";
+const amount = 0.0001;
+const comment = "SomePayment";
+const comment_to = "Someone";
+const subtractfeefromamount = true;
+const replaceable = true;
+const conf_target = 20;
+const estimate_mode = "CONSERVATIVE";
+const result = await client.sendtoaddress(
+  {
+    address,
+    amount,
+    comment,
+    comment_to,
+    subtractfeefromamount,
+    replaceable,
+    conf_target,
+    estimate_mode
+  },
+  wallet
+);
+```
+
+- [`sethdseed`](https://bitcoin.org/en/developer-reference#sethdseed)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const newkeypool = true;
+const seed = "cUFvQRAsGvyTVBPX5vowrghWmYXTvNw7nQvkKPtiACsdzRKWZM2P";
+const result = await client.sethdseed({ newkeypool, seed }, wallet);
+```
+
+- [`setlabel`](https://bitcoin.org/en/developer-reference#setlabel)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "tb1qcay50erzz8gaagge3jqeau0m8yav0kjgy8sxkp";
+const label = "SomeLabel";
+const result = await client.setlabel({ address, label }, wallet);
+```
+
+- [`settxfee`](https://bitcoin.org/en/developer-reference#settxfee)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const amount = 0.00002;
+const result = await client.settxfee({ amount }, wallet);
+```
+
+- [`signmessage`](https://bitcoin.org/en/developer-reference#signmessage)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const address = "muQN4LGGwtD9bqPeCexKGpksvygnRAnTA3";
+const message = "Hello World!";
+const result = await client.signmessage({ address, message }, wallet);
+```
+
+- [`signrawtransactionwithwallet`](https://bitcoin.org/en/developer-reference#signrawtransactionwithwallet)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const hexstring =
+  "02000000011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b100000000";
+const prevtxs = [
+  {
+    txid: "7a3c07063b1407050836354f69a2667343b6d8389348551610d789f1ece96d1e",
+    vout: 0,
+    scriptPubKey: "0014c92776d7c9e5c7d74f9c8093335de1928862e8ac",
+    amount: 0.06924013
+  }
+];
+const sighashtype = "ALL|ANYONECANPAY";
+const result = await client.signrawtransactionwithwallet(
+  { hexstring, prevtxs, sighashtype },
+  wallet
+);
+```
+
+- [`unloadwallet`](https://bitcoin.org/en/developer-reference#unloadwallet)
+
+```javascript
+const wallet_name = "bitcoin-core-wallet.dat";
+const result = await client.unloadwallet({ wallet_name });
+```
+
+- [`walletcreatefundedpsbt`](https://bitcoin.org/en/developer-reference#walletcreatefundedpsbt)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const inputs = [
+  {
+    txid: "5396f889b7118fc57f4bfb3397e12399d7f2b8ccd7f5a66bd33792f6ebe399e3",
+    vout: 0
+  }
+];
+const outputs = [
+  {
+    tb1qu7jphg0km5mrl7kx8txy3xuky9tlpvmxmehz8m: 0.001466
+  }
+];
+const locktime = 1;
+const options = {
+  changeAddress: "tb1qc0vz2vryuadyvcux09pswnl7ng2r9fzzd3cwnf",
+  changePosition: 1,
+  includeWatching: false,
+  lockUnspents: false,
+  subtractFeeFromOutputs: [],
+  replaceable: true,
+  conf_target: 20,
+  estimate_mode: "ECONOMICAL"
+};
+const bip32derivs = true;
+const result = await client.walletcreatefundedpsbt(
+  { inputs, outputs, locktime, options, bip32derivs },
+  wallet
+);
+```
+
+- [`walletlock`](https://bitcoin.org/en/developer-reference#walletlock)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.walletlock(wallet);
+```
+
+- [`walletpassphrase`](https://bitcoin.org/en/developer-reference#walletpassphrase)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const passphrase = "VerySecretPassphraseDoNotTellAnyone";
+const timeout = 600;
+const result = await client.walletpassphrase({ passphrase, timeout }, wallet);
+```
+
+- [`walletpassphrasechange`](https://bitcoin.org/en/developer-reference#walletpassphrasechange)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const oldpassphrase = "SecretPassphraseDoNotTellAnyone";
+const newpassphrase = "VerySecretPassphraseDoNotTellAnyone";
+const result = await client.walletpassphrasechange(
+  { oldpassphrase, newpassphrase },
+  wallet
+);
+```
+
+- [`walletprocesspsbt`](https://bitcoin.org/en/developer-reference#walletprocesspsbt)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const psbt =
+  "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAAA";
+const sign = true;
+const sighashtype = "ALL|ANYONECANPAY";
+const bip32derivs = true;
+const result = await client.walletprocesspsbt(
+  { psbt, sign, sighashtype, bip32derivs },
+  wallet
+);
+```
+
 ### ZMQ
 
 - [`getzmqnotifications`](https://bitcoincore.org/en/doc/0.17.0/rpc/zmq/getzmqnotifications/)

@@ -107,10 +107,12 @@ export type SetBanParams = {
   absolute?: boolean;
 };
 
+export type AddressType = "legacy" | "p2sh-segwit" | "bech32";
+
 export type CreateMultiSigParams = {
   nrequired: number;
   keys: string[];
-  address_type?: "legacy" | "p2sh-segwit" | "bech32";
+  address_type?: AddressType;
 };
 
 export type DeriveAddressesParams = {
@@ -118,9 +120,12 @@ export type DeriveAddressesParams = {
   range?: number | [number, number];
 };
 
-export type EstimateSmartFeeParams = {
-  conf_target: number;
+export type EstimateMode = {
   estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
+};
+
+export type EstimateSmartFeeParams = EstimateMode & {
+  conf_target: number;
 };
 
 export type SignMessageWithPrivKeyParams = {
@@ -141,9 +146,9 @@ export type ConvertToPsbtParams = HexString & {
   iswitness?: boolean;
 };
 
-export type TransactionInput = {
-  txid: string;
-  vout: number;
+export type BaseTransactionInput = { txid: string; vout: number };
+
+export type TransactionInput = BaseTransactionInput & {
   sequence?: number;
 };
 
@@ -151,10 +156,13 @@ export type TransactionOutput =
   | { [address: string]: string | number }
   | { data: string };
 
-export type CreateTransactionParams = {
+export type BaseCreateTransaction = {
   inputs: TransactionInput[];
   outputs: TransactionOutput[];
   locktime?: number;
+};
+
+export type CreateTransactionParams = BaseCreateTransaction & {
   replaceable?: boolean;
 };
 
@@ -162,8 +170,8 @@ export type DecodeRawTransactionParams = HexString & { iswitness?: boolean };
 
 export type FinalizePsbtParams = { psbt: string; extract?: boolean };
 
-export type FundRawTransactionParams = HexString & {
-  options?: {
+export type BaseFundOptions = {
+  options?: EstimateMode & {
     changeAddress?: string;
     changePosition?: number;
     change_type?: string;
@@ -173,8 +181,11 @@ export type FundRawTransactionParams = HexString & {
     subtractFeeFromOutputs?: number[];
     replaceable?: boolean;
     conf_target?: number;
-    estimate_mode?: "UNSET" | "ECONOMICAL" | "CONSERVATIVE";
   };
+};
+
+export type FundRawTransactionParams = HexString & {
+  options?: BaseFundOptions;
   iswitness?: boolean;
 };
 
@@ -191,21 +202,208 @@ export type PrevTx = {
   amount: number | string;
 };
 
-export type SignRawTransactionWithKeyParams = HexString & {
-  privkeys: string[];
+export type SigHashType =
+  | "ALL"
+  | "NONE"
+  | "SINGLE"
+  | "ALL|ANYONECANPAY"
+  | "NONE|ANYONECANPAY"
+  | "SINGLE|ANYONECANPAY";
+
+export type SignRawTransactionWithWalletParams = HexString & {
   prevtxs?: PrevTx[];
-  sighashtype?:
-    | "ALL"
-    | "NONE"
-    | "SINGLE"
-    | "ALL|ANYONECANPAY"
-    | "NONE|ANYONECANPAY"
-    | "SINGLE|ANYONECANPAY";
+  sighashtype?: SigHashType;
 };
+
+export type SignRawTransactionWithKeyParams = {
+  privkeys: string[];
+} & SignRawTransactionWithWalletParams;
 
 export type TestmemPoolAcceptParams = {
   rawtxs: string[];
   allowhighfees?: boolean;
+};
+
+export type Label = { label?: string };
+
+export type AddMultiSigAddressParams = CreateMultiSigParams & Label;
+
+export type BumpFeeParams = {
+  txid: string;
+  options?: EstimateMode & { replaceable?: boolean } & (
+      | { confTarget?: number }
+      | { totalFee?: number });
+};
+
+export type CreateWalletParams = {
+  wallet_name: string;
+  disable_private_keys?: boolean;
+  blank?: boolean;
+};
+
+export type GetBalanceParams = {
+  minconf?: number;
+  include_watchonly?: boolean;
+};
+
+export type GetNewAddressParams = { address_type?: AddressType } & Label;
+
+export type GetReceivedByAddressParams = {
+  address: string;
+  minconf?: number;
+};
+
+export type GetReceivedByLabelParams = {
+  label: string;
+  minconf?: number;
+};
+
+export type GetTransactionParams = TxId & { include_watchonly?: boolean };
+
+export type ImportAddressParams = {
+  address: string;
+  label?: string;
+  rescan?: boolean;
+  p2sh?: boolean;
+};
+
+export type ImportMultiRequest = {
+  timestamp: number | "now";
+  internal?: boolean;
+  watchonly?: boolean;
+  label?: string;
+  keypool?: boolean;
+} & (
+  | {
+      desc: string;
+      range?: number | [number, number];
+    }
+  | {
+      scriptPubKey: { address: string } | string;
+      redeemscript?: string;
+      witnessscript?: string;
+      pubkeys?: string[];
+      keys?: string[];
+    });
+
+export type ImportMultiParams = {
+  requests: ImportMultiRequest[];
+  options?: {
+    rescan?: boolean;
+  };
+};
+
+export type ImportPrivKeyParams = {
+  privkey: string;
+  label?: string;
+  rescan?: boolean;
+};
+
+export type ImportPrunedFundsParams = {
+  rawtransaction: string;
+  txoutproof: string;
+};
+
+export type ImportPubKeyParams = {
+  pubkey: string;
+  label?: string;
+  rescan?: boolean;
+};
+
+export type ListLabelsParams = { purpose: "receive" | "send" };
+
+export type ListReceivedByAddressParams = ListReceivedByLabelParams & {
+  address_filter?: string;
+};
+
+export type ListReceivedByLabelParams = {
+  minconf?: number;
+  include_empty?: boolean;
+  include_watchonly?: boolean;
+};
+
+export type ListSinceBlockParams = {
+  blockhash?: string;
+  target_confirmations?: number;
+  include_watchonly?: boolean;
+  include_removed?: boolean;
+};
+
+export type ListTransactionsParams = {
+  label?: string;
+  count?: number;
+  skip?: number;
+  include_watchonly?: boolean;
+};
+
+export type ListUnspentParams = {
+  minconf?: number;
+  maxconf?: number;
+  addresses?: string[];
+  include_unsafe?: boolean;
+  query_options?: {
+    minimumAmount?: number | string;
+    maximumAmount?: number | string;
+    maximumCount?: number;
+    minimumSumAmount?: number | string;
+  };
+};
+
+export type LockUnspentParams = {
+  unlock: boolean;
+  transactions?: BaseTransactionInput[];
+};
+
+export type RescanBlockchainParams = {
+  start_height?: number;
+  stop_height?: number;
+};
+
+export type BaseSendParams = EstimateMode & {
+  comment?: string;
+  replaceable?: boolean;
+  conf_target?: number;
+};
+
+export type SendManyParams = BaseSendParams & {
+  amounts: { [address: string]: number | string };
+  minconf?: number;
+  subtractfeefrom?: string[];
+};
+
+export type SendToAddressParams = BaseSendParams & {
+  address: string;
+  amount: string | number;
+  comment_to?: string;
+  subtractfeefromamount?: boolean;
+};
+
+export type SetHDSeedParams = { newkeypool?: boolean; seed?: string };
+
+export type SetLabelParams = { address: string; label: string };
+
+export type SignMessageParams = { address: string; message: string };
+
+export type WalletCreateFundedPsbtParams = BaseCreateTransaction &
+  BaseFundOptions & {
+    bip32derivs?: boolean;
+  };
+
+export type WalletPassphraseParams = {
+  passphrase: string;
+  timeout: number;
+};
+
+export type WalletPassphraseChangeParams = {
+  oldpassphrase: string;
+  newpassphrase: string;
+};
+
+export type WalletProcessPsbtParams = {
+  psbt: string;
+  sign?: boolean;
+  sighashtype?: SigHashType;
+  bip32derivs?: boolean;
 };
 
 export class RPCClient extends RESTClient {
@@ -221,9 +419,7 @@ export class RPCClient extends RESTClient {
   }: RPCIniOptions) {
     super({ ...options, auth: { user, pass }, uri: "/" });
     this.fullResponse = fullResponse ? true : false;
-    if (wallet) {
-      this.wallet = wallet;
-    }
+    this.wallet = typeof wallet === "string" ? wallet : undefined;
   }
 
   async batch(body: JSONRPC | JSONRPC[], uri = "/") {
@@ -231,10 +427,17 @@ export class RPCClient extends RESTClient {
   }
 
   async rpc(method: string, params = {}, wallet?: string) {
-    const uri = !wallet ? "/" : "wallet/" + wallet;
+    const uri = typeof wallet === "undefined" ? "/" : "wallet/" + wallet;
     const body = { method, params, jsonrpc: 1.0, id: "rpc-bitcoin" };
-    const response = await this.batch(body, uri);
-    return this.fullResponse ? response : response.result;
+    try {
+      const response = await this.batch(body, uri);
+      return this.fullResponse ? response : response.result;
+    } catch (error) {
+      if (error.error && error.error.error && error.error.result === null) {
+        throw this.fullResponse ? error.error : error.error.error;
+      }
+      throw error;
+    }
   }
 
   /**
@@ -853,6 +1056,647 @@ export class RPCClient extends RESTClient {
    */
   async verifymessage({ address, signature, message }: VerifyMessageParams) {
     return this.rpc("verifymessage", { address, signature, message });
+  }
+
+  /**
+   * @description Mark in-wallet transaction `txid` as abandoned
+   */
+  async abandontransaction({ txid }: TxId, wallet?: string) {
+    return this.rpc("abandontransaction", { txid }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Stops current wallet rescan triggered by an RPC call
+   */
+  async abortrescan(wallet?: string) {
+    return this.rpc("abortrescan", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Add a nrequired-to-sign multisignature address to the wallet.
+   */
+  async addmultisigaddress(
+    { nrequired, keys, label, address_type }: AddMultiSigAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "addmultisigaddress",
+      { nrequired, keys, label, address_type },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Safely copies current wallet file to destination.
+   */
+  async backupwallet(
+    { destination }: { destination: string },
+    wallet?: string
+  ) {
+    return this.rpc("backupwallet", { destination }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Bumps the fee of an opt-in-RBF transaction T, replacing it with a new transaction B.
+   */
+  async bumpfee({ txid, options }: BumpFeeParams, wallet?: string) {
+    return this.rpc("bumpfee", { txid, options }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Creates and loads a new wallet.
+   */
+  async createwallet({
+    wallet_name,
+    disable_private_keys = false,
+    blank = false
+  }: CreateWalletParams) {
+    return this.rpc("createwallet", {
+      wallet_name,
+      disable_private_keys,
+      blank
+    });
+  }
+
+  /**
+   * @description Reveals the private key corresponding to 'address'.
+   */
+  async dumpprivkey({ address }: { address: string }, wallet?: string) {
+    return this.rpc("dumpprivkey", { address }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Dumps all wallet keys in a human-readable format to a server-side file.
+   */
+  async dumpwallet({ filename }: { filename: string }, wallet?: string) {
+    return this.rpc("dumpwallet", { filename }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Encrypts the wallet with 'passphrase'.
+   */
+  async encryptwallet({ passphrase }: { passphrase: string }, wallet?: string) {
+    return this.rpc("encryptwallet", { passphrase }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns the list of addresses assigned the specified label.
+   */
+  async getaddressesbylabel({ label }: { label: string }, wallet?: string) {
+    return this.rpc("getaddressesbylabel", { label }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Return information about the given bitcoin address.
+   */
+  async getaddressinfo({ address }: { address: string }, wallet?: string) {
+    return this.rpc("getaddressinfo", { address }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns the total available balance.
+   */
+  async getbalance(
+    { minconf, include_watchonly = false }: GetBalanceParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getbalance",
+      { minconf, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns a new Bitcoin address for receiving payments.
+   */
+  async getnewaddress(
+    { label = "", address_type }: GetNewAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getnewaddress",
+      { label, address_type },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns a new Bitcoin address, for receiving change.
+   */
+  async getrawchangeaddress(
+    { address_type }: { address_type?: AddressType },
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getrawchangeaddress",
+      { address_type },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns the total amount received by the given address in transactions with at least minconf confirmations.
+   */
+  async getreceivedbyaddress(
+    { address, minconf = 1 }: GetReceivedByAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getreceivedbyaddress",
+      { address, minconf },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns the total amount received by addresses with `label` in transactions with at least `minconf` confirmations.
+   */
+  async getreceivedbylabel(
+    { label, minconf = 1 }: GetReceivedByLabelParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "getreceivedbylabel",
+      { label, minconf },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Get detailed information about in-wallet transaction `txid`
+   */
+  async gettransaction(
+    { txid, include_watchonly = false }: GetTransactionParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "gettransaction",
+      { txid, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns the server's total unconfirmed balance
+   */
+  async getunconfirmedbalance(wallet?: string) {
+    return this.rpc("getunconfirmedbalance", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns an object containing various wallet state info.
+   */
+  async getwalletinfo(wallet?: string) {
+    return this.rpc("getwalletinfo", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Adds an address or script (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
+   */
+  async importaddress(
+    { address, label = "", rescan = true, p2sh = false }: ImportAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importaddress",
+      { address, label, rescan, p2sh },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Import addresses/scripts (with private or public keys, redeem script (P2SH)), optionally rescanning the blockchain from the earliest creation time of the imported scripts.
+   */
+  async importmulti({ requests, options }: ImportMultiParams, wallet?: string) {
+    return this.rpc(
+      "importmulti",
+      { requests, options },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Adds a private key (as returned by `dumpprivkey`) to your wallet.
+   */
+  async importprivkey(
+    { privkey, label, rescan }: ImportPrivKeyParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importprivkey",
+      { privkey, label, rescan },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Imports funds without rescan. Corresponding address or script must previously be included in wallet.
+   */
+  async importprunedfunds(
+    { rawtransaction, txoutproof }: ImportPrunedFundsParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importprunedfunds",
+      { rawtransaction, txoutproof },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Adds a public key (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
+   */
+  async importpubkey(
+    { pubkey, label = "", rescan = true }: ImportPubKeyParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "importpubkey",
+      { pubkey, label, rescan },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Imports keys from a wallet dump file (see `dumpwallet`).
+   */
+  async importwallet({ filename }: { filename: string }, wallet?: string) {
+    return this.rpc("importwallet", { filename }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Fills the keypool.
+   */
+  async keypoolrefill(
+    { newsize = 100 }: { newsize?: number },
+    wallet?: string
+  ) {
+    return this.rpc("keypoolrefill", { newsize }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Lists groups of addresses which have had their common ownership made public by common use as inputs or as the resulting change in past transactions
+   */
+  async listaddressgroupings(wallet?: string) {
+    return this.rpc("listaddressgroupings", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns the list of all labels, or labels that are assigned to addresses with a specific purpose.
+   */
+  async listlabels({ purpose }: ListLabelsParams, wallet?: string) {
+    return this.rpc("listlabels", { purpose }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Returns list of temporarily unspendable outputs.
+   */
+  async listlockunspent(wallet?: string) {
+    return this.rpc("listlockunspent", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description List balances by receiving address.
+   */
+  async listreceivedbyaddress(
+    {
+      minconf = 1,
+      include_empty = false,
+      include_watchonly = false,
+      address_filter
+    }: ListReceivedByAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listreceivedbyaddress",
+      { minconf, include_empty, include_watchonly, address_filter },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description List received transactions by label.
+   */
+  async listreceivedbylabel(
+    {
+      minconf = 1,
+      include_empty = false,
+      include_watchonly = false
+    }: ListReceivedByLabelParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listreceivedbylabel",
+      { minconf, include_empty, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Get all transactions in blocks since block `blockhash`, or all transactions if omitted.
+   */
+  async listsinceblock(
+    {
+      blockhash,
+      target_confirmations = 1,
+      include_watchonly = false,
+      include_removed = true
+    }: ListSinceBlockParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listsinceblock",
+      { blockhash, target_confirmations, include_watchonly, include_removed },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns up to `count` most recent transactions skipping the first `skip` transactions.
+   */
+  async listtransactions(
+    {
+      label,
+      count = 10,
+      skip = 0,
+      include_watchonly = false
+    }: ListTransactionsParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listtransactions",
+      { label, count, skip, include_watchonly },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns array of unspent transaction outputs with between `minconf` and `maxconf` (inclusive) confirmations.
+   */
+  async listunspent(
+    {
+      minconf = 1,
+      maxconf = 9999999,
+      addresses,
+      include_unsafe = true,
+      query_options
+    }: ListUnspentParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "listunspent",
+      { minconf, maxconf, addresses, include_unsafe, query_options },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Returns a list of wallets in the wallet directory.
+   */
+  async listwalletdir() {
+    return this.rpc("listwalletdir");
+  }
+
+  /**
+   * @description Returns a list of currently loaded wallets.
+   */
+  async listwallets() {
+    return this.rpc("listwallets");
+  }
+
+  /**
+   * @description Loads a wallet from a wallet file or directory.
+   */
+  async loadwallet({ filename }: { filename: string }) {
+    return this.rpc("loadwallet", { filename });
+  }
+
+  /**
+   * @description Updates list of temporarily unspendable outputs.
+   */
+  async lockunspent(
+    { unlock, transactions }: LockUnspentParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "lockunspent",
+      { unlock, transactions },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Deletes the specified transaction from the wallet.
+   */
+  async removeprunedfunds({ txid }: TxId, wallet?: string) {
+    return this.rpc("removeprunedfunds", { txid }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Rescan the local blockchain for wallet related transactions.
+   */
+  async rescanblockchain(
+    { start_height = 0, stop_height }: RescanBlockchainParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "rescanblockchain",
+      { start_height, stop_height },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Send multiple times.
+   */
+  async sendmany(
+    {
+      amounts,
+      minconf = 1,
+      comment,
+      subtractfeefrom,
+      replaceable,
+      conf_target,
+      estimate_mode = "UNSET"
+    }: SendManyParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "sendmany",
+      {
+        amounts,
+        minconf,
+        comment,
+        subtractfeefrom,
+        replaceable,
+        conf_target,
+        estimate_mode
+      },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Send an amount to a given address.
+   */
+  async sendtoaddress(
+    {
+      address,
+      amount,
+      comment,
+      comment_to,
+      subtractfeefromamount = false,
+      replaceable,
+      conf_target,
+      estimate_mode = "UNSET"
+    }: SendToAddressParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "sendtoaddress",
+      {
+        address,
+        amount,
+        comment,
+        comment_to,
+        subtractfeefromamount,
+        replaceable,
+        conf_target,
+        estimate_mode
+      },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Set or generate a new HD wallet seed.
+   */
+  async sethdseed({ newkeypool, seed }: SetHDSeedParams, wallet?: string) {
+    return this.rpc("sethdseed", { newkeypool, seed }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Sets the label associated with the given address.
+   */
+  async setlabel({ address, label }: SetLabelParams, wallet?: string) {
+    return this.rpc("setlabel", { address, label }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Set the transaction fee per kB for this wallet.
+   */
+  async settxfee({ amount }: { amount: number | string }, wallet?: string) {
+    return this.rpc("settxfee", { amount }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Sign a message with the private key of an address
+   */
+  async signmessage({ address, message }: SignMessageParams, wallet?: string) {
+    return this.rpc("signmessage", { address, message }, wallet || this.wallet);
+  }
+
+  /**
+   * @description Sign inputs for raw transaction
+   */
+  async signrawtransactionwithwallet(
+    {
+      hexstring,
+      prevtxs,
+      sighashtype = "ALL"
+    }: SignRawTransactionWithWalletParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "signrawtransactionwithwallet",
+      { hexstring, prevtxs, sighashtype },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Unloads the wallet.
+   */
+  async unloadwallet({ wallet_name }: { wallet_name?: string } = {}) {
+    if (typeof wallet_name !== "undefined") {
+      return this.rpc("unloadwallet", { wallet_name });
+    }
+    return this.rpc("unloadwallet", undefined, this.wallet);
+  }
+
+  /**
+   * @description Creates and funds a transaction in the Partially Signed Transaction format.
+   */
+  async walletcreatefundedpsbt(
+    {
+      inputs,
+      outputs,
+      locktime = 0,
+      options,
+      bip32derivs = false
+    }: WalletCreateFundedPsbtParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletcreatefundedpsbt",
+      { inputs, outputs, locktime, options, bip32derivs },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Removes the wallet encryption key from memory, locking the wallet.
+   */
+  async walletlock(wallet?: string) {
+    return this.rpc("walletlock", undefined, wallet || this.wallet);
+  }
+
+  /**
+   * @description Stores the wallet decryption key in memory for `timeout` seconds.
+   */
+  async walletpassphrase(
+    { passphrase, timeout }: WalletPassphraseParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletpassphrase",
+      { passphrase, timeout },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Changes the wallet passphrase from `oldpassphrase` to `newpassphrase`.
+   */
+  async walletpassphrasechange(
+    { oldpassphrase, newpassphrase }: WalletPassphraseChangeParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletpassphrasechange",
+      { oldpassphrase, newpassphrase },
+      wallet || this.wallet
+    );
+  }
+
+  /**
+   * @description Update a PSBT with input information from our wallet and then sign inputs that we can sign for.
+   */
+  async walletprocesspsbt(
+    {
+      psbt,
+      sign = true,
+      sighashtype = "ALL",
+      bip32derivs = false
+    }: WalletProcessPsbtParams,
+    wallet?: string
+  ) {
+    return this.rpc(
+      "walletprocesspsbt",
+      { psbt, sign, sighashtype, bip32derivs },
+      wallet || this.wallet
+    );
   }
 
   /**
