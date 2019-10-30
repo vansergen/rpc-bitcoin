@@ -15,7 +15,8 @@
     "lint": "eslint --ext .ts,.js ./",
     "lint-fix": "npm run lint -- --fix",
     "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts",
-    "prepublishOnly": "npm run prettier && npm run lint && npm run build && npm run prettier-write && npm run lint-fix"
+    "prepublishOnly": "npm run prettier && npm run lint && npm run build && npm run prettier-write && npm run lint-fix",
+    "postpublish": "rm -fr build"
   },
   "repository": {
     "type": "git",
