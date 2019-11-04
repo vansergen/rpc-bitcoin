@@ -1,6 +1,6 @@
 {
   "name": "rpc-bitcoin",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "A TypeScript library to make RPC and HTTP REST requests to Bitcoin Core",
   "main": "build/index.js",
   "type": "module",
@@ -38,13 +38,13 @@
     "@typescript-eslint/parser": "^2.6.0",
     "eslint": "^6.6.0",
     "mocha": "^6.2.2",
-    "nock": "^11.6.0",
+    "nock": "^11.7.0",
     "prettier": "^1.18.2",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   },
   "dependencies": {
-    "rpc-request": "^3.1.0"
+    "rpc-request": "^3.1.1"
   },
   "directories": {
     "test": "test"
