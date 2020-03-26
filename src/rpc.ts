@@ -1008,6 +1008,13 @@ export class RPCClient extends RESTClient {
   }
 
   /**
+   * @description Returns all balances in BTC.
+   */
+  getbalances(wallet?: string) {
+    return this.rpc("getbalances", undefined, wallet || this.wallet);
+  }
+
+  /**
    * @description Returns a new Bitcoin address for receiving payments.
    */
   getnewaddress(options: GetNewAddressParams, wallet?: string) {

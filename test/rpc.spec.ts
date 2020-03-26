@@ -2475,6 +2475,20 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".getbalances()", async () => {
+      const request = { params: {}, method: "getbalances", id, jsonrpc };
+      const result = {
+        mine: { trusted: 0, untrusted_pending: 0, immature: 0 },
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getbalances(wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".getnewaddress()", async () => {
       const label = "SomeLabel";
       const address_type: "bech32" = "bech32";

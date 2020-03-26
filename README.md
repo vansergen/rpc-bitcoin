@@ -829,6 +829,13 @@ const include_watchonly = true;
 const result = await client.getbalance({ minconf, include_watchonly }, wallet);
 ```
 
+- [`getbalances`](https://bitcoin.org/en/developer-reference#getbalances)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.getbalances(wallet);
+```
+
 - [`getnewaddress`](https://bitcoin.org/en/developer-reference#getnewaddress)
 
 ```javascript
