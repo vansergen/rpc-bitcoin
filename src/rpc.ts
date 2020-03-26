@@ -653,16 +653,6 @@ export class RPCClient extends RESTClient {
   }
 
   /**
-   * @description Mine up to nblocks blocks immediately (before the RPC call returns) to an address in the wallet.
-   */
-  async generate(
-    { nblocks, maxtries = 1000000 }: GenerateParams,
-    wallet?: string
-  ) {
-    return this.rpc("generate", { nblocks, maxtries }, wallet || this.wallet);
-  }
-
-  /**
    * @description Mine blocks immediately to a specified address (before the RPC call returns)
    */
   async generatetoaddress(

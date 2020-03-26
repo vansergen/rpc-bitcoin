@@ -1021,46 +1021,6 @@ suite("RPCClient", () => {
   });
 
   suite("Generating", () => {
-    test(".generate()", async () => {
-      const params = { nblocks: 1, maxtries: 10000 };
-      const request = { params, method: "generate", id, jsonrpc };
-      const result: string[] = [];
-      nock(uri)
-        .post("/", request)
-        .times(1)
-        .basicAuth(auth)
-        .reply(200, { result, error, id });
-      const data = await client.generate(params);
-      assert.deepStrictEqual(data, result);
-    });
-
-    test(".generate() (multi-wallet)", async () => {
-      const params = { nblocks: 1, maxtries: 10000 };
-      const request = { params, method: "generate", id, jsonrpc };
-      const result: string[] = [];
-      nock(uri)
-        .post("/wallet/" + wallet, request)
-        .times(1)
-        .basicAuth(auth)
-        .reply(200, { result, error, id });
-      const data = await client.generate(params, wallet);
-      assert.deepStrictEqual(data, result);
-    });
-
-    test(".generate() (default wallet)", async () => {
-      const client = new RPCClient({ port, timeout, pass, wallet });
-      const params = { nblocks: 1, maxtries: 10000 };
-      const request = { params, method: "generate", id, jsonrpc };
-      const result: string[] = [];
-      nock(uri)
-        .post("/wallet/" + wallet, request)
-        .times(1)
-        .basicAuth(auth)
-        .reply(200, { result, error, id });
-      const data = await client.generate(params);
-      assert.deepStrictEqual(data, result);
-    });
-
     test(".generatetoaddress()", async () => {
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };

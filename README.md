@@ -263,15 +263,6 @@ const result = await client.uptime();
 
 ### Generating
 
-- [`generate`](https://bitcoin.org/en/developer-reference#generate)
-
-```javascript
-const nblocks = 1;
-const maxtries = 10000;
-const wallet = "bitcoin-core-wallet.dat";
-const result = await client.generate({ nblocks, maxtries }, wallet);
-```
-
 - [`generatetoaddress`](https://bitcoin.org/en/developer-reference#generatetoaddress)
 
 ```javascript
