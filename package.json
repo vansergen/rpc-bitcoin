@@ -35,7 +35,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.6.0",
+    "@typescript-eslint/parser": "^2.25.0",
     "eslint": "^6.8.0",
     "mocha": "^7.1.1",
     "nock": "^12.0.3",
