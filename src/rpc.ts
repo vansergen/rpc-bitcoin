@@ -166,7 +166,9 @@ export type FundRawTransactionParams = HexString & {
 
 export type GetRawTransactionParams = TxId & Verbose & { blockhash?: string };
 
-export type SendRawTransactionParams = HexString & { allowhighfees?: boolean };
+export type SendRawTransactionParams = HexString & {
+  maxfeerate?: number | string;
+};
 
 export type PrevTx = {
   txid: string;
@@ -196,7 +198,7 @@ export type SignRawTransactionWithKeyParams = {
 
 export type TestmemPoolAcceptParams = {
   rawtxs: string[];
-  allowhighfees?: boolean;
+  maxfeerate?: string | number;
 };
 
 export type UtxoUpdatePsbtParams = {

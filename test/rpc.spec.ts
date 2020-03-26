@@ -2060,8 +2060,8 @@ suite("RPCClient", () => {
     test(".sendrawtransaction()", async () => {
       const hexstring =
         "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000";
-      const allowhighfees = true;
-      const params = { hexstring, allowhighfees };
+      const maxfeerate = 0.1;
+      const params = { hexstring, maxfeerate };
       const request = { params, method: "sendrawtransaction", id, jsonrpc };
       const result =
         "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
@@ -2107,8 +2107,8 @@ suite("RPCClient", () => {
       const rawtxs = [
         "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000",
       ];
-      const allowhighfees = true;
-      const params = { rawtxs, allowhighfees };
+      const maxfeerate = 0.1;
+      const params = { rawtxs, maxfeerate };
       const request = { params, method: "testmempoolaccept", id, jsonrpc };
       const result = [
         {
@@ -3250,7 +3250,6 @@ suite("RPCClient", () => {
         tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
         tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003",
       };
-      const minconf = 6;
       const comment = "SomeComment";
       const subtractfeefrom = ["tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237"];
       const replaceable = true;
@@ -3258,7 +3257,6 @@ suite("RPCClient", () => {
       const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
       const params = {
         amounts,
-        minconf,
         comment,
         subtractfeefrom,
         replaceable,
