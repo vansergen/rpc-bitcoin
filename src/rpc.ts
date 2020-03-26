@@ -199,6 +199,14 @@ export type TestmemPoolAcceptParams = {
   allowhighfees?: boolean;
 };
 
+export type UtxoUpdatePsbtParams = {
+  psbt: string;
+  descriptors?: (
+    | string
+    | { desc: string; range?: number | [number, number] }
+  )[];
+};
+
 export type Label = { label?: string };
 
 export type AddMultiSigAddressParams = CreateMultiSigParams & Label;
@@ -883,7 +891,7 @@ export class RPCClient extends RESTClient {
   /**
    * @description Updates a PSBT with witness UTXOs retrieved from the UTXO set or the mempool.
    */
-  utxoupdatepsbt(options: { psbt: string }) {
+  utxoupdatepsbt(options: UtxoUpdatePsbtParams) {
     return this.rpc("utxoupdatepsbt", options);
   }
 
