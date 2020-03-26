@@ -59,6 +59,15 @@ const info = await client.getblockchaininfo();
 const count = await client.getblockcount();
 ```
 
+- [`getblockfilter`](https://bitcoin.org/en/developer-reference#getblockfilter)
+
+```javascript
+const blockhash =
+  "00000000000000dfffa1954693ba3f79813909dbcdedfe05eccb9829e828c141";
+const filtertype = "basic";
+const result = await client.getblockfilter({ blockhash, filtertype });
+```
+
 - [`getblockhash`](https://bitcoin.org/en/developer-reference#getblockhash)
 
 ```javascript

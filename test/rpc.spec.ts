@@ -375,6 +375,29 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".getblockfilter()", async () => {
+      const blockhash =
+        "00000000000000dfffa1954693ba3f79813909dbcdedfe05eccb9829e828c141";
+      const filtertype = "basic";
+      const request = {
+        params: { blockhash, filtertype },
+        method: "getblockfilter",
+        id,
+        jsonrpc,
+      };
+      const result = {
+        filter: "<the hex-encoded filter data>",
+        header: "<the hex-encoded filter header>",
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getblockfilter({ blockhash, filtertype });
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".getblockhash()", async () => {
       const height = 1583782;
       const params = { height };

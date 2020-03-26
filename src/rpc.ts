@@ -26,6 +26,8 @@ export type TxId = { txid: string };
 
 export type GetBlockParams = Verbosity & Blockhash;
 
+export type GetBlockFilterParams = Blockhash & { filtertype?: string };
+
 export type GetBlockHeaderParams = Blockhash & Verbose;
 
 export type GetBlockStatsParams = {
@@ -430,6 +432,13 @@ export class RPCClient extends RESTClient {
    */
   getblockcount() {
     return this.rpc("getblockcount");
+  }
+
+  /**
+   * @description Retrieve a BIP 157 content filter for a particular block.
+   */
+  getblockfilter(options: GetBlockFilterParams) {
+    return this.rpc("getblockfilter", options);
   }
 
   /**
