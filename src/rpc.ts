@@ -336,7 +336,6 @@ export type BaseSendParams = EstimateMode & {
 
 export type SendManyParams = BaseSendParams & {
   amounts: { [address: string]: number | string };
-  minconf?: number;
   subtractfeefrom?: string[];
 };
 
