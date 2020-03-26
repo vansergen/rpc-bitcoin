@@ -222,6 +222,7 @@ export type BumpFeeParams = {
 };
 
 export type CreateWalletParams = {
+  passphrase?: string;
   avoid_reuse?: boolean;
   wallet_name: string;
   disable_private_keys?: boolean;
