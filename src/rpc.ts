@@ -384,7 +384,7 @@ export class RPCClient extends RESTClient {
     this.wallet = typeof wallet === "string" ? wallet : undefined;
   }
 
-  async batch(body: JSONRPC | JSONRPC[], uri = "/") {
+  batch(body: JSONRPC | JSONRPC[], uri = "/") {
     return super.post({ body, uri });
   }
 
@@ -405,280 +405,280 @@ export class RPCClient extends RESTClient {
   /**
    * @description Returns the hash of the best (tip) block in the longest blockchain.
    */
-  async getbestblockhash() {
+  getbestblockhash() {
     return this.rpc("getbestblockhash");
   }
 
   /**
    * @description If verbosity is 0, returns a string that is serialized, hex-encoded data for block 'hash'. If verbosity is 1, returns an Object with information about block <hash>. If verbosity is 2, returns an Object with information about block <hash> and information about each transaction.
    */
-  async getblock({ blockhash, verbosity = 1 }: GetBlockParams) {
+  getblock({ blockhash, verbosity = 1 }: GetBlockParams) {
     return this.rpc("getblock", { blockhash, verbosity });
   }
 
   /**
    * @description Returns an object containing various state info regarding blockchain processing.
    */
-  async getblockchaininfo() {
+  getblockchaininfo() {
     return this.rpc("getblockchaininfo");
   }
 
   /**
    * @description Returns the number of blocks in the longest blockchain.
    */
-  async getblockcount() {
+  getblockcount() {
     return this.rpc("getblockcount");
   }
 
   /**
    * @description Returns hash of block in best-block-chain at height provided.
    */
-  async getblockhash({ height }: Height) {
+  getblockhash({ height }: Height) {
     return this.rpc("getblockhash", { height });
   }
 
   /**
    * @description If verbose is `false`, returns a string that is serialized, hex-encoded data for blockheader 'hash'. If verbose is `true`, returns an Object with information about blockheader <hash>.
    */
-  async getblockheader({ blockhash, verbose = true }: GetBlockHeaderParams) {
+  getblockheader({ blockhash, verbose = true }: GetBlockHeaderParams) {
     return this.rpc("getblockheader", { blockhash, verbose });
   }
 
   /**
    * @description Compute per block statistics for a given window.
    */
-  async getblockstats({ hash_or_height, stats = [] }: GetBlockStatsParams) {
+  getblockstats({ hash_or_height, stats = [] }: GetBlockStatsParams) {
     return this.rpc("getblockstats", { hash_or_height, stats });
   }
 
   /**
    * @description Return information about all known tips in the block tree, including the main chain as well as orphaned branches.
    */
-  async getchaintips() {
+  getchaintips() {
     return this.rpc("getchaintips");
   }
 
   /**
    * @description Compute statistics about the total number and rate of transactions in the chain.
    */
-  async getchaintxstats({ nblocks, blockhash }: GetChainTxStatsParams) {
+  getchaintxstats({ nblocks, blockhash }: GetChainTxStatsParams) {
     return this.rpc("getchaintxstats", { nblocks, blockhash });
   }
 
   /**
    * @description Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
    */
-  async getdifficulty() {
+  getdifficulty() {
     return this.rpc("getdifficulty");
   }
 
   /**
    * @description If txid is in the mempool, returns all in-mempool ancestors.
    */
-  async getmempoolancestors({ txid, verbose = false }: GetMemPoolParams) {
+  getmempoolancestors({ txid, verbose = false }: GetMemPoolParams) {
     return this.rpc("getmempoolancestors", { txid, verbose });
   }
 
   /**
    * @description If txid is in the mempool, returns all in-mempool descendants.
    */
-  async getmempooldescendants({ txid, verbose = false }: GetMemPoolParams) {
+  getmempooldescendants({ txid, verbose = false }: GetMemPoolParams) {
     return this.rpc("getmempooldescendants", { txid, verbose });
   }
 
   /**
    * @description Returns mempool data for given transaction
    */
-  async getmempoolentry({ txid }: TxId) {
+  getmempoolentry({ txid }: TxId) {
     return this.rpc("getmempoolentry", { txid });
   }
 
   /**
    * @description Returns details on the active state of the TX memory pool.
    */
-  async getmempoolinfo() {
+  getmempoolinfo() {
     return this.rpc("getmempoolinfo");
   }
 
   /**
    * @description Returns all transaction ids in memory pool as a json array of string transaction ids.
    */
-  async getrawmempool({ verbose = false }: Verbose = {}) {
+  getrawmempool({ verbose = false }: Verbose = {}) {
     return this.rpc("getrawmempool", { verbose });
   }
 
   /**
    * @description Returns details about an unspent transaction output.
    */
-  async gettxout({ txid, n, include_mempool = true }: GetTxOutParams) {
+  gettxout({ txid, n, include_mempool = true }: GetTxOutParams) {
     return this.rpc("gettxout", { txid, n, include_mempool });
   }
 
   /**
    * @description Returns a hex-encoded proof that "txid" was included in a block.
    */
-  async gettxoutproof({ txids, blockhash }: GetTxOutProofParams) {
+  gettxoutproof({ txids, blockhash }: GetTxOutProofParams) {
     return this.rpc("gettxoutproof", { txids, blockhash });
   }
 
   /**
    * @description Returns statistics about the unspent transaction output set.
    */
-  async gettxoutsetinfo() {
+  gettxoutsetinfo() {
     return this.rpc("gettxoutsetinfo");
   }
 
   /**
    * @description Treats a block as if it were received before others with the same work.
    */
-  async preciousblock({ blockhash }: Blockhash) {
+  preciousblock({ blockhash }: Blockhash) {
     return this.rpc("preciousblock", { blockhash });
   }
 
   /**
    * @description Prune the blockchain.
    */
-  async pruneblockchain({ height }: Height) {
+  pruneblockchain({ height }: Height) {
     return this.rpc("pruneblockchain", { height });
   }
 
   /**
    * @description Dumps the mempool to disk. It will fail until the previous dump is fully loaded.
    */
-  async savemempool() {
+  savemempool() {
     return this.rpc("savemempool");
   }
 
   /**
    * @description Scans the unspent transaction output set for entries that match certain output descriptors.
    */
-  async scantxoutset({ action, scanobjects }: ScanTxOutSetParams) {
+  scantxoutset({ action, scanobjects }: ScanTxOutSetParams) {
     return this.rpc("scantxoutset", { action, scanobjects });
   }
 
   /**
    * @description Verifies blockchain database.
    */
-  async verifychain({ checklevel = 3, nblocks = 6 } = {}) {
+  verifychain({ checklevel = 3, nblocks = 6 } = {}) {
     return this.rpc("verifychain", { checklevel, nblocks });
   }
 
   /**
    * @description Verifies that a proof points to a transaction in a block, returning the transaction it commits to and throwing an RPC error if the block is not in our best chain.
    */
-  async verifytxoutproof({ proof }: { proof: string }) {
+  verifytxoutproof({ proof }: { proof: string }) {
     return this.rpc("verifytxoutproof", { proof });
   }
 
   /**
    * @description Returns an object containing information about memory usage.
    */
-  async getmemoryinfo({ mode = "stats" } = {}) {
+  getmemoryinfo({ mode = "stats" } = {}) {
     return this.rpc("getmemoryinfo", { mode });
   }
 
   /**
    * @description Returns details of the RPC server.
    */
-  async getrpcinfo() {
+  getrpcinfo() {
     return this.rpc("getrpcinfo");
   }
 
   /**
    * @description List all commands, or get help for a specified command.
    */
-  async help({ command }: HelpParams = {}) {
+  help({ command }: HelpParams = {}) {
     return this.rpc("help", { command });
   }
 
   /**
    * @description Gets and sets the logging configuration.
    */
-  async logging({ include, exclude }: LoggingParams = {}) {
+  logging({ include, exclude }: LoggingParams = {}) {
     return this.rpc("logging", { include, exclude });
   }
 
   /**
    * @description Stop Bitcoin server.
    */
-  async stop() {
+  stop() {
     return this.rpc("stop");
   }
 
   /**
    * @description Returns the total uptime of the server.
    */
-  async uptime() {
+  uptime() {
     return this.rpc("uptime");
   }
 
   /**
    * @description Mine blocks immediately to a specified address (before the RPC call returns)
    */
-  async generatetoaddress(options: GenerateToAddressParams, wallet?: string) {
+  generatetoaddress(options: GenerateToAddressParams, wallet?: string) {
     return this.rpc("generatetoaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description It returns data needed to construct a block to work on.
    */
-  async getblocktemplate(options: GetBlockTemplateParams) {
+  getblocktemplate(options: GetBlockTemplateParams) {
     return this.rpc("getblocktemplate", options);
   }
 
   /**
    * @description Returns a json object containing mining-related information.
    */
-  async getmininginfo() {
+  getmininginfo() {
     return this.rpc("getmininginfo");
   }
 
   /**
    * @description Returns the estimated network hashes per second based on the last `n` blocks.
    */
-  async getnetworkhashps(options = {}) {
+  getnetworkhashps(options = {}) {
     return this.rpc("getnetworkhashps", options);
   }
 
   /**
    * @description Accepts the transaction into mined blocks at a higher (or lower) priority
    */
-  async prioritisetransaction(options: PrioritiseTransactionParams) {
+  prioritisetransaction(options: PrioritiseTransactionParams) {
     return this.rpc("prioritisetransaction", options);
   }
 
   /**
    * @description Attempts to submit new block to network.
    */
-  async submitblock(options: HexData) {
+  submitblock(options: HexData) {
     return this.rpc("submitblock", options);
   }
 
   /**
    * @description Decode the given hexdata as a header and submit it as a candidate chain tip if valid.
    */
-  async submitheader(options: HexData) {
+  submitheader(options: HexData) {
     return this.rpc("submitheader", options);
   }
 
   /**
    * @description Attempts to add or remove a node from the addnode list.
    */
-  async addnode(options: AddNodeParams) {
+  addnode(options: AddNodeParams) {
     return this.rpc("addnode", options);
   }
 
   /**
    * @description Clear all banned IPs.
    */
-  async clearbanned() {
+  clearbanned() {
     return this.rpc("clearbanned");
   }
 
   /**
    * @description Immediately disconnects from the specified peer node.
    */
-  async disconnectnode(params: DisconnectNodeParams) {
+  disconnectnode(params: DisconnectNodeParams) {
     if ("address" in params) {
       return this.rpc("disconnectnode", { address: params.address });
     }
@@ -688,336 +688,336 @@ export class RPCClient extends RESTClient {
   /**
    * @description Returns information about the given added node, or all added nodes
    */
-  async getaddednodeinfo(options: { node?: string } = {}) {
+  getaddednodeinfo(options: { node?: string } = {}) {
     return this.rpc("getaddednodeinfo", options);
   }
 
   /**
    * @description Returns the number of connections to other nodes.
    */
-  async getconnectioncount() {
+  getconnectioncount() {
     return this.rpc("getconnectioncount");
   }
 
   /**
    * @description Returns information about network traffic, including bytes in, bytes out, and current time.
    */
-  async getnettotals() {
+  getnettotals() {
     return this.rpc("getnettotals");
   }
 
   /**
    * @description Returns an object containing various state info regarding P2P networking.
    */
-  async getnetworkinfo() {
+  getnetworkinfo() {
     return this.rpc("getnetworkinfo");
   }
 
   /**
    * @description Return known addresses which can potentially be used to find new nodes in the network
    */
-  async getnodeaddresses(options = {}) {
+  getnodeaddresses(options = {}) {
     return this.rpc("getnodeaddresses", options);
   }
 
   /**
    * @description Returns data about each connected network node as a json array of objects.
    */
-  async getpeerinfo() {
+  getpeerinfo() {
     return this.rpc("getpeerinfo");
   }
 
   /**
    * @description List all banned IPs/Subnets.
    */
-  async listbanned() {
+  listbanned() {
     return this.rpc("listbanned");
   }
 
   /**
    * @description Requests that a ping be sent to all other nodes, to measure ping time.
    */
-  async ping() {
+  ping() {
     return this.rpc("ping");
   }
 
   /**
    * @description Attempts to add or remove an IP/Subnet from the banned list
    */
-  async setban(options: SetBanParams) {
+  setban(options: SetBanParams) {
     return this.rpc("setban", options);
   }
 
   /**
    * @description Disable/enable all p2p network activity.
    */
-  async setnetworkactive(options: { state: boolean }) {
+  setnetworkactive(options: { state: boolean }) {
     return this.rpc("setnetworkactive", options);
   }
 
   /**
    * @description Analyzes and provides information about the current status of a PSBT and its inputs
    */
-  async analyzepsbt(options: { psbt: string }) {
+  analyzepsbt(options: { psbt: string }) {
     return this.rpc("analyzepsbt", options);
   }
 
   /**
    * @description Combine multiple partially signed Bitcoin transactions into one transaction.
    */
-  async combinepsbt(options: { txs: string[] }) {
+  combinepsbt(options: { txs: string[] }) {
     return this.rpc("combinepsbt", options);
   }
 
   /**
    * @description Combine multiple partially signed transactions into one transaction.
    */
-  async combinerawtransaction(options: { txs: string[] }) {
+  combinerawtransaction(options: { txs: string[] }) {
     return this.rpc("combinerawtransaction", options);
   }
 
   /**
    * @description Converts a network serialized transaction to a PSBT.
    */
-  async converttopsbt(options: ConvertToPsbtParams) {
+  converttopsbt(options: ConvertToPsbtParams) {
     return this.rpc("converttopsbt", options);
   }
 
   /**
    * @description Creates a transaction in the Partially Signed Transaction format.
    */
-  async createpsbt(options: CreateTransactionParams) {
+  createpsbt(options: CreateTransactionParams) {
     return this.rpc("createpsbt", options);
   }
 
   /**
    * @description Create a transaction spending the given inputs and creating new outputs.
    */
-  async createrawtransaction(options: CreateTransactionParams) {
+  createrawtransaction(options: CreateTransactionParams) {
     return this.rpc("createrawtransaction", options);
   }
 
   /**
    * @description Return a JSON object representing the serialized, base64-encoded partially signed Bitcoin transaction.
    */
-  async decodepsbt(options: { psbt: string }) {
+  decodepsbt(options: { psbt: string }) {
     return this.rpc("decodepsbt", options);
   }
 
   /**
    * @description Return a JSON object representing the serialized, hex-encoded transaction.
    */
-  async decoderawtransaction(options: DecodeRawTransactionParams) {
+  decoderawtransaction(options: DecodeRawTransactionParams) {
     return this.rpc("decoderawtransaction", options);
   }
 
   /**
    * @description Decode a hex-encoded script.
    */
-  async decodescript(options: HexString) {
+  decodescript(options: HexString) {
     return this.rpc("decodescript", options);
   }
 
   /**
    * @description Finalize the inputs of a PSBT.
    */
-  async finalizepsbt(options: FinalizePsbtParams) {
+  finalizepsbt(options: FinalizePsbtParams) {
     return this.rpc("finalizepsbt", options);
   }
 
   /**
    * @description Add inputs to a transaction until it has enough in value to meet its out value.
    */
-  async fundrawtransaction(options: FundRawTransactionParams, wallet?: string) {
+  fundrawtransaction(options: FundRawTransactionParams, wallet?: string) {
     return this.rpc("fundrawtransaction", options, wallet || this.wallet);
   }
 
   /**
    * @description Return the raw transaction data.
    */
-  async getrawtransaction(options: GetRawTransactionParams) {
+  getrawtransaction(options: GetRawTransactionParams) {
     return this.rpc("getrawtransaction", options);
   }
 
   /**
    * @description Joins multiple distinct PSBTs with different inputs and outputs into one PSBT with inputs and outputs from all of the PSBTs.
    */
-  async joinpsbts(options: { txs: string[] }) {
+  joinpsbts(options: { txs: string[] }) {
     return this.rpc("joinpsbts", options);
   }
 
   /**
    * @description Submits raw transaction (serialized, hex-encoded) to local node and network.
    */
-  async sendrawtransaction(options: SendRawTransactionParams) {
+  sendrawtransaction(options: SendRawTransactionParams) {
     return this.rpc("sendrawtransaction", options);
   }
 
   /**
    * @description Sign inputs for raw transaction
    */
-  async signrawtransactionwithkey(options: SignRawTransactionWithKeyParams) {
+  signrawtransactionwithkey(options: SignRawTransactionWithKeyParams) {
     return this.rpc("signrawtransactionwithkey", options);
   }
 
   /**
    * @description Returns result of mempool acceptance tests indicating if raw transaction (serialized, hex-encoded) would be accepted by mempool.
    */
-  async testmempoolaccept(options: TestmemPoolAcceptParams) {
+  testmempoolaccept(options: TestmemPoolAcceptParams) {
     return this.rpc("testmempoolaccept", options);
   }
 
   /**
    * @description Updates a PSBT with witness UTXOs retrieved from the UTXO set or the mempool.
    */
-  async utxoupdatepsbt(options: { psbt: string }) {
+  utxoupdatepsbt(options: { psbt: string }) {
     return this.rpc("utxoupdatepsbt", options);
   }
 
   /**
    * @description Creates a multi-signature address with n signature of m keys required.
    */
-  async createmultisig(options: CreateMultiSigParams) {
+  createmultisig(options: CreateMultiSigParams) {
     return this.rpc("createmultisig", options);
   }
 
   /**
    * @description Derives one or more addresses corresponding to an output descriptor.
    */
-  async deriveaddresses({ descriptor, range }: DeriveAddressesParams) {
+  deriveaddresses({ descriptor, range }: DeriveAddressesParams) {
     return this.rpc("deriveaddresses", { descriptor, range });
   }
 
   /**
    * @description Estimates the approximate fee per kilobyte needed for a transaction to begin confirmation within `conf_target` blocks if possible and return the number of blocks for which the estimate is valid.
    */
-  async estimatesmartfee(options: EstimateSmartFeeParams) {
+  estimatesmartfee(options: EstimateSmartFeeParams) {
     return this.rpc("estimatesmartfee", options);
   }
 
   /**
    * @description Analyses a descriptor.
    */
-  async getdescriptorinfo(options: { descriptor: string }) {
+  getdescriptorinfo(options: { descriptor: string }) {
     return this.rpc("getdescriptorinfo", options);
   }
 
   /**
    * @description Sign a message with the private key of an address.
    */
-  async signmessagewithprivkey(options: SignMessageWithPrivKeyParams) {
+  signmessagewithprivkey(options: SignMessageWithPrivKeyParams) {
     return this.rpc("signmessagewithprivkey", options);
   }
 
   /**
    * @description Return information about the given bitcoin address.
    */
-  async validateaddress(options: { address: string }) {
+  validateaddress(options: { address: string }) {
     return this.rpc("validateaddress", options);
   }
 
   /**
    * @description Verify a signed message
    */
-  async verifymessage(options: VerifyMessageParams) {
+  verifymessage(options: VerifyMessageParams) {
     return this.rpc("verifymessage", options);
   }
 
   /**
    * @description Mark in-wallet transaction `txid` as abandoned
    */
-  async abandontransaction(options: TxId, wallet?: string) {
+  abandontransaction(options: TxId, wallet?: string) {
     return this.rpc("abandontransaction", options, wallet || this.wallet);
   }
 
   /**
    * @description Stops current wallet rescan triggered by an RPC call
    */
-  async abortrescan(wallet?: string) {
+  abortrescan(wallet?: string) {
     return this.rpc("abortrescan", undefined, wallet || this.wallet);
   }
 
   /**
    * @description Add a nrequired-to-sign multisignature address to the wallet.
    */
-  async addmultisigaddress(options: AddMultiSigAddressParams, wallet?: string) {
+  addmultisigaddress(options: AddMultiSigAddressParams, wallet?: string) {
     return this.rpc("addmultisigaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description Safely copies current wallet file to destination.
    */
-  async backupwallet(options: { destination: string }, wallet?: string) {
+  backupwallet(options: { destination: string }, wallet?: string) {
     return this.rpc("backupwallet", options, wallet || this.wallet);
   }
 
   /**
    * @description Bumps the fee of an opt-in-RBF transaction T, replacing it with a new transaction B.
    */
-  async bumpfee(options: BumpFeeParams, wallet?: string) {
+  bumpfee(options: BumpFeeParams, wallet?: string) {
     return this.rpc("bumpfee", options, wallet || this.wallet);
   }
 
   /**
    * @description Creates and loads a new wallet.
    */
-  async createwallet(options: CreateWalletParams) {
+  createwallet(options: CreateWalletParams) {
     return this.rpc("createwallet", options);
   }
 
   /**
    * @description Reveals the private key corresponding to 'address'.
    */
-  async dumpprivkey(options: { address: string }, wallet?: string) {
+  dumpprivkey(options: { address: string }, wallet?: string) {
     return this.rpc("dumpprivkey", options, wallet || this.wallet);
   }
 
   /**
    * @description Dumps all wallet keys in a human-readable format to a server-side file.
    */
-  async dumpwallet(options: { filename: string }, wallet?: string) {
+  dumpwallet(options: { filename: string }, wallet?: string) {
     return this.rpc("dumpwallet", options, wallet || this.wallet);
   }
 
   /**
    * @description Encrypts the wallet with 'passphrase'.
    */
-  async encryptwallet(options: { passphrase: string }, wallet?: string) {
+  encryptwallet(options: { passphrase: string }, wallet?: string) {
     return this.rpc("encryptwallet", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns the list of addresses assigned the specified label.
    */
-  async getaddressesbylabel(options: { label: string }, wallet?: string) {
+  getaddressesbylabel(options: { label: string }, wallet?: string) {
     return this.rpc("getaddressesbylabel", options, wallet || this.wallet);
   }
 
   /**
    * @description Return information about the given bitcoin address.
    */
-  async getaddressinfo(options: { address: string }, wallet?: string) {
+  getaddressinfo(options: { address: string }, wallet?: string) {
     return this.rpc("getaddressinfo", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns the total available balance.
    */
-  async getbalance(options: GetBalanceParams, wallet?: string) {
+  getbalance(options: GetBalanceParams, wallet?: string) {
     return this.rpc("getbalance", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns a new Bitcoin address for receiving payments.
    */
-  async getnewaddress(options: GetNewAddressParams, wallet?: string) {
+  getnewaddress(options: GetNewAddressParams, wallet?: string) {
     return this.rpc("getnewaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns a new Bitcoin address, for receiving change.
    */
-  async getrawchangeaddress(
+  getrawchangeaddress(
     options: { address_type?: AddressType },
     wallet?: string
   ) {
@@ -1027,240 +1027,231 @@ export class RPCClient extends RESTClient {
   /**
    * @description Returns the total amount received by the given address in transactions with at least minconf confirmations.
    */
-  async getreceivedbyaddress(
-    options: GetReceivedByAddressParams,
-    wallet?: string
-  ) {
+  getreceivedbyaddress(options: GetReceivedByAddressParams, wallet?: string) {
     return this.rpc("getreceivedbyaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns the total amount received by addresses with `label` in transactions with at least `minconf` confirmations.
    */
-  async getreceivedbylabel(options: GetReceivedByLabelParams, wallet?: string) {
+  getreceivedbylabel(options: GetReceivedByLabelParams, wallet?: string) {
     return this.rpc("getreceivedbylabel", options, wallet || this.wallet);
   }
 
   /**
    * @description Get detailed information about in-wallet transaction `txid`
    */
-  async gettransaction(options: GetTransactionParams, wallet?: string) {
+  gettransaction(options: GetTransactionParams, wallet?: string) {
     return this.rpc("gettransaction", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns the server's total unconfirmed balance
    */
-  async getunconfirmedbalance(wallet?: string) {
+  getunconfirmedbalance(wallet?: string) {
     return this.rpc("getunconfirmedbalance", undefined, wallet || this.wallet);
   }
 
   /**
    * @description Returns an object containing various wallet state info.
    */
-  async getwalletinfo(wallet?: string) {
+  getwalletinfo(wallet?: string) {
     return this.rpc("getwalletinfo", undefined, wallet || this.wallet);
   }
 
   /**
    * @description Adds an address or script (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
    */
-  async importaddress(options: ImportAddressParams, wallet?: string) {
+  importaddress(options: ImportAddressParams, wallet?: string) {
     return this.rpc("importaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description Import addresses/scripts (with private or public keys, redeem script (P2SH)), optionally rescanning the blockchain from the earliest creation time of the imported scripts.
    */
-  async importmulti(options: ImportMultiParams, wallet?: string) {
+  importmulti(options: ImportMultiParams, wallet?: string) {
     return this.rpc("importmulti", options, wallet || this.wallet);
   }
 
   /**
    * @description Adds a private key (as returned by `dumpprivkey`) to your wallet.
    */
-  async importprivkey(options: ImportPrivKeyParams, wallet?: string) {
+  importprivkey(options: ImportPrivKeyParams, wallet?: string) {
     return this.rpc("importprivkey", options, wallet || this.wallet);
   }
 
   /**
    * @description Imports funds without rescan. Corresponding address or script must previously be included in wallet.
    */
-  async importprunedfunds(options: ImportPrunedFundsParams, wallet?: string) {
+  importprunedfunds(options: ImportPrunedFundsParams, wallet?: string) {
     return this.rpc("importprunedfunds", options, wallet || this.wallet);
   }
 
   /**
    * @description Adds a public key (in hex) that can be watched as if it were in your wallet but cannot be used to spend.
    */
-  async importpubkey(options: ImportPubKeyParams, wallet?: string) {
+  importpubkey(options: ImportPubKeyParams, wallet?: string) {
     return this.rpc("importpubkey", options, wallet || this.wallet);
   }
 
   /**
    * @description Imports keys from a wallet dump file (see `dumpwallet`).
    */
-  async importwallet(options: { filename: string }, wallet?: string) {
+  importwallet(options: { filename: string }, wallet?: string) {
     return this.rpc("importwallet", options, wallet || this.wallet);
   }
 
   /**
    * @description Fills the keypool.
    */
-  async keypoolrefill(options: { newsize?: number }, wallet?: string) {
+  keypoolrefill(options: { newsize?: number }, wallet?: string) {
     return this.rpc("keypoolrefill", options, wallet || this.wallet);
   }
 
   /**
    * @description Lists groups of addresses which have had their common ownership made public by common use as inputs or as the resulting change in past transactions
    */
-  async listaddressgroupings(wallet?: string) {
+  listaddressgroupings(wallet?: string) {
     return this.rpc("listaddressgroupings", undefined, wallet || this.wallet);
   }
 
   /**
    * @description Returns the list of all labels, or labels that are assigned to addresses with a specific purpose.
    */
-  async listlabels(options: ListLabelsParams, wallet?: string) {
+  listlabels(options: ListLabelsParams, wallet?: string) {
     return this.rpc("listlabels", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns list of temporarily unspendable outputs.
    */
-  async listlockunspent(wallet?: string) {
+  listlockunspent(wallet?: string) {
     return this.rpc("listlockunspent", undefined, wallet || this.wallet);
   }
 
   /**
    * @description List balances by receiving address.
    */
-  async listreceivedbyaddress(
-    options: ListReceivedByAddressParams,
-    wallet?: string
-  ) {
+  listreceivedbyaddress(options: ListReceivedByAddressParams, wallet?: string) {
     return this.rpc("listreceivedbyaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description List received transactions by label.
    */
-  async listreceivedbylabel(
-    options: ListReceivedByLabelParams,
-    wallet?: string
-  ) {
+  listreceivedbylabel(options: ListReceivedByLabelParams, wallet?: string) {
     return this.rpc("listreceivedbylabel", options, wallet || this.wallet);
   }
 
   /**
    * @description Get all transactions in blocks since block `blockhash`, or all transactions if omitted.
    */
-  async listsinceblock(options: ListSinceBlockParams, wallet?: string) {
+  listsinceblock(options: ListSinceBlockParams, wallet?: string) {
     return this.rpc("listsinceblock", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns up to `count` most recent transactions skipping the first `skip` transactions.
    */
-  async listtransactions(options: ListTransactionsParams, wallet?: string) {
+  listtransactions(options: ListTransactionsParams, wallet?: string) {
     return this.rpc("listtransactions", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns array of unspent transaction outputs with between `minconf` and `maxconf` (inclusive) confirmations.
    */
-  async listunspent(options: ListUnspentParams, wallet?: string) {
+  listunspent(options: ListUnspentParams, wallet?: string) {
     return this.rpc("listunspent", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns a list of wallets in the wallet directory.
    */
-  async listwalletdir() {
+  listwalletdir() {
     return this.rpc("listwalletdir");
   }
 
   /**
    * @description Returns a list of currently loaded wallets.
    */
-  async listwallets() {
+  listwallets() {
     return this.rpc("listwallets");
   }
 
   /**
    * @description Loads a wallet from a wallet file or directory.
    */
-  async loadwallet({ filename }: { filename: string }) {
+  loadwallet({ filename }: { filename: string }) {
     return this.rpc("loadwallet", { filename });
   }
 
   /**
    * @description Updates list of temporarily unspendable outputs.
    */
-  async lockunspent(options: LockUnspentParams, wallet?: string) {
+  lockunspent(options: LockUnspentParams, wallet?: string) {
     return this.rpc("lockunspent", options, wallet || this.wallet);
   }
 
   /**
    * @description Deletes the specified transaction from the wallet.
    */
-  async removeprunedfunds(options: TxId, wallet?: string) {
+  removeprunedfunds(options: TxId, wallet?: string) {
     return this.rpc("removeprunedfunds", options, wallet || this.wallet);
   }
 
   /**
    * @description Rescan the local blockchain for wallet related transactions.
    */
-  async rescanblockchain(options: RescanBlockchainParams, wallet?: string) {
+  rescanblockchain(options: RescanBlockchainParams, wallet?: string) {
     return this.rpc("rescanblockchain", options, wallet || this.wallet);
   }
 
   /**
    * @description Send multiple times.
    */
-  async sendmany(options: SendManyParams, wallet?: string) {
+  sendmany(options: SendManyParams, wallet?: string) {
     return this.rpc("sendmany", options, wallet || this.wallet);
   }
 
   /**
    * @description Send an amount to a given address.
    */
-  async sendtoaddress(options: SendToAddressParams, wallet?: string) {
+  sendtoaddress(options: SendToAddressParams, wallet?: string) {
     return this.rpc("sendtoaddress", options, wallet || this.wallet);
   }
 
   /**
    * @description Set or generate a new HD wallet seed.
    */
-  async sethdseed(options: SetHDSeedParams, wallet?: string) {
+  sethdseed(options: SetHDSeedParams, wallet?: string) {
     return this.rpc("sethdseed", options, wallet || this.wallet);
   }
 
   /**
    * @description Sets the label associated with the given address.
    */
-  async setlabel(options: SetLabelParams, wallet?: string) {
+  setlabel(options: SetLabelParams, wallet?: string) {
     return this.rpc("setlabel", options, wallet || this.wallet);
   }
 
   /**
    * @description Set the transaction fee per kB for this wallet.
    */
-  async settxfee(options: { amount: number | string }, wallet?: string) {
+  settxfee(options: { amount: number | string }, wallet?: string) {
     return this.rpc("settxfee", options, wallet || this.wallet);
   }
 
   /**
    * @description Sign a message with the private key of an address
    */
-  async signmessage(options: SignMessageParams, wallet?: string) {
+  signmessage(options: SignMessageParams, wallet?: string) {
     return this.rpc("signmessage", options, wallet || this.wallet);
   }
 
   /**
    * @description Sign inputs for raw transaction
    */
-  async signrawtransactionwithwallet(
+  signrawtransactionwithwallet(
     options: SignRawTransactionWithWalletParams,
     wallet?: string
   ) {
@@ -1274,7 +1265,7 @@ export class RPCClient extends RESTClient {
   /**
    * @description Unloads the wallet.
    */
-  async unloadwallet({ wallet_name }: { wallet_name?: string } = {}) {
+  unloadwallet({ wallet_name }: { wallet_name?: string } = {}) {
     if (typeof wallet_name !== "undefined") {
       return this.rpc("unloadwallet", { wallet_name });
     }
@@ -1284,7 +1275,7 @@ export class RPCClient extends RESTClient {
   /**
    * @description Creates and funds a transaction in the Partially Signed Transaction format.
    */
-  async walletcreatefundedpsbt(
+  walletcreatefundedpsbt(
     options: WalletCreateFundedPsbtParams,
     wallet?: string
   ) {
@@ -1294,21 +1285,21 @@ export class RPCClient extends RESTClient {
   /**
    * @description Removes the wallet encryption key from memory, locking the wallet.
    */
-  async walletlock(wallet?: string) {
+  walletlock(wallet?: string) {
     return this.rpc("walletlock", undefined, wallet || this.wallet);
   }
 
   /**
    * @description Stores the wallet decryption key in memory for `timeout` seconds.
    */
-  async walletpassphrase(options: WalletPassphraseParams, wallet?: string) {
+  walletpassphrase(options: WalletPassphraseParams, wallet?: string) {
     return this.rpc("walletpassphrase", options, wallet || this.wallet);
   }
 
   /**
    * @description Changes the wallet passphrase from `oldpassphrase` to `newpassphrase`.
    */
-  async walletpassphrasechange(
+  walletpassphrasechange(
     options: WalletPassphraseChangeParams,
     wallet?: string
   ) {
@@ -1318,14 +1309,14 @@ export class RPCClient extends RESTClient {
   /**
    * @description Update a PSBT with input information from our wallet and then sign inputs that we can sign for.
    */
-  async walletprocesspsbt(options: WalletProcessPsbtParams, wallet?: string) {
+  walletprocesspsbt(options: WalletProcessPsbtParams, wallet?: string) {
     return this.rpc("walletprocesspsbt", options, wallet || this.wallet);
   }
 
   /**
    * @description Returns information about the active ZeroMQ notifications.
    */
-  async getzmqnotifications() {
+  getzmqnotifications() {
     return this.rpc("getzmqnotifications");
   }
 }
