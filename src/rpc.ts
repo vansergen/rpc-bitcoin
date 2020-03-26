@@ -212,12 +212,14 @@ export type BumpFeeParams = {
 };
 
 export type CreateWalletParams = {
+  avoid_reuse?: boolean;
   wallet_name: string;
   disable_private_keys?: boolean;
   blank?: boolean;
 };
 
 export type GetBalanceParams = {
+  avoid_reuse?: boolean;
   minconf?: number;
   include_watchonly?: boolean;
 };
@@ -340,6 +342,7 @@ export type SendManyParams = BaseSendParams & {
 };
 
 export type SendToAddressParams = BaseSendParams & {
+  avoid_reuse?: boolean;
   address: string;
   amount: string | number;
   comment_to?: string;
