@@ -41,28 +41,24 @@ suite("RPCClient", () => {
     const requests = [
       { method: "getbestblockhash", id: 1 },
       { method: "help", params: { command: "help" }, id: "custom-id" },
-      { method: "getzmqnotifications", params: {}, id: 2 }
+      { method: "getzmqnotifications", params: {}, id: 2 },
     ];
     const response = [
       {
         result:
           "000000000004f7f1ec631acb86a86ef0d97f1294d79f5fba1d0e579c1513b5ea",
         error,
-        id: 1
+        id: 1,
       },
       {
         result:
           'help ( "command" )\n\nList all commands, or get help for a specified command.\n\nArguments:\n1. command    (string, optional, default=all commands) The command to get help on\n\nResult:\n"text"     (string) The help text\n',
         error,
-        id: "custom-id"
+        id: "custom-id",
       },
-      { result: [], error, id: 2 }
+      { result: [], error, id: 2 },
     ];
-    nock(uri)
-      .post("/", requests)
-      .times(1)
-      .basicAuth(auth)
-      .reply(200, response);
+    nock(uri).post("/", requests).times(1).basicAuth(auth).reply(200, response);
     const data = await client.batch(requests);
     assert.deepStrictEqual(data, response);
   });
@@ -88,11 +84,7 @@ suite("RPCClient", () => {
     const result =
       "000000000004f7f1ec631acb86a86ef0d97f1294d79f5fba1d0e579c1513b5ea";
     const response = { error, id, result };
-    nock(uri)
-      .post("/", request)
-      .times(1)
-      .basicAuth(auth)
-      .reply(200, response);
+    nock(uri).post("/", request).times(1).basicAuth(auth).reply(200, response);
     const data = await client.rpc(method);
     assert.deepStrictEqual(data, response);
   });
@@ -215,8 +207,8 @@ suite("RPCClient", () => {
               {
                 coinbase:
                   "036f1d180459fe965d08f80000014b0700000c2f746573746e65747465722f",
-                sequence: 0
-              }
+                sequence: 0,
+              },
             ],
             vout: [
               {
@@ -228,8 +220,8 @@ suite("RPCClient", () => {
                   hex: "a914b4316d69836fe185d3d4ca234e90a7a5ce6491ab87",
                   reqSigs: 1,
                   type: "scripthash",
-                  addresses: ["2N9fzq66uZYQXp7uqrPBH6jKBhjrgTzpGCy"]
-                }
+                  addresses: ["2N9fzq66uZYQXp7uqrPBH6jKBhjrgTzpGCy"],
+                },
               },
               {
                 value: 0,
@@ -239,12 +231,12 @@ suite("RPCClient", () => {
                     "OP_RETURN aa21a9ed3116a1d2c6dc9cf601112589ce7d2334acd8a196fb02ceacddf6eed2bf4b72b5",
                   hex:
                     "6a24aa21a9ed3116a1d2c6dc9cf601112589ce7d2334acd8a196fb02ceacddf6eed2bf4b72b5",
-                  type: "nulldata"
-                }
-              }
+                  type: "nulldata",
+                },
+              },
             ],
             hex:
-              "010000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff1f036f1d180459fe965d08f80000014b0700000c2f746573746e65747465722f0000000002e2f332030000000017a914b4316d69836fe185d3d4ca234e90a7a5ce6491ab870000000000000000266a24aa21a9ed3116a1d2c6dc9cf601112589ce7d2334acd8a196fb02ceacddf6eed2bf4b72b50120000000000000000000000000000000000000000000000000000000000000000000000000"
+              "010000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff1f036f1d180459fe965d08f80000014b0700000c2f746573746e65747465722f0000000002e2f332030000000017a914b4316d69836fe185d3d4ca234e90a7a5ce6491ab870000000000000000266a24aa21a9ed3116a1d2c6dc9cf601112589ce7d2334acd8a196fb02ceacddf6eed2bf4b72b50120000000000000000000000000000000000000000000000000000000000000000000000000",
           },
           {
             txid:
@@ -265,10 +257,10 @@ suite("RPCClient", () => {
                   asm:
                     "304502210098a6a7a2329a7373ff838b3e816e8b48f94238dfbe08add7896ff95127ebfc310220541302168ae986ec6abbb0c5eea95f069621166fe841ba965ed6ea3bb351735c[ALL] 0396cfa148d2fc150d225262836aaf4ed98da771a9c2f6bc54da03d402d3f1a384",
                   hex:
-                    "48304502210098a6a7a2329a7373ff838b3e816e8b48f94238dfbe08add7896ff95127ebfc310220541302168ae986ec6abbb0c5eea95f069621166fe841ba965ed6ea3bb351735c01210396cfa148d2fc150d225262836aaf4ed98da771a9c2f6bc54da03d402d3f1a384"
+                    "48304502210098a6a7a2329a7373ff838b3e816e8b48f94238dfbe08add7896ff95127ebfc310220541302168ae986ec6abbb0c5eea95f069621166fe841ba965ed6ea3bb351735c01210396cfa148d2fc150d225262836aaf4ed98da771a9c2f6bc54da03d402d3f1a384",
                 },
-                sequence: 4294967295
-              }
+                sequence: 4294967295,
+              },
             ],
             vout: [
               {
@@ -280,8 +272,8 @@ suite("RPCClient", () => {
                   hex: "76a914ef6639af5e3f5beb577f327f09ec3b0708cb03f188ac",
                   reqSigs: 1,
                   type: "pubkeyhash",
-                  addresses: ["n3LnFeCEuo6zcRS7kGuKx9URwnLXHaKonL"]
-                }
+                  addresses: ["n3LnFeCEuo6zcRS7kGuKx9URwnLXHaKonL"],
+                },
               },
               {
                 value: 0.40164686,
@@ -292,13 +284,13 @@ suite("RPCClient", () => {
                   hex: "76a91460ade08bbf58068ccbed250d4ee64c0a827745d388ac",
                   reqSigs: 1,
                   type: "pubkeyhash",
-                  addresses: ["mpL9TfWHudvTkWPrtzwkcuD4mKoo7eXJo5"]
-                }
-              }
+                  addresses: ["mpL9TfWHudvTkWPrtzwkcuD4mKoo7eXJo5"],
+                },
+              },
             ],
             hex:
-              "01000000014473be9b0ff6a1ce12c4e43b3bf7191fb13b2b6779233b0f190de97da1453162010000006b48304502210098a6a7a2329a7373ff838b3e816e8b48f94238dfbe08add7896ff95127ebfc310220541302168ae986ec6abbb0c5eea95f069621166fe841ba965ed6ea3bb351735c01210396cfa148d2fc150d225262836aaf4ed98da771a9c2f6bc54da03d402d3f1a384ffffffff0205000000000000001976a914ef6639af5e3f5beb577f327f09ec3b0708cb03f188ac4edd6402000000001976a91460ade08bbf58068ccbed250d4ee64c0a827745d388ac00000000"
-          }
+              "01000000014473be9b0ff6a1ce12c4e43b3bf7191fb13b2b6779233b0f190de97da1453162010000006b48304502210098a6a7a2329a7373ff838b3e816e8b48f94238dfbe08add7896ff95127ebfc310220541302168ae986ec6abbb0c5eea95f069621166fe841ba965ed6ea3bb351735c01210396cfa148d2fc150d225262836aaf4ed98da771a9c2f6bc54da03d402d3f1a384ffffffff0205000000000000001976a914ef6639af5e3f5beb577f327f09ec3b0708cb03f188ac4edd6402000000001976a91460ade08bbf58068ccbed250d4ee64c0a827745d388ac00000000",
+          },
         ],
         time: 1570176600,
         mediantime: 1570170591,
@@ -311,7 +303,7 @@ suite("RPCClient", () => {
         previousblockhash:
           "000000006d7da16a58a4e56c790d1aeb4e08bce6dab68e03995f585b187551be",
         nextblockhash:
-          "000000005104d2692a021f9b58932c3fa32ea15b97cbff2147e11ad24f9d49af"
+          "000000005104d2692a021f9b58932c3fa32ea15b97cbff2147e11ad24f9d49af",
       };
       nock(uri)
         .post("/", request)
@@ -344,23 +336,23 @@ suite("RPCClient", () => {
         softforks: [
           { id: "bip34", version: 2, reject: { status: true } },
           { id: "bip66", version: 3, reject: { status: true } },
-          { id: "bip65", version: 4, reject: { status: true } }
+          { id: "bip65", version: 4, reject: { status: true } },
         ],
         bip9_softforks: {
           csv: {
             status: "active",
             startTime: 1456790400,
             timeout: 1493596800,
-            since: 770112
+            since: 770112,
           },
           segwit: {
             status: "active",
             startTime: 1462060800,
             timeout: 1493596800,
-            since: 834624
-          }
+            since: 834624,
+          },
         },
-        warnings: "Warning: unknown new rules activated (versionbit 28)"
+        warnings: "Warning: unknown new rules activated (versionbit 28)",
       };
       nock(uri)
         .post("/", request)
@@ -439,29 +431,29 @@ suite("RPCClient", () => {
           hash:
             "0000000071434abcdf7b2a82fb3005a67fe9f458e542a586313f5a7dc671a0c9",
           branchlen: 0,
-          status: "active"
+          status: "active",
         },
         {
           height: 1580960,
           hash:
             "000000006999656106c726515ccfc34d160a5fa299ddb6bb278598b2feefaa7e",
           branchlen: 1,
-          status: "valid-fork"
+          status: "valid-fork",
         },
         {
           height: 1580787,
           hash:
             "0000000029515fe9800761af4c19a087525ad9f3a1e41c4d1b136993711c3f83",
           branchlen: 1,
-          status: "valid-fork"
+          status: "valid-fork",
         },
         {
           height: 1414433,
           hash:
             "00000000210004840364b52bc5e455d888f164e4264a4fec06a514b67e9d5722",
           branchlen: 23,
-          status: "headers-only"
-        }
+          status: "headers-only",
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -486,7 +478,7 @@ suite("RPCClient", () => {
         window_block_count: 2016,
         window_tx_count: 274713,
         window_interval: 1731648,
-        txrate: 0.1586425185719038
+        txrate: 0.1586425185719038,
       };
       nock(uri)
         .post("/", request)
@@ -521,7 +513,7 @@ suite("RPCClient", () => {
             base: 0.00000208,
             modified: 0.00000208,
             ancestor: 0.00000208,
-            descendant: 0.00000349
+            descendant: 0.00000349,
           },
           size: 208,
           fee: 0.00000208,
@@ -538,10 +530,10 @@ suite("RPCClient", () => {
             "4ec7101b17a19ad11c6b738330303f9baa30c0aabc3e56ce8735d019fcff13e7",
           depends: [],
           spentby: [
-            "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a"
+            "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
           ],
-          "bip125-replaceable": true
-        }
+          "bip125-replaceable": true,
+        },
       };
       nock(uri)
         .post("/", request)
@@ -564,7 +556,7 @@ suite("RPCClient", () => {
             base: 0.00000141,
             modified: 0.00000141,
             ancestor: 0.00000349,
-            descendant: 0.00000141
+            descendant: 0.00000141,
           },
           size: 141,
           fee: 0.00000141,
@@ -580,11 +572,11 @@ suite("RPCClient", () => {
           wtxid:
             "6a2704699b5935b96a9c008b21518e99990cf099a6977760d56aec350b2d9d66",
           depends: [
-            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b"
+            "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
           ],
           spentby: [],
-          "bip125-replaceable": true
-        }
+          "bip125-replaceable": true,
+        },
       };
       nock(uri)
         .post("/", request)
@@ -605,7 +597,7 @@ suite("RPCClient", () => {
           base: 0.00000148,
           modified: 0.00000148,
           ancestor: 0.00000391,
-          descendant: 0.00000148
+          descendant: 0.00000148,
         },
         size: 146,
         fee: 0.00000148,
@@ -621,10 +613,10 @@ suite("RPCClient", () => {
         wtxid:
           "cf5208ea2196816473a315504b5476fb4e75a16fb4584dda92093b72901bde08",
         depends: [
-          "f594f57099cd6e1c4d0697ad92795196a1774ea752d1bec481019abd3eef30ee"
+          "f594f57099cd6e1c4d0697ad92795196a1774ea752d1bec481019abd3eef30ee",
         ],
         spentby: [],
-        "bip125-replaceable": false
+        "bip125-replaceable": false,
       };
       nock(uri)
         .post("/", request)
@@ -643,7 +635,7 @@ suite("RPCClient", () => {
         usage: 362416,
         maxmempool: 300000000,
         mempoolminfee: 0.00001,
-        minrelaytxfee: 0.00001
+        minrelaytxfee: 0.00001,
       };
       nock(uri)
         .post("/", request)
@@ -664,7 +656,7 @@ suite("RPCClient", () => {
             base: 0.00000543,
             modified: 0.00000543,
             ancestor: 0.00000543,
-            descendant: 0.00000543
+            descendant: 0.00000543,
           },
           size: 149,
           fee: 0.00000543,
@@ -681,14 +673,14 @@ suite("RPCClient", () => {
             "957c764cede26364705436977e087039f4a8fb9d68c51c9db9e2347dbd12a120",
           depends: [],
           spentby: [],
-          "bip125-replaceable": true
+          "bip125-replaceable": true,
         },
         "2275109000640d8e45ec8e23cf74ba8a82850bb5c01993972f1a40dd20fa9484": {
           fees: {
             base: 0.00016797,
             modified: 0.00016797,
             ancestor: 0.00016797,
-            descendant: 0.00016797
+            descendant: 0.00016797,
           },
           size: 166,
           fee: 0.00016797,
@@ -705,8 +697,8 @@ suite("RPCClient", () => {
             "7b05abb26d64d6c39d1f483a2cac992c3ebad77f9240fadeeee90649ffbc9092",
           depends: [],
           spentby: [],
-          "bip125-replaceable": false
-        }
+          "bip125-replaceable": false,
+        },
       };
       nock(uri)
         .post("/", request)
@@ -734,9 +726,9 @@ suite("RPCClient", () => {
           hex: "a914f2420e17b443ea418ec4c6ac97affaafd48eca7087",
           reqSigs: 1,
           type: "scripthash",
-          addresses: ["2NFLAeHuBzrMfqQHfCtnKErNJSF3fqysUhF"]
+          addresses: ["2NFLAeHuBzrMfqQHfCtnKErNJSF3fqysUhF"],
         },
-        coinbase: false
+        coinbase: false,
       };
       nock(uri)
         .post("/", request)
@@ -749,7 +741,7 @@ suite("RPCClient", () => {
 
     test(".gettxoutproof()", async () => {
       const txids = [
-        "e50c4bf07ca16e5089bf8c4f4b4d12b4e6b2bb47b09d533ebaa395342c756b95"
+        "e50c4bf07ca16e5089bf8c4f4b4d12b4e6b2bb47b09d533ebaa395342c756b95",
       ];
       const blockhash =
         "000000005a9b7656024e9d1a2a0e559b91dcc5756048ce4904ba877686f0eecc";
@@ -778,7 +770,7 @@ suite("RPCClient", () => {
         hash_serialized_2:
           "9b4021d53da6689371aa734ef32fe502ed38a47870db2802c48c8cde0a5c191e",
         disk_size: 1256916738,
-        total_amount: 20879513.30609612
+        total_amount: 20879513.30609612,
       };
       nock(uri)
         .post("/", request)
@@ -850,7 +842,7 @@ suite("RPCClient", () => {
             scriptPubKey: "76a914bdad1f4d02035b61fb1d237410e85d8402a1187d88ac",
             desc: "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)#7ca3vlzt",
             amount: 0.08745533,
-            height: 1583799
+            height: 1583799,
           },
           {
             txid:
@@ -859,7 +851,7 @@ suite("RPCClient", () => {
             scriptPubKey: "76a914bdad1f4d02035b61fb1d237410e85d8402a1187d88ac",
             desc: "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)#7ca3vlzt",
             amount: 0,
-            height: 1352790
+            height: 1352790,
           },
           {
             txid:
@@ -868,10 +860,10 @@ suite("RPCClient", () => {
             scriptPubKey: "76a914bdad1f4d02035b61fb1d237410e85d8402a1187d88ac",
             desc: "addr(mxosQ4CvQR8ipfWdRktyB3u16tauEdamGc)#7ca3vlzt",
             amount: 0,
-            height: 1326382
-          }
+            height: 1326382,
+          },
         ],
-        total_amount: 0.08745533
+        total_amount: 0.08745533,
       };
       nock(uri)
         .post("/", request)
@@ -903,7 +895,7 @@ suite("RPCClient", () => {
       const params = { proof };
       const request = { params, method: "verifytxoutproof", id, jsonrpc };
       const result = [
-        "6f0b2595600c49d6f6483c71bbfa348c31d214bfcc340c3b40aed9d7ffa84d8a"
+        "6f0b2595600c49d6f6483c71bbfa348c31d214bfcc340c3b40aed9d7ffa84d8a",
       ];
       nock(uri)
         .post("/", request)
@@ -926,8 +918,8 @@ suite("RPCClient", () => {
           total: 262144,
           locked: 0,
           chunks_used: 6065,
-          chunks_free: 3
-        }
+          chunks_free: 3,
+        },
       };
       nock(uri)
         .post("/", request)
@@ -941,7 +933,7 @@ suite("RPCClient", () => {
     test(".getrpcinfo()", async () => {
       const request = { params: {}, method: "getrpcinfo", id, jsonrpc };
       const result = {
-        active_commands: [{ method: "getrpcinfo", duration: 0 }]
+        active_commands: [{ method: "getrpcinfo", duration: 0 }],
       };
       nock(uri)
         .post("/", request)
@@ -992,7 +984,7 @@ suite("RPCClient", () => {
         libevent: false,
         coindb: false,
         qt: false,
-        leveldb: false
+        leveldb: false,
       };
       nock(uri)
         .post("/", request)
@@ -1140,7 +1132,7 @@ suite("RPCClient", () => {
             depends: [],
             fee: 22361,
             sigops: 0,
-            weight: 884
+            weight: 884,
           },
           {
             data:
@@ -1152,8 +1144,8 @@ suite("RPCClient", () => {
             depends: [],
             fee: 16796,
             sigops: 1,
-            weight: 661
-          }
+            weight: 661,
+          },
         ],
         coinbaseaux: { flags: "" },
         coinbasevalue: 39633673,
@@ -1171,7 +1163,7 @@ suite("RPCClient", () => {
         bits: "1a0175ed",
         height: 1583887,
         default_witness_commitment:
-          "6a24aa21a9ed78a54605e10113365da2095badf375ae434b5abcda3d864a73c91477bd480676"
+          "6a24aa21a9ed78a54605e10113365da2095badf375ae434b5abcda3d864a73c91477bd480676",
       };
       nock(uri)
         .post("/", request)
@@ -1192,7 +1184,7 @@ suite("RPCClient", () => {
         networkhashps: 26197621661352.18,
         pooledtx: 101,
         chain: "test",
-        warnings: "Warning: unknown new rules activated (versionbit 28)"
+        warnings: "Warning: unknown new rules activated (versionbit 28)",
       };
       nock(uri)
         .post("/", request)
@@ -1306,8 +1298,8 @@ suite("RPCClient", () => {
         {
           addednode: "92.53.89.123:18333",
           connected: true,
-          addresses: [{ address: "92.53.89.123:18333", connected: "outbound" }]
-        }
+          addresses: [{ address: "92.53.89.123:18333", connected: "outbound" }],
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -1342,8 +1334,8 @@ suite("RPCClient", () => {
           target_reached: false,
           serve_historical_blocks: true,
           bytes_left_in_cycle: 0,
-          time_left_in_cycle: 0
-        }
+          time_left_in_cycle: 0,
+        },
       };
       nock(uri)
         .post("/", request)
@@ -1371,27 +1363,27 @@ suite("RPCClient", () => {
             limited: false,
             reachable: true,
             proxy: "",
-            proxy_randomize_credentials: false
+            proxy_randomize_credentials: false,
           },
           {
             name: "ipv6",
             limited: false,
             reachable: true,
             proxy: "",
-            proxy_randomize_credentials: false
+            proxy_randomize_credentials: false,
           },
           {
             name: "onion",
             limited: true,
             reachable: false,
             proxy: "",
-            proxy_randomize_credentials: false
-          }
+            proxy_randomize_credentials: false,
+          },
         ],
         relayfee: 0.00001,
         incrementalfee: 0.00001,
         localaddresses: [],
-        warnings: "Warning: unknown new rules activated (versionbit 28)"
+        warnings: "Warning: unknown new rules activated (versionbit 28)",
       };
       nock(uri)
         .post("/", request)
@@ -1410,14 +1402,14 @@ suite("RPCClient", () => {
           time: 1569474479,
           services: 1036,
           address: "188.162.132.87",
-          port: 18333
+          port: 18333,
         },
         {
           time: 1569557642,
           services: 1037,
           address: "174.138.24.48",
-          port: 18333
-        }
+          port: 18333,
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -1471,7 +1463,7 @@ suite("RPCClient", () => {
             sendheaders: 24,
             tx: 4065,
             verack: 24,
-            version: 126
+            version: 126,
           },
           bytesrecv_per_msg: {
             addr: 30192,
@@ -1488,8 +1480,8 @@ suite("RPCClient", () => {
             sendheaders: 24,
             tx: 286787,
             verack: 24,
-            version: 126
-          }
+            version: 126,
+          },
         },
         {
           id: 5,
@@ -1531,7 +1523,7 @@ suite("RPCClient", () => {
             sendheaders: 24,
             tx: 9887,
             verack: 24,
-            version: 126
+            version: 126,
           },
           bytesrecv_per_msg: {
             addr: 30107,
@@ -1547,9 +1539,9 @@ suite("RPCClient", () => {
             sendheaders: 24,
             tx: 150831,
             verack: 24,
-            version: 126
-          }
-        }
+            version: 126,
+          },
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -1567,8 +1559,8 @@ suite("RPCClient", () => {
           address: "92.53.89.123/32",
           banned_until: 1571932132,
           ban_created: 1571932032,
-          ban_reason: "manually added"
-        }
+          ban_reason: "manually added",
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -1603,14 +1595,14 @@ suite("RPCClient", () => {
           time: 1569474479,
           services: 1036,
           address: "188.162.132.87",
-          port: 18333
+          port: 18333,
         },
         {
           time: 1569557642,
           services: 1037,
           address: "174.138.24.48",
-          port: 18333
-        }
+          port: 18333,
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -1644,9 +1636,9 @@ suite("RPCClient", () => {
       const result = {
         inputs: [
           { has_utxo: false, is_final: false, next: "updater" },
-          { has_utxo: false, is_final: false, next: "updater" }
+          { has_utxo: false, is_final: false, next: "updater" },
         ],
-        next: "updater"
+        next: "updater",
       };
       nock(uri)
         .post("/", request)
@@ -1660,7 +1652,7 @@ suite("RPCClient", () => {
     test(".combinepsbt()", async () => {
       const txs = [
         "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQEIawJHMEQCIAenBxHwiJAo9Mt/0B0gsflruKfe90W0OUaW/gMqT13hAiBrcsvglEZvxDWKKhMLArU52ndMb6cAangC/u6mowwjGAEhAoNFASSjynZOTTIf6bOnANXURu5zQ9eGpUAcB1x569/qAAAA",
-        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQABAR/HgTsAAAAAABYAFDNBVvuJV65T//o2rr6AhKSwDPt9AQhrAkcwRAIgWyFL8FdWh0kB8CbKL2GsVPQU2Wgb9E4YvOwJ9KLseMgCIHBdaP/zuYg7Y4cL5B+gjsOUB4PFss6+dnACpn/+U9UjASEDTi3KTyZW9vKWtxYxflo5B7l1PHSqn0GUlf8AsXkGfvQAAA=="
+        "cHNidP8BAHsCAAAAAn+RFbuIDPiBkN5ua0vnUVZwwvbnnDZ8Ca4Z6y3vQyqnAAAAAAD9////KUVYeBVxQc4IZCvsc2WohVhZanD54jy11Gxxn4YRtpYBAAAAAP3///8BYII7AAAAAAAWABSANbyZwTJ0B7qPqpWSolEEKYbIFQEAAAAAAQEfIAMAAAAAAAAWABRCHnul3Lf2vUn4GUU9mrnGLnTHsQABAR/HgTsAAAAAABYAFDNBVvuJV65T//o2rr6AhKSwDPt9AQhrAkcwRAIgWyFL8FdWh0kB8CbKL2GsVPQU2Wgb9E4YvOwJ9KLseMgCIHBdaP/zuYg7Y4cL5B+gjsOUB4PFss6+dnACpn/+U9UjASEDTi3KTyZW9vKWtxYxflo5B7l1PHSqn0GUlf8AsXkGfvQAAA==",
       ];
       const params = { txs };
       const request = { params, method: "combinepsbt", id, jsonrpc };
@@ -1678,7 +1670,7 @@ suite("RPCClient", () => {
     test(".combinerawtransaction()", async () => {
       const txs = [
         "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69000247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
-        "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20000000000"
+        "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20000000000",
       ];
       const params = { txs };
       const request = { params, method: "combinerawtransaction", id, jsonrpc };
@@ -1716,19 +1708,19 @@ suite("RPCClient", () => {
         {
           txid:
             "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
-          vout: 1
+          vout: 1,
         },
         {
           txid:
             "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
-          vout: 0
-        }
+          vout: 0,
+        },
       ];
       const out1: { [address: string]: number } = {
-        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215,
       };
       const out2: { [address: string]: number } = {
-        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001,
       };
       const outputs = [out1, out2];
       const locktime = 1;
@@ -1751,19 +1743,19 @@ suite("RPCClient", () => {
         {
           txid:
             "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
-          vout: 1
+          vout: 1,
         },
         {
           txid:
             "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
-          vout: 0
-        }
+          vout: 0,
+        },
       ];
       const out1: { [address: string]: number } = {
-        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215
+        tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su: 0.00215,
       };
       const out2: { [address: string]: number } = {
-        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001
+        tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs: 0.001,
       };
       const outputs = [out1, out2];
       const locktime = 1;
@@ -1803,15 +1795,15 @@ suite("RPCClient", () => {
                 "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
               vout: 1,
               scriptSig: { asm: "", hex: "" },
-              sequence: 4294967293
+              sequence: 4294967293,
             },
             {
               txid:
                 "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
               vout: 0,
               scriptSig: { asm: "", hex: "" },
-              sequence: 4294967293
-            }
+              sequence: 4294967293,
+            },
           ],
           vout: [
             {
@@ -1822,8 +1814,8 @@ suite("RPCClient", () => {
                 hex: "00146f709183bc76478188b2325f2ee692e8c043cb8f",
                 reqSigs: 1,
                 type: "witness_v0_keyhash",
-                addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"]
-              }
+                addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"],
+              },
             },
             {
               value: 0.001,
@@ -1833,14 +1825,14 @@ suite("RPCClient", () => {
                 hex: "0014b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
                 reqSigs: 1,
                 type: "witness_v0_keyhash",
-                addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"]
-              }
-            }
-          ]
+                addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"],
+              },
+            },
+          ],
         },
         unknown: {},
         inputs: [{}, {}],
-        outputs: [{}, {}]
+        outputs: [{}, {}],
       };
       nock(uri)
         .post("/", request)
@@ -1873,15 +1865,15 @@ suite("RPCClient", () => {
               "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
             vout: 1,
             scriptSig: { asm: "", hex: "" },
-            sequence: 4294967293
+            sequence: 4294967293,
           },
           {
             txid:
               "ff758ffd73729be8afae0d683547f7840bdaee75ad5e5c464fb621b2509c366b",
             vout: 0,
             scriptSig: { asm: "", hex: "" },
-            sequence: 4294967293
-          }
+            sequence: 4294967293,
+          },
         ],
         vout: [
           {
@@ -1892,8 +1884,8 @@ suite("RPCClient", () => {
               hex: "00146f709183bc76478188b2325f2ee692e8c043cb8f",
               reqSigs: 1,
               type: "witness_v0_keyhash",
-              addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"]
-            }
+              addresses: ["tb1qdacfrqauwercrz9jxf0jae5jarqy8ju0ywt8su"],
+            },
           },
           {
             value: 0.001,
@@ -1903,10 +1895,10 @@ suite("RPCClient", () => {
               hex: "0014b7137dfed18ffe396fbe0b1678608cebdd45b1eb",
               reqSigs: 1,
               type: "witness_v0_keyhash",
-              addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"]
-            }
-          }
-        ]
+              addresses: ["tb1qkufhmlk33llrjma7pvt8scyva0w5tv0tvuy6zs"],
+            },
+          },
+        ],
       };
       nock(uri)
         .post("/", request)
@@ -1930,7 +1922,7 @@ suite("RPCClient", () => {
         addresses: [
           "miY4Gn8gzbU7SMNzTqRMgU78FVaLCEUnrd",
           "mkeLiKDk5MZX19e8P2CrKA2mwNgWLwzUoW",
-          "mucT5ReiLujp3bA1mRSud7eAF6aRfS3v3D"
+          "mucT5ReiLujp3bA1mRSud7eAF6aRfS3v3D",
         ],
         p2sh: "2NFnZXZPkTfKPmBbDY6EhmVZc4tNK3eyLcr",
         segwit: {
@@ -1941,10 +1933,10 @@ suite("RPCClient", () => {
           reqSigs: 1,
           type: "witness_v0_scripthash",
           addresses: [
-            "tb1qe36nkq87qczlnuqm4n2kcutvzngjvah5pmy7gm3duaptrkgh25ts0p4m5w"
+            "tb1qe36nkq87qczlnuqm4n2kcutvzngjvah5pmy7gm3duaptrkgh25ts0p4m5w",
           ],
-          "p2sh-segwit": "2Mzt4Uc77wz8rGk3Yad2kgJuj47ax5soMCJ"
-        }
+          "p2sh-segwit": "2Mzt4Uc77wz8rGk3Yad2kgJuj47ax5soMCJ",
+        },
       };
       nock(uri)
         .post("/", request)
@@ -1964,7 +1956,7 @@ suite("RPCClient", () => {
       const result = {
         hex:
           "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000",
-        complete: true
+        complete: true,
       };
       nock(uri)
         .post("/", request)
@@ -1989,7 +1981,7 @@ suite("RPCClient", () => {
         hex:
           "020000000229455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960000000000fdffffffa95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000fdffffff02d4c52d00000000001600143bef1b30253a516128b176621f52f07f415c670240420f00000000001600148470e04e616ab6552d72e8284a32a293ff8a959b00000000",
         fee: 0.00000236,
-        changepos: 0
+        changepos: 0,
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2028,10 +2020,10 @@ suite("RPCClient", () => {
               asm:
                 "3045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e2[ALL] 039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9",
               hex:
-                "483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9"
+                "483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9",
             },
-            sequence: 4294967295
-          }
+            sequence: 4294967295,
+          },
         ],
         vout: [
           {
@@ -2043,9 +2035,9 @@ suite("RPCClient", () => {
               hex: "a9145629021f7668d4ec310ac5e99701a6d6cf95eb8f87",
               reqSigs: 1,
               type: "scripthash",
-              addresses: ["2N16oE62ZjAPup985dFBQYAuy5zpDraH7Hk"]
-            }
-          }
+              addresses: ["2N16oE62ZjAPup985dFBQYAuy5zpDraH7Hk"],
+            },
+          },
         ],
         hex:
           "01000000018931eb4ccedd42474db1da12d1529724c3b3bf2195ec183e52f457c18adb5022010000006b483045022100d21fffc9343da1b2ec190c7084f8a69d201adcd88b880beb013fa4e0ab4158ad02205e0c362f844cc63539467b37d583128c7d2f7754864d08efe29cef98272688e20121039c17e0e4ebd61c753fda99392658a692dbfdab430399b1e12221da6a4cda5dd9ffffffff01dbf428030000000017a9145629021f7668d4ec310ac5e99701a6d6cf95eb8f8700000000",
@@ -2053,7 +2045,7 @@ suite("RPCClient", () => {
           "00000000480351c0fc7047af37756bbae30996a018e94d9ca8156dccea032018",
         confirmations: 3204,
         time: 1570540739,
-        blocktime: 1570540739
+        blocktime: 1570540739,
       };
       nock(uri)
         .post("/", request)
@@ -2067,7 +2059,7 @@ suite("RPCClient", () => {
     test(".joinpsbts()", async () => {
       const txs = [
         "cHNidP8BAFICAAAAAdVSFGEYzcJX2qwhy8iJGI1Y/zeIqBQtH/OBC9WJ4mx7AQAAAAD9////AdhHAwAAAAAAFgAUb3CRg7x2R4GIsjJfLuaS6MBDy48BAAAAAAAA",
-        "cHNidP8BAFICAAAAAWs2nFCyIbZPRlxerXXu2guE90c1aA2ur+ibcnP9j3X/AAAAAAD9////AaCGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAA"
+        "cHNidP8BAFICAAAAAWs2nFCyIbZPRlxerXXu2guE90c1aA2ur+ibcnP9j3X/AAAAAAD9////AaCGAQAAAAAAFgAUtxN9/tGP/jlvvgsWeGCM691FsesBAAAAAAAA",
       ];
       const params = { txs };
       const request = { params, method: "joinpsbts", id, jsonrpc };
@@ -2104,7 +2096,7 @@ suite("RPCClient", () => {
         "02000000029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e6900000000";
       const privkeys = [
         "cSo9pNKNPhPhebybLJaE2BdqAtYjMGJHpxujScKd2ZTrgxCD28r6",
-        "cQeGBYp4NiFj2L2d1ivgan4UMsba3oWQKiBf98tq1QXjPiKQMQeB"
+        "cQeGBYp4NiFj2L2d1ivgan4UMsba3oWQKiBf98tq1QXjPiKQMQeB",
       ];
       const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
       const params = { hexstring, privkeys, sighashtype };
@@ -2112,12 +2104,12 @@ suite("RPCClient", () => {
         params,
         method: "signrawtransactionwithkey",
         id,
-        jsonrpc
+        jsonrpc,
       };
       const result = {
         hex:
           "020000000001029a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0000000000fdffffff9a2b645e97cfde604d0b65aa174fb4747f8b99152f581d12d42055f3388c123e0100000000fdffffff0180250000000000001600143d366a85a8c07a44b5eed0a622197d6784c07e69024730440220451546bae0bc61270eec966f1ca0a5cb16a93c5f88a800094240e61fb3f6fdd7022021a0065ec25e06f9e0b3a4d87b06d13adc2bd620dd8f2ecf7a40366ceaa93e998121039a3d49d8d6a2ca7ff2ea6657d3c8c19ba20ab67f529edb522030928b5f4894d20247304402201596d19c0eec785d301dad21ecc8bad1d808d4bd15615df1a5a1b9e930404066022038126c82743ccf5bc225b61a38ddd7ae651f12d27a730817de79279df8fd0ab88121028cc283639d0254c3f3091659d66f7681189de1ade326d36eefa50217956b057b00000000",
-        complete: true
+        complete: true,
       };
       nock(uri)
         .post("/", request)
@@ -2130,7 +2122,7 @@ suite("RPCClient", () => {
 
     test(".testmempoolaccept()", async () => {
       const rawtxs = [
-        "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000"
+        "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000",
       ];
       const allowhighfees = true;
       const params = { rawtxs, allowhighfees };
@@ -2139,8 +2131,8 @@ suite("RPCClient", () => {
         {
           txid:
             "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9",
-          allowed: true
-        }
+          allowed: true,
+        },
       ];
       nock(uri)
         .post("/", request)
@@ -2173,7 +2165,7 @@ suite("RPCClient", () => {
       const nrequired = 2;
       const keys = [
         "03789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd",
-        "03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626"
+        "03dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a61626",
       ];
       const address_type: "bech32" = "bech32";
       const params = { nrequired, keys, address_type };
@@ -2182,7 +2174,7 @@ suite("RPCClient", () => {
         address:
           "tb1q0jnggjwnn22a4ywxc2pcw86c0d6tghqkgk3hlryrxl7nmxkylmnqdcdsu7",
         redeemScript:
-          "522103789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd2103dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a6162652ae"
+          "522103789ed0bb717d88f7d321a368d905e7430207ebbd82bd342cf11ae157a7ace5fd2103dbc6764b8884a92e871274b87583e6d5c2a58819473e17e107ef3f6aa5a6162652ae",
       };
       nock(uri)
         .post("/", request)
@@ -2202,7 +2194,7 @@ suite("RPCClient", () => {
       const result = [
         "tb1q7as9cz0t8rfng5f0xdklfgyp0x6ya0tu6ckaqs",
         "tb1q0aducdmz77tfu4dhfez8ayycmp2pz6jwy85hhn",
-        "tb1qsdqewd8upv66txx48qssr0an5r3llaxtwqzytk"
+        "tb1qsdqewd8upv66txx48qssr0an5r3llaxtwqzytk",
       ];
       nock(uri)
         .post("/", request)
@@ -2237,7 +2229,7 @@ suite("RPCClient", () => {
           "wpkh([d34db33f/84'/0'/0']0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798)#n9g43y4k",
         isrange: false,
         issolvable: true,
-        hasprivatekeys: false
+        hasprivatekeys: false,
       };
       nock(uri)
         .post("/", request)
@@ -2274,7 +2266,7 @@ suite("RPCClient", () => {
         isscript: false,
         iswitness: true,
         witness_version: 0,
-        witness_program: "db351aed368d616814515e1ce9e1a5e21eeb923d"
+        witness_program: "db351aed368d616814515e1ce9e1a5e21eeb923d",
       };
       nock(uri)
         .post("/", request)
@@ -2335,7 +2327,7 @@ suite("RPCClient", () => {
       const nrequired = 2;
       const keys = [
         "030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f",
-        "02ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e9"
+        "02ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e9",
       ];
       const label = "NewMultiSigAddress";
       const address_type: "bech32" = "bech32";
@@ -2345,7 +2337,7 @@ suite("RPCClient", () => {
         address:
           "tb1qylfjvzx7a7wkntajyvek2wur2qnmt3gxqnevhjkw957fw0ggw9nqczpy6l",
         redeemScript:
-          "5221030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f2102ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e952ae"
+          "5221030b0f444121f91cf323ad599ee8ced39dcbb136905e8ac42f9bdb4756142c716f2102ea2e2847de9386b704cacb5c730c272c4f3e7b14a586ca6122cdacff5dea59e952ae",
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2384,7 +2376,7 @@ suite("RPCClient", () => {
           "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
         origfee: 0.00000144,
         fee: 0.00000839,
-        errors: []
+        errors: [],
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2430,7 +2422,7 @@ suite("RPCClient", () => {
       const params = { filename };
       const request = { params, method: "dumpwallet", id, jsonrpc };
       const result = {
-        filename: "D:\\Wallets\\Bitcoin Core\\myWalletDump.dat"
+        filename: "D:\\Wallets\\Bitcoin Core\\myWalletDump.dat",
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2462,7 +2454,7 @@ suite("RPCClient", () => {
       const request = { params, method: "getaddressesbylabel", id, jsonrpc };
       const result = {
         tb1qxwqd5gance6rk9xel5uwuxxdj79wfwgaxsrnn0: { purpose: "receive" },
-        tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj: { purpose: "receive" }
+        tb1qds5qv262690uvsh6wytp0aq8xey29jfuegv4pj: { purpose: "receive" },
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2497,7 +2489,7 @@ suite("RPCClient", () => {
         hdkeypath: "m/0'/0'/25'",
         hdseedid: "d43760fda85e35a75e0bed11233185630f8d1279",
         hdmasterfingerprint: "2f8f8c1b",
-        labels: [{ name: "SomeLabel", purpose: "receive" }]
+        labels: [{ name: "SomeLabel", purpose: "receive" }],
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2605,7 +2597,7 @@ suite("RPCClient", () => {
         "bip125-replaceable": "no",
         details: [],
         hex:
-          "02000000000101a95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000feffffff02a086010000000000160014aacf5a9d6c52c5ffe8006182a72486baf2e8bf3333fb390000000000160014e87724699668d3abff7311cb18a62b0c8de1038502473044022026a9618c21c3eab177877c6f8f8890610ad0ac93b8e243c4ea32dadf52728dae02206817f8aaa7fabf728853415bdae7b4e2fc02fc72630cba23952224fad374bcc3012102a00a9973ab15acaac69b591dcebed3fcf44ab76950d962671391fd1c1c3f0015742c1800"
+          "02000000000101a95716e643eed9055510fb925eb59b536ff496c642b2904ed5260c03574751d10000000000feffffff02a086010000000000160014aacf5a9d6c52c5ffe8006182a72486baf2e8bf3333fb390000000000160014e87724699668d3abff7311cb18a62b0c8de1038502473044022026a9618c21c3eab177877c6f8f8890610ad0ac93b8e243c4ea32dadf52728dae02206817f8aaa7fabf728853415bdae7b4e2fc02fc72630cba23952224fad374bcc3012102a00a9973ab15acaac69b591dcebed3fcf44ab76950d962671391fd1c1c3f0015742c1800",
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2621,7 +2613,7 @@ suite("RPCClient", () => {
         params: {},
         method: "getunconfirmedbalance",
         id,
-        jsonrpc
+        jsonrpc,
       };
       const result = 0;
       nock(uri)
@@ -2647,7 +2639,7 @@ suite("RPCClient", () => {
         keypoolsize_hd_internal: 999,
         paytxfee: 0,
         hdseedid: "d43760fda85e35a75e0bed11233185630f8d1279",
-        private_keys_enabled: true
+        private_keys_enabled: true,
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2685,21 +2677,21 @@ suite("RPCClient", () => {
           range,
           internal: true,
           watchonly: true,
-          timestamp: 0
+          timestamp: 0,
         },
         {
           scriptPubKey: {
-            address: "tb1q0pjl9cy0t38uvyfs75t7av7ujrhs65xx0nfjmf"
+            address: "tb1q0pjl9cy0t38uvyfs75t7av7ujrhs65xx0nfjmf",
           },
-          timestamp
+          timestamp,
         },
         {
           scriptPubKey: {
-            address: "tb1qxqt28qy3uvj8qeucm60dnrzty3cccx88hp9car"
+            address: "tb1qxqt28qy3uvj8qeucm60dnrzty3cccx88hp9car",
           },
           keys: ["cQfkAynVm54Je8mXYH6zkKKjug7ehheUeMx5jnWTvy94M73X2Vdj"],
-          timestamp
-        }
+          timestamp,
+        },
       ];
       const options = { rescan: false };
       const params = { requests, options };
@@ -2798,9 +2790,9 @@ suite("RPCClient", () => {
       const result = [
         [
           ["tb1q8hdflcavy6cqekcz89nyeknn0jgp6jrffchkru", 0],
-          ["tb1qd6kfch0myeleugs5egs9dwmn94zc0wjjaxhecw", 0, ""]
+          ["tb1qd6kfch0myeleugs5egs9dwmn94zc0wjjaxhecw", 0, ""],
         ],
-        [["tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5", 0, ""]]
+        [["tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5", 0, ""]],
       ];
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2831,13 +2823,13 @@ suite("RPCClient", () => {
         {
           txid:
             "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
-          vout: 0
+          vout: 0,
         },
         {
           txid:
             "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
-          vout: 1
-        }
+          vout: 1,
+        },
       ];
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2857,7 +2849,7 @@ suite("RPCClient", () => {
         minconf,
         include_empty,
         include_watchonly,
-        address_filter
+        address_filter,
       };
       const request = { params, method: "listreceivedbyaddress", id, jsonrpc };
       const result = [
@@ -2867,9 +2859,9 @@ suite("RPCClient", () => {
           confirmations: 3739,
           label: "",
           txids: [
-            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5"
-          ]
-        }
+            "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
+          ],
+        },
       ];
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2892,9 +2884,9 @@ suite("RPCClient", () => {
           involvesWatchonly: true,
           amount: 0.00001234,
           confirmations: 3835,
-          label: "MultiSig"
+          label: "MultiSig",
         },
-        { amount: 0, confirmations: 0, label: "SomeLabel" }
+        { amount: 0, confirmations: 0, label: "SomeLabel" },
       ];
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -2915,7 +2907,7 @@ suite("RPCClient", () => {
         blockhash,
         target_confirmations,
         include_watchonly,
-        include_removed
+        include_removed,
       };
       const request = { params, method: "listsinceblock", id, jsonrpc };
       const result = {
@@ -2935,14 +2927,14 @@ suite("RPCClient", () => {
             txid:
               "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
             walletconflicts: [
-              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1"
+              "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
             ],
             time: 1572356102,
             timereceived: 1572356102,
             "bip125-replaceable": "no",
             replaces_txid:
               "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
-            abandoned: false
+            abandoned: false,
           },
           {
             address: "tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5",
@@ -2962,7 +2954,7 @@ suite("RPCClient", () => {
             time: 1572360790,
             timereceived: 1572360790,
             "bip125-replaceable": "no",
-            abandoned: false
+            abandoned: false,
           },
           {
             address: "tb1qjnldyxvhr8gxsrlplxy9yt0pyc9y4qup7v7jv5",
@@ -2980,7 +2972,7 @@ suite("RPCClient", () => {
             walletconflicts: [],
             time: 1572360790,
             timereceived: 1572360790,
-            "bip125-replaceable": "no"
+            "bip125-replaceable": "no",
           },
           {
             address: "tb1qtektjrzjl28dhh8hgftv4f66ukh566sm62vg27",
@@ -3000,7 +2992,7 @@ suite("RPCClient", () => {
             time: 1572355952,
             timereceived: 1572355952,
             "bip125-replaceable": "no",
-            abandoned: false
+            abandoned: false,
           },
           {
             address: "mmHGoznJqAjpokaBNpNYc35o8D3hZhkgkY",
@@ -3014,18 +3006,18 @@ suite("RPCClient", () => {
             txid:
               "92dee32122b5f270c2c28eb4bdccd767f897b613ee51157bfcc4b53c5106acf1",
             walletconflicts: [
-              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d"
+              "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
             ],
             time: 1572356081,
             timereceived: 1572356081,
             "bip125-replaceable": "yes",
             replaced_by_txid:
               "e540d4c27e148c193979dc5bb7e86110f818311a51223e6ba5f5d9e8daaf5e3d",
-            abandoned: false
-          }
+            abandoned: false,
+          },
         ],
         lastblock:
-          "0000000000000063d9b6e5d9ca6692dec30afab32615b0717ac88f39bc199339"
+          "0000000000000063d9b6e5d9ca6692dec30afab32615b0717ac88f39bc199339",
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -3062,7 +3054,7 @@ suite("RPCClient", () => {
           time: 1572030277,
           timereceived: 1572030277,
           "bip125-replaceable": "no",
-          abandoned: false
+          abandoned: false,
         },
         {
           address: "tb1qtektjrzjl28dhh8hgftv4f66ukh566sm62vg27",
@@ -3082,8 +3074,8 @@ suite("RPCClient", () => {
           time: 1572355952,
           timereceived: 1572355952,
           "bip125-replaceable": "no",
-          abandoned: false
-        }
+          abandoned: false,
+        },
       ];
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -3099,21 +3091,21 @@ suite("RPCClient", () => {
       const maxconf = 4000;
       const addresses = [
         "tb1qg9nfs5ll5h3xl3h8xqhw8wg4sj6j6g6666cstmeg7v2q4ty0ccsqg5du3n",
-        "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4"
+        "tb1q8vd7hh77afe2aans7vywyt8txvz84r3pwkmny4",
       ];
       const include_unsafe = false;
       const query_options = {
         minimumAmount: 0.0001,
         maximumAmount: 0.01,
         maximumCount: 3,
-        minimumSumAmount: 10
+        minimumSumAmount: 10,
       };
       const params = {
         minconf,
         maxconf,
         addresses,
         include_unsafe,
-        query_options
+        query_options,
       };
       const request = { params, method: "listunspent", id, jsonrpc };
       const result = [
@@ -3134,7 +3126,7 @@ suite("RPCClient", () => {
           solvable: true,
           desc:
             "wsh(multi(2,[2f8f8c1b/0'/0'/11']026544d2de6d868276cdfb8d2cdd020119162440fe98eac1add12fa354e7fef838,[2f8f8c1b/0'/0'/10']024a8638218164e64ac6ef560ebc18356a8773697aaeea37bc2c5707cca598b8c7))#v4j2pdsn",
-          safe: true
+          safe: true,
         },
         {
           txid:
@@ -3148,8 +3140,8 @@ suite("RPCClient", () => {
           solvable: true,
           desc:
             "wpkh([2f8f8c1b/0'/1'/0']023efde40c10ded46eeb2ccbe4ece98ccffc9921e6e2cbb82f21965b5563dc59a3)#vc3pfv5a",
-          safe: true
-        }
+          safe: true,
+        },
       ];
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -3163,7 +3155,7 @@ suite("RPCClient", () => {
     test(".listwalletdir()", async () => {
       const request = { params: {}, method: "listwalletdir", id, jsonrpc };
       const result = {
-        wallets: [{ name: "bitcoin-core-wallet.dat" }, { name: "" }]
+        wallets: [{ name: "bitcoin-core-wallet.dat" }, { name: "" }],
       };
       nock(uri)
         .post("/", request)
@@ -3206,13 +3198,13 @@ suite("RPCClient", () => {
         {
           txid:
             "7b6ce289d50b81f31f2d14a88837ff588d1889c8cb21acda57c2cd18611452d5",
-          vout: 1
+          vout: 1,
         },
         {
           txid:
             "3e128c38f35520d4121d582f15998b7f74b44f17aa650b4d60decf975e642b9a",
-          vout: 0
-        }
+          vout: 0,
+        },
       ];
       const params = { unlock, transactions };
       const request = { params, method: "lockunspent", id, jsonrpc };
@@ -3259,7 +3251,7 @@ suite("RPCClient", () => {
     test(".sendmany()", async () => {
       const amounts = {
         tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
-        tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003"
+        tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003",
       };
       const minconf = 6;
       const comment = "SomeComment";
@@ -3274,7 +3266,7 @@ suite("RPCClient", () => {
         subtractfeefrom,
         replaceable,
         conf_target,
-        estimate_mode
+        estimate_mode,
       };
       const request = { params, method: "sendmany", id, jsonrpc };
       const result =
@@ -3305,7 +3297,7 @@ suite("RPCClient", () => {
         subtractfeefromamount,
         replaceable,
         conf_target,
-        estimate_mode
+        estimate_mode,
       };
       const request = { params, method: "sendtoaddress", id, jsonrpc };
       const result =
@@ -3388,8 +3380,8 @@ suite("RPCClient", () => {
             "7a3c07063b1407050836354f69a2667343b6d8389348551610d789f1ece96d1e",
           vout: 0,
           scriptPubKey: "0014c92776d7c9e5c7d74f9c8093335de1928862e8ac",
-          amount: 0.06924013
-        }
+          amount: 0.06924013,
+        },
       ];
       const sighashtype: "ALL|ANYONECANPAY" = "ALL|ANYONECANPAY";
       const params = { hexstring, prevtxs, sighashtype };
@@ -3397,12 +3389,12 @@ suite("RPCClient", () => {
         params,
         method: "signrawtransactionwithwallet",
         id,
-        jsonrpc
+        jsonrpc,
       };
       const result = {
         hex:
           "020000000001011e6de9ecf189d7101655489338d8b6437366a2694f3536080507143b06073c7a0000000000fdffffff0118a66900000000001600141b5eaac3aca51241ffa5a10cfd85b38c0035e7b102473044022035b072acf1e166e9d20999adbd40fd4fe6d76947cc395b1450e96a5e5c3d677602203622d8827e5c4396bbdd390fd29d7a93992273e5028a4c8a76329af45496848d812103bcde895db85d99e39b1eb4689671798c689435b6e131891aad026aed31f4a8f700000000",
-        complete: true
+        complete: true,
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -3457,13 +3449,13 @@ suite("RPCClient", () => {
         {
           txid:
             "5396f889b7118fc57f4bfb3397e12399d7f2b8ccd7f5a66bd33792f6ebe399e3",
-          vout: 0
-        }
+          vout: 0,
+        },
       ];
       const outputs = [
         {
-          tb1qu7jphg0km5mrl7kx8txy3xuky9tlpvmxmehz8m: 0.001466
-        }
+          tb1qu7jphg0km5mrl7kx8txy3xuky9tlpvmxmehz8m: 0.001466,
+        },
       ];
       const locktime = 1;
       const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
@@ -3475,7 +3467,7 @@ suite("RPCClient", () => {
         subtractFeeFromOutputs: [],
         replaceable: true,
         conf_target: 20,
-        estimate_mode
+        estimate_mode,
       };
       const bip32derivs = true;
       const params = {
@@ -3483,14 +3475,14 @@ suite("RPCClient", () => {
         outputs,
         locktime,
         options,
-        bip32derivs
+        bip32derivs,
       };
       const request = { params, method: "walletcreatefundedpsbt", id, jsonrpc };
       const result = {
         psbt:
           "cHNidP8BAFICAAAAAeOZ4+v2kjfTa6b118y48teZI+GXM/tLf8WPEbeJ+JZTAAAAAAD9////Aag8AgAAAAAAFgAU56QbofbdNj/6xjrMSJuWIVfws2YBAAAAAAEA4QEAAAAB7KfSdMCo0aVk+cIkbmlgddOFp+1riB5jCVwBZ0Cgaq4BAAAAakcwRAIgAeAUrBBpoUPgr8A4ysywkv0B8WdgsxfNhAvFpbw/Ki0CIE8GFYALdKLWw2jdwVfLiMFFsy024Toj7Po0/ds/35XCASEDr3vX6YlRh/pfO+KjhQRMg9cfwiFHITID8mKFdFu1gBv/////Asw9AgAAAAAAGXapFIujKvHonUGL+2VSyu2XWvBQ7l63iKxfx5AAAAAAABl2qRQYJu+2OZ47eXi0rxco8eAHp2y2PoisAAAAACIGA7sa3R4eYJPKpZ8Sf/PUd/isIQ8sofjIH/jBYC2aW6zQEPnXKHwAAACAAAAAgAIAAIAAIgIC6aO2I6xv+jeXEqj2kFvHlIt21Rso0GDglJsE2UOs36wQJaaBjQAAAIAAAACABQAAgAA=",
         fee: 0.00000292,
-        changepos: -1
+        changepos: -1,
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -3554,7 +3546,7 @@ suite("RPCClient", () => {
       const result = {
         psbt:
           "cHNidP8BAFICAAAAAesycXqP/ZnHQ42fCokY4ws3HyKokiDXfsosfWt2t83wAAAAAAD9////ASBFQAAAAAAAFgAUYN55MzrCRphAffpgyBh5daiXrAcBAAAAAAEBH1NHQAAAAAAAFgAUpOVc1oxzfkX57QvwzkDs8f75ppsBCGsCRzBEAiBCMoeFpGtSbsUWbGubHEmIvyDmKr9KHTB1nbuI9HgIsgIgLj4HuddO7hZ9F7FiqzGo+vLXkY0G2+3VGwgO5qp+LMCBIQKeXII7c4+9Decuri9xUBRtIRde/fOL2WLc6UnN9/qomwAiAgM4FaCpxCh+XmYDxo7+zZXN1BaI1l+HBJzFUnQBUFWfWhCl/jeMAAAAgAAAAIACAACAAA==",
-        complete: true
+        complete: true,
       };
       nock(uri)
         .post("/wallet/" + wallet, request)
@@ -3574,15 +3566,15 @@ suite("RPCClient", () => {
         {
           type: "pubhashblock",
           address: "tcp://127.0.0.1:3333",
-          hwm: 1000
+          hwm: 1000,
         },
         { type: "pubhashtx", address: "tcp://127.0.0.1:3333", hwm: 1000 },
         {
           type: "pubrawblock",
           address: "tcp://127.0.0.1:3333",
-          hwm: 1000
+          hwm: 1000,
         },
-        { type: "pubrawtx", address: "tcp://127.0.0.1:3333", hwm: 1000 }
+        { type: "pubrawtx", address: "tcp://127.0.0.1:3333", hwm: 1000 },
       ];
       nock(uri)
         .post("/", request)

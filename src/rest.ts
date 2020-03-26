@@ -97,7 +97,7 @@ export class RESTClient extends RPC {
   async getUtxos({
     checkmempool = true,
     outpoints,
-    format = "json"
+    format = "json",
   }: UtxosParams) {
     let uri = "rest/getutxos" + (checkmempool ? "/checkmempool" : "");
     outpoints = !Array.isArray(outpoints) ? [outpoints] : outpoints;
