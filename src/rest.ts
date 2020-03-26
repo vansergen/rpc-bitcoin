@@ -30,9 +30,7 @@ export type TxParams = formatParam & {
   txid: string;
 };
 
-export type RESTIniOptions = RPCOtpions & {
-  url?: string;
-};
+export type RESTIniOptions = RPCOptions & { url?: string };
 
 export class RESTClient extends RPC {
   /**
