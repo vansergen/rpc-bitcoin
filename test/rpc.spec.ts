@@ -375,6 +375,29 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".getblockfilter()", async () => {
+      const blockhash =
+        "00000000000000dfffa1954693ba3f79813909dbcdedfe05eccb9829e828c141";
+      const filtertype = "basic";
+      const request = {
+        params: { blockhash, filtertype },
+        method: "getblockfilter",
+        id,
+        jsonrpc,
+      };
+      const result = {
+        filter: "<the hex-encoded filter data>",
+        header: "<the hex-encoded filter header>",
+      };
+      nock(uri)
+        .post("/", request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getblockfilter({ blockhash, filtertype });
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".getblockhash()", async () => {
       const height = 1583782;
       const params = { height };
@@ -1021,46 +1044,6 @@ suite("RPCClient", () => {
   });
 
   suite("Generating", () => {
-    test(".generate()", async () => {
-      const params = { nblocks: 1, maxtries: 10000 };
-      const request = { params, method: "generate", id, jsonrpc };
-      const result: string[] = [];
-      nock(uri)
-        .post("/", request)
-        .times(1)
-        .basicAuth(auth)
-        .reply(200, { result, error, id });
-      const data = await client.generate(params);
-      assert.deepStrictEqual(data, result);
-    });
-
-    test(".generate() (multi-wallet)", async () => {
-      const params = { nblocks: 1, maxtries: 10000 };
-      const request = { params, method: "generate", id, jsonrpc };
-      const result: string[] = [];
-      nock(uri)
-        .post("/wallet/" + wallet, request)
-        .times(1)
-        .basicAuth(auth)
-        .reply(200, { result, error, id });
-      const data = await client.generate(params, wallet);
-      assert.deepStrictEqual(data, result);
-    });
-
-    test(".generate() (default wallet)", async () => {
-      const client = new RPCClient({ port, timeout, pass, wallet });
-      const params = { nblocks: 1, maxtries: 10000 };
-      const request = { params, method: "generate", id, jsonrpc };
-      const result: string[] = [];
-      nock(uri)
-        .post("/wallet/" + wallet, request)
-        .times(1)
-        .basicAuth(auth)
-        .reply(200, { result, error, id });
-      const data = await client.generate(params);
-      assert.deepStrictEqual(data, result);
-    });
-
     test(".generatetoaddress()", async () => {
       const address = "tb1qc4gce3kvc8px505r4wurwdytqclkdjta68qlh4";
       const params = { nblocks: 1, maxtries: 10000, address };
@@ -2077,8 +2060,8 @@ suite("RPCClient", () => {
     test(".sendrawtransaction()", async () => {
       const hexstring =
         "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000";
-      const allowhighfees = true;
-      const params = { hexstring, allowhighfees };
+      const maxfeerate = 0.1;
+      const params = { hexstring, maxfeerate };
       const request = { params, method: "sendrawtransaction", id, jsonrpc };
       const result =
         "d1514757030c26d54e90b242c696f46f539bb55e92fb105505d9ee43e61657a9";
@@ -2124,8 +2107,8 @@ suite("RPCClient", () => {
       const rawtxs = [
         "020000000001027f9115bb880cf88190de6e6b4be7515670c2f6e79c367c09ae19eb2def432aa70000000000fdffffff29455878157141ce08642bec7365a88558596a70f9e23cb5d46c719f8611b6960100000000fdffffff0160823b00000000001600148035bc99c1327407ba8faa9592a251042986c81502473044022007a70711f0889028f4cb7fd01d20b1f96bb8a7def745b4394696fe032a4f5de102206b72cbe094466fc4358a2a130b02b539da774c6fa7006a7802feeea6a30c231801210283450124a3ca764e4d321fe9b3a700d5d446ee7343d786a5401c075c79ebdfea0247304402205b214bf05756874901f026ca2f61ac54f414d9681bf44e18bcec09f4a2ec78c80220705d68fff3b9883b63870be41fa08ec3940783c5b2cebe767002a67ffe53d5230121034e2dca4f2656f6f296b716317e5a3907b9753c74aa9f419495ff00b179067ef401000000",
       ];
-      const allowhighfees = true;
-      const params = { rawtxs, allowhighfees };
+      const maxfeerate = 0.1;
+      const params = { rawtxs, maxfeerate };
       const request = { params, method: "testmempoolaccept", id, jsonrpc };
       const result = [
         {
@@ -2512,6 +2495,20 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, { result, error, id });
       const data = await client.getbalance(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".getbalances()", async () => {
+      const request = { params: {}, method: "getbalances", id, jsonrpc };
+      const result = {
+        mine: { trusted: 0, untrusted_pending: 0, immature: 0 },
+      };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.getbalances(wallet);
       assert.deepStrictEqual(data, result);
     });
 
@@ -3253,7 +3250,6 @@ suite("RPCClient", () => {
         tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237: 0.00002,
         tb1qm0m54hj4hmgw4ncufh7g6gx8lp7294rgjr8vz3: "0.00003",
       };
-      const minconf = 6;
       const comment = "SomeComment";
       const subtractfeefrom = ["tb1qh4v0nuuglwfvzjhhjwn2mm8xa5n9mmg6azq237"];
       const replaceable = true;
@@ -3261,7 +3257,6 @@ suite("RPCClient", () => {
       const estimate_mode: "ECONOMICAL" = "ECONOMICAL";
       const params = {
         amounts,
-        minconf,
         comment,
         subtractfeefrom,
         replaceable,
@@ -3352,6 +3347,21 @@ suite("RPCClient", () => {
         .basicAuth(auth)
         .reply(200, { result, error, id });
       const data = await client.settxfee(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
+    test(".setwalletflag()", async () => {
+      const flag = "avoid_reuse";
+      const value = false;
+      const params = { flag, value };
+      const request = { params, method: "setwalletflag", id, jsonrpc };
+      const result = { flag_name: "avoid_reuse", flag_state: false };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.setwalletflag(params, wallet);
       assert.deepStrictEqual(data, result);
     });
 

@@ -1,24 +1,24 @@
 {
   "name": "rpc-bitcoin",
-  "version": "1.11.1",
+  "version": "2.0.0",
   "description": "A TypeScript library to make RPC and HTTP REST requests to Bitcoin Core",
   "main": "build/index.js",
-  "type": "module",
+  "type": "commonjs",
   "engines": {
-    "node": ">=10.16.3"
+    "node": ">=10.19.0"
   },
   "types": "build/index.d.ts",
   "scripts": {
     "build": "rm -fr build && tsc",
     "fresh-install": "rm -fr node_modules && rm -f package-lock.json && npm install",
-    "prettier": "prettier -c **/*.{md,ts,json}",
-    "prettier:build": "prettier -c **/*.{js} --write",
+    "prettier": "prettier -c \"**/*.{md,ts,json}\"",
+    "prettier:build": "prettier -c \"./build/**/*.{js,d.ts}\" --write",
     "prettier-write": "npm run prettier -- --write",
     "lint": "eslint --ext .ts ./",
     "lint:build": "eslint --ext .js ./ --fix",
     "lint-fix": "npm run lint -- --fix",
     "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts",
-    "prepublishOnly": "npm run prettier && npm run lint && npm run build && prettier:build && lint:build",
+    "prepublishOnly": "npm run prettier && npm run lint && npm run build && npm run prettier:build && npm run lint:build",
     "postpublish": "rm -fr build"
   },
   "repository": {

@@ -1,4 +1,4 @@
-# rpc-bitcoin [![Build Status](https://travis-ci.com/vansergen/rpc-bitcoin.svg?token=cg5dVMovG8Db6p5Qzzps&branch=master)](https://travis-ci.com/vansergen/rpc-bitcoin)
+# rpc-bitcoin [![Build Status](https://travis-ci.com/vansergen/rpc-bitcoin.svg?token=cg5dVMovG8Db6p5Qzzps&branch=master)](https://travis-ci.com/vansergen/rpc-bitcoin) [![Known Vulnerabilities](https://snyk.io/test/github/vansergen/rpc-bitcoin/badge.svg)](https://snyk.io/test/github/vansergen/rpc-bitcoin) ![NPM license](https://img.shields.io/npm/l/rpc-bitcoin) ![npm downloads](https://img.shields.io/npm/dt/rpc-bitcoin) ![GitHub top language](https://img.shields.io/github/languages/top/vansergen/rpc-bitcoin)
 
 A [TypeScript](https://www.typescriptlang.org) library to make RPC and HTTP REST requests to [Bitcoin Core](https://bitcoin.org/en/bitcoin-core/).
 
@@ -57,6 +57,15 @@ const info = await client.getblockchaininfo();
 
 ```javascript
 const count = await client.getblockcount();
+```
+
+- [`getblockfilter`](https://bitcoin.org/en/developer-reference#getblockfilter)
+
+```javascript
+const blockhash =
+  "00000000000000dfffa1954693ba3f79813909dbcdedfe05eccb9829e828c141";
+const filtertype = "basic";
+const result = await client.getblockfilter({ blockhash, filtertype });
 ```
 
 - [`getblockhash`](https://bitcoin.org/en/developer-reference#getblockhash)
@@ -262,15 +271,6 @@ const result = await client.uptime();
 ```
 
 ### Generating
-
-- [`generate`](https://bitcoin.org/en/developer-reference#generate)
-
-```javascript
-const nblocks = 1;
-const maxtries = 10000;
-const wallet = "bitcoin-core-wallet.dat";
-const result = await client.generate({ nblocks, maxtries }, wallet);
-```
 
 - [`generatetoaddress`](https://bitcoin.org/en/developer-reference#generatetoaddress)
 
@@ -838,6 +838,13 @@ const include_watchonly = true;
 const result = await client.getbalance({ minconf, include_watchonly }, wallet);
 ```
 
+- [`getbalances`](https://bitcoin.org/en/developer-reference#getbalances)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const result = await client.getbalances(wallet);
+```
+
 - [`getnewaddress`](https://bitcoin.org/en/developer-reference#getnewaddress)
 
 ```javascript
@@ -1226,6 +1233,15 @@ const result = await client.setlabel({ address, label }, wallet);
 const wallet = "bitcoin-core-wallet.dat";
 const amount = 0.00002;
 const result = await client.settxfee({ amount }, wallet);
+```
+
+- [`setwalletflag`](https://bitcoin.org/en/developer-reference#setwalletflag)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const flag = "avoid_reuse";
+const value = false;
+const result = await client.setwalletflag({ flag, value }, wallet);
 ```
 
 - [`signmessage`](https://bitcoin.org/en/developer-reference#signmessage)

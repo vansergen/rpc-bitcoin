@@ -1,8 +1,12 @@
 language: node_js
 node_js:
-  - stable
-  - lts/*
+  - 10
+  - 11
+  - 12
+  - 13
 script:
   - npm run prettier
   - npm run lint
   - npm test
+  - npm run prepublishOnly
+  - npm run postpublish
