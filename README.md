@@ -1226,6 +1226,15 @@ const amount = 0.00002;
 const result = await client.settxfee({ amount }, wallet);
 ```
 
+- [`setwalletflag`](https://bitcoin.org/en/developer-reference#setwalletflag)
+
+```javascript
+const wallet = "bitcoin-core-wallet.dat";
+const flag = "avoid_reuse";
+const value = false;
+const result = await client.setwalletflag({ flag, value }, wallet);
+```
+
 - [`signmessage`](https://bitcoin.org/en/developer-reference#signmessage)
 
 ```javascript

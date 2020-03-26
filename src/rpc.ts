@@ -349,6 +349,8 @@ export type SetHDSeedParams = { newkeypool?: boolean; seed?: string };
 
 export type SetLabelParams = { address: string; label: string };
 
+export type SetWalletFlagParams = { flag: string; value?: boolean };
+
 export type SignMessageParams = { address: string; message: string };
 
 export type WalletCreateFundedPsbtParams = BaseCreateTransaction &
@@ -1246,6 +1248,13 @@ export class RPCClient extends RESTClient {
    */
   settxfee(options: { amount: number | string }, wallet?: string) {
     return this.rpc("settxfee", options, wallet || this.wallet);
+  }
+
+  /**
+   * @description Change the state of the given wallet flag for a wallet.
+   */
+  setwalletflag(options: SetWalletFlagParams, wallet?: string) {
+    return this.rpc("setwalletflag", options, wallet || this.wallet);
   }
 
   /**

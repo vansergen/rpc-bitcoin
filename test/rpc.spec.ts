@@ -3329,6 +3329,21 @@ suite("RPCClient", () => {
       assert.deepStrictEqual(data, result);
     });
 
+    test(".setwalletflag()", async () => {
+      const flag = "avoid_reuse";
+      const value = false;
+      const params = { flag, value };
+      const request = { params, method: "setwalletflag", id, jsonrpc };
+      const result = { flag_name: "avoid_reuse", flag_state: false };
+      nock(uri)
+        .post("/wallet/" + wallet, request)
+        .times(1)
+        .basicAuth(auth)
+        .reply(200, { result, error, id });
+      const data = await client.setwalletflag(params, wallet);
+      assert.deepStrictEqual(data, result);
+    });
+
     test(".signmessage()", async () => {
       const address = "muQN4LGGwtD9bqPeCexKGpksvygnRAnTA3";
       const message = "Hello World!";
