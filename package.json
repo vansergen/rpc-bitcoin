@@ -41,7 +41,7 @@
     "nock": "^11.7.0",
     "prettier": "^1.18.2",
     "ts-node": "^8.4.1",
-    "typescript": "^3.6.4"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "rpc-request": "^3.1.1"
