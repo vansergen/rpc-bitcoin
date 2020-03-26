@@ -37,6 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "eslint": "^6.8.0",
+    "lint-staged": "^10.0.9",
     "mocha": "^7.1.1",
     "nock": "^12.0.3",
     "prettier": "^2.0.2",
@@ -48,5 +49,19 @@
   },
   "directories": {
     "test": "test"
+  },
+  "lint-staged": {
+    "*.{ts,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts,js}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "funding": {
+    "type": "Coinbase Commerce",
+    "url": "https://commerce.coinbase.com/checkout/89a70363-3d1f-4aa0-8d2a-1424ed9e87ee"
   }
 }
