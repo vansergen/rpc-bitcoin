@@ -4,3 +4,4 @@ tsconfig.json
 index.ts
 .github/
 .eslintrc.json
+.travis.yml
