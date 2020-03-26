@@ -243,7 +243,10 @@ export type GetReceivedByLabelParams = {
   minconf?: number;
 };
 
-export type GetTransactionParams = TxId & { include_watchonly?: boolean };
+export type GetTransactionParams = TxId & {
+  include_watchonly?: boolean;
+  verbose?: boolean;
+};
 
 export type ImportAddressParams = {
   address: string;
