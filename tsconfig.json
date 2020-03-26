@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2019",
+    "target": "esnext",
     "module": "commonjs",
     "declaration": true,
-    "declarationMap": true,
     "outDir": "./build",
-    "sourceMap": true,
+    "newLine": "lf",
     "strict": true,
     "noImplicitAny": true,
+    "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node"
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules", "**/*.spec.ts", "bin"]
+  "exclude": ["test"]
 }
