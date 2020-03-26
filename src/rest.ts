@@ -1,4 +1,4 @@
-import { RPC, RPCOtpions } from "rpc-request";
+import { RPC, RPCOptions } from "rpc-request";
 
 export type formatParam = {
   format?: "json" | "hex" | "bin";
