@@ -8,5 +8,5 @@ script:
   - npm run prettier
   - npm run lint
   - npm test
-  - prepublishOnly
-  - postpublish
+  - npm run prepublishOnly
+  - npm run postpublish
