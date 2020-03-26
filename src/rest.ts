@@ -1,34 +1,21 @@
 import { RPC, RPCOptions } from "rpc-request";
 
-export type formatParam = {
-  format?: "json" | "hex" | "bin";
-};
+export type formatParam = { format?: "json" | "hex" | "bin" };
 
-export type BlockParams = formatParam & {
-  hash: string;
-};
+export type BlockParams = formatParam & { hash: string };
 
-export type BlockHeightParams = formatParam & {
-  height: number;
-};
+export type BlockHeightParams = formatParam & { height: number };
 
-export type Outpoint = {
-  txid: string;
-  n: number;
-};
+export type Outpoint = { txid: string; n: number };
 
 export type UtxosParams = formatParam & {
   checkmempool?: boolean;
   outpoints: Outpoint[] | Outpoint;
 };
 
-export type HeaderParams = BlockParams & {
-  count?: number;
-};
+export type HeaderParams = BlockParams & { count?: number };
 
-export type TxParams = formatParam & {
-  txid: string;
-};
+export type TxParams = formatParam & { txid: string };
 
 export type RESTIniOptions = RPCOptions & { url?: string };
 
@@ -46,7 +33,7 @@ export class RESTClient extends RPC {
     timeout = 30000,
     ...options
   }: RESTIniOptions = {}) {
-    super({ ...options, baseUrl: url + ":" + port, timeout, json: true });
+    super({ ...options, baseUrl: `${url}:${port}`, timeout, json: true });
   }
 
   /**
@@ -56,7 +43,7 @@ export class RESTClient extends RPC {
    * @param {string} [params.format='json'] - Set to 'json' for decoded block contents in JSON, or 'bin' or 'hex' for a serialized block in binary or hex
    */
   async getBlock({ hash, format = "json" }: BlockParams) {
-    return this.get({ uri: "rest/block/" + hash + "." + format });
+    return this.get({ uri: `/rest/block/${hash}.${format}` });
   }
 
   /**
@@ -66,7 +53,7 @@ export class RESTClient extends RPC {
    * @param {string} [params.format='json'] - Set to 'json' for decoded block contents in JSON, or 'bin' or 'hex' for a serialized block in binary or hex
    */
   async getBlockNoTxDetails({ hash, format = "json" }: BlockParams) {
-    return this.get({ uri: "rest/block/notxdetails/" + hash + "." + format });
+    return this.get({ uri: `/rest/block/notxdetails/${hash}.${format}` });
   }
 
   /**
@@ -76,8 +63,7 @@ export class RESTClient extends RPC {
    * @param {string} [params.format='json'] - Set to `json`, `bin` or `hex`.
    */
   async getBlockHashByHeight({ height, format = "json" }: BlockHeightParams) {
-    const uri = "/rest/blockhashbyheight/" + height + "." + format;
-    return this.get({ uri });
+    return this.get({ uri: `/rest/blockhashbyheight/${height}.${format}` });
   }
 
   /**
@@ -99,10 +85,10 @@ export class RESTClient extends RPC {
     outpoints,
     format = "json",
   }: UtxosParams) {
-    let uri = "rest/getutxos" + (checkmempool ? "/checkmempool" : "");
+    let uri = `rest/getutxos${checkmempool ? "/checkmempool" : ""}`;
     outpoints = !Array.isArray(outpoints) ? [outpoints] : outpoints;
     for (const { txid, n } of outpoints) {
-      uri += "/" + txid + "-" + n;
+      uri += `/${txid}-${n}`;
     }
     return this.get({ uri: uri + "." + format });
   }
@@ -115,8 +101,7 @@ export class RESTClient extends RPC {
    * @param {string} [params.format='json'] - Set to `json`, `bin` or `hex`.
    */
   async getHeaders({ count, hash, format = "json" }: HeaderParams) {
-    const uri = "rest/headers/" + count + "/" + hash + "." + format;
-    return this.get({ uri });
+    return this.get({ uri: `rest/headers/${count}/${hash}.${format}` });
   }
 
   /**
@@ -140,6 +125,6 @@ export class RESTClient extends RPC {
    * @param {string} [params.format='json'] - Set to `json`, `bin` or `hex`.
    */
   async getTx({ txid, format = "json" }: TxParams) {
-    return this.get({ uri: "rest/tx/" + txid + "." + format });
+    return this.get({ uri: `rest/tx/${txid}.${format}` });
   }
 }
