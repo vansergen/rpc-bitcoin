@@ -1,0 +1,6 @@
+src/
+test/
+tsconfig.json
+index.ts
+.github/
+.eslintrc.json
