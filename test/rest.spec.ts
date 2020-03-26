@@ -52,13 +52,13 @@ suite("RESTClient", () => {
       {
         txid:
           "e346be6c1ef4d24f3a26ea8e1b45a2645d339fbee9da8b9dc03aeef1c4179716",
-        n: 0
+        n: 0,
       },
       {
         txid:
           "e346be6c1ef4d24f3a26ea8e1b45a2645d339fbee9da8b9dc03aeef1c4179716",
-        n: 1
-      }
+        n: 1,
+      },
     ];
     const format = "hex";
     await client.getUtxos({ checkmempool, outpoints, format });

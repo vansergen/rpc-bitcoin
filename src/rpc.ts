@@ -232,7 +232,8 @@ export type BumpFeeParams = {
   txid: string;
   options?: EstimateMode & { replaceable?: boolean } & (
       | { confTarget?: number }
-      | { totalFee?: number });
+      | { totalFee?: number }
+    );
 };
 
 export type CreateWalletParams = {
@@ -284,7 +285,8 @@ export type ImportMultiRequest = {
       witnessscript?: string;
       pubkeys?: string[];
       keys?: string[];
-    });
+    }
+);
 
 export type ImportMultiParams = {
   requests: ImportMultiRequest[];
@@ -700,7 +702,7 @@ export class RPCClient extends RESTClient {
    */
   async prioritisetransaction({
     txid,
-    fee_delta
+    fee_delta,
   }: PrioritiseTransactionParams) {
     return this.rpc("prioritisetransaction", { txid, fee_delta });
   }
@@ -806,7 +808,7 @@ export class RPCClient extends RESTClient {
     subnet,
     command,
     bantime = 0,
-    absolute = false
+    absolute = false,
   }: SetBanParams) {
     return this.rpc("setban", { subnet, command, bantime, absolute });
   }
@@ -845,12 +847,12 @@ export class RPCClient extends RESTClient {
   async converttopsbt({
     hexstring,
     permitsigdata = false,
-    iswitness
+    iswitness,
   }: ConvertToPsbtParams) {
     return this.rpc("converttopsbt", {
       hexstring,
       permitsigdata,
-      iswitness
+      iswitness,
     });
   }
 
@@ -861,13 +863,13 @@ export class RPCClient extends RESTClient {
     inputs,
     outputs,
     locktime = 0,
-    replaceable = false
+    replaceable = false,
   }: CreateTransactionParams) {
     return this.rpc("createpsbt", {
       inputs,
       outputs,
       locktime,
-      replaceable
+      replaceable,
     });
   }
 
@@ -878,13 +880,13 @@ export class RPCClient extends RESTClient {
     inputs,
     outputs,
     locktime = 0,
-    replaceable = false
+    replaceable = false,
   }: CreateTransactionParams) {
     return this.rpc("createrawtransaction", {
       inputs,
       outputs,
       locktime,
-      replaceable
+      replaceable,
     });
   }
 
@@ -900,7 +902,7 @@ export class RPCClient extends RESTClient {
    */
   async decoderawtransaction({
     hexstring,
-    iswitness
+    iswitness,
   }: DecodeRawTransactionParams) {
     return this.rpc("decoderawtransaction", { hexstring, iswitness });
   }
@@ -931,7 +933,7 @@ export class RPCClient extends RESTClient {
       {
         hexstring,
         options,
-        iswitness
+        iswitness,
       },
       wallet || this.wallet
     );
@@ -943,7 +945,7 @@ export class RPCClient extends RESTClient {
   async getrawtransaction({
     txid,
     verbose = false,
-    blockhash
+    blockhash,
   }: GetRawTransactionParams) {
     return this.rpc("getrawtransaction", { txid, verbose, blockhash });
   }
@@ -960,7 +962,7 @@ export class RPCClient extends RESTClient {
    */
   async sendrawtransaction({
     hexstring,
-    allowhighfees = false
+    allowhighfees = false,
   }: SendRawTransactionParams) {
     return this.rpc("sendrawtransaction", { hexstring, allowhighfees });
   }
@@ -972,13 +974,13 @@ export class RPCClient extends RESTClient {
     hexstring,
     privkeys,
     prevtxs,
-    sighashtype = "ALL"
+    sighashtype = "ALL",
   }: SignRawTransactionWithKeyParams) {
     return this.rpc("signrawtransactionwithkey", {
       hexstring,
       privkeys,
       prevtxs,
-      sighashtype
+      sighashtype,
     });
   }
 
@@ -987,7 +989,7 @@ export class RPCClient extends RESTClient {
    */
   async testmempoolaccept({
     rawtxs,
-    allowhighfees = false
+    allowhighfees = false,
   }: TestmemPoolAcceptParams) {
     return this.rpc("testmempoolaccept", { rawtxs, allowhighfees });
   }
@@ -1005,7 +1007,7 @@ export class RPCClient extends RESTClient {
   async createmultisig({
     nrequired,
     keys,
-    address_type = "legacy"
+    address_type = "legacy",
   }: CreateMultiSigParams) {
     return this.rpc("createmultisig", { nrequired, keys, address_type });
   }
@@ -1022,7 +1024,7 @@ export class RPCClient extends RESTClient {
    */
   async estimatesmartfee({
     conf_target,
-    estimate_mode = "CONSERVATIVE"
+    estimate_mode = "CONSERVATIVE",
   }: EstimateSmartFeeParams) {
     return this.rpc("estimatesmartfee", { conf_target, estimate_mode });
   }
@@ -1039,7 +1041,7 @@ export class RPCClient extends RESTClient {
    */
   async signmessagewithprivkey({
     privkey,
-    message
+    message,
   }: SignMessageWithPrivKeyParams) {
     return this.rpc("signmessagewithprivkey", { privkey, message });
   }
@@ -1109,12 +1111,12 @@ export class RPCClient extends RESTClient {
   async createwallet({
     wallet_name,
     disable_private_keys = false,
-    blank = false
+    blank = false,
   }: CreateWalletParams) {
     return this.rpc("createwallet", {
       wallet_name,
       disable_private_keys,
-      blank
+      blank,
     });
   }
 
@@ -1364,7 +1366,7 @@ export class RPCClient extends RESTClient {
       minconf = 1,
       include_empty = false,
       include_watchonly = false,
-      address_filter
+      address_filter,
     }: ListReceivedByAddressParams,
     wallet?: string
   ) {
@@ -1382,7 +1384,7 @@ export class RPCClient extends RESTClient {
     {
       minconf = 1,
       include_empty = false,
-      include_watchonly = false
+      include_watchonly = false,
     }: ListReceivedByLabelParams,
     wallet?: string
   ) {
@@ -1401,7 +1403,7 @@ export class RPCClient extends RESTClient {
       blockhash,
       target_confirmations = 1,
       include_watchonly = false,
-      include_removed = true
+      include_removed = true,
     }: ListSinceBlockParams,
     wallet?: string
   ) {
@@ -1420,7 +1422,7 @@ export class RPCClient extends RESTClient {
       label,
       count = 10,
       skip = 0,
-      include_watchonly = false
+      include_watchonly = false,
     }: ListTransactionsParams,
     wallet?: string
   ) {
@@ -1440,7 +1442,7 @@ export class RPCClient extends RESTClient {
       maxconf = 9999999,
       addresses,
       include_unsafe = true,
-      query_options
+      query_options,
     }: ListUnspentParams,
     wallet?: string
   ) {
@@ -1518,7 +1520,7 @@ export class RPCClient extends RESTClient {
       subtractfeefrom,
       replaceable,
       conf_target,
-      estimate_mode = "UNSET"
+      estimate_mode = "UNSET",
     }: SendManyParams,
     wallet?: string
   ) {
@@ -1531,7 +1533,7 @@ export class RPCClient extends RESTClient {
         subtractfeefrom,
         replaceable,
         conf_target,
-        estimate_mode
+        estimate_mode,
       },
       wallet || this.wallet
     );
@@ -1549,7 +1551,7 @@ export class RPCClient extends RESTClient {
       subtractfeefromamount = false,
       replaceable,
       conf_target,
-      estimate_mode = "UNSET"
+      estimate_mode = "UNSET",
     }: SendToAddressParams,
     wallet?: string
   ) {
@@ -1563,7 +1565,7 @@ export class RPCClient extends RESTClient {
         subtractfeefromamount,
         replaceable,
         conf_target,
-        estimate_mode
+        estimate_mode,
       },
       wallet || this.wallet
     );
@@ -1604,7 +1606,7 @@ export class RPCClient extends RESTClient {
     {
       hexstring,
       prevtxs,
-      sighashtype = "ALL"
+      sighashtype = "ALL",
     }: SignRawTransactionWithWalletParams,
     wallet?: string
   ) {
@@ -1634,7 +1636,7 @@ export class RPCClient extends RESTClient {
       outputs,
       locktime = 0,
       options,
-      bip32derivs = false
+      bip32derivs = false,
     }: WalletCreateFundedPsbtParams,
     wallet?: string
   ) {
@@ -1688,7 +1690,7 @@ export class RPCClient extends RESTClient {
       psbt,
       sign = true,
       sighashtype = "ALL",
-      bip32derivs = false
+      bip32derivs = false,
     }: WalletProcessPsbtParams,
     wallet?: string
   ) {

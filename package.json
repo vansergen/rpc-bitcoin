@@ -9,13 +9,16 @@
   },
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "prettier": "prettier -c **/*.{js,md,ts,json}",
+    "build": "rm -fr build && tsc",
+    "fresh-install": "rm -fr node_modules && rm -f package-lock.json && npm install",
+    "prettier": "prettier -c **/*.{md,ts,json}",
+    "prettier:build": "prettier -c **/*.{js} --write",
     "prettier-write": "npm run prettier -- --write",
-    "lint": "eslint --ext .ts,.js ./",
+    "lint": "eslint --ext .ts ./",
+    "lint:build": "eslint --ext .js ./ --fix",
     "lint-fix": "npm run lint -- --fix",
     "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts",
-    "prepublishOnly": "npm run prettier && npm run lint && npm run build && npm run prettier-write && npm run lint-fix",
+    "prepublishOnly": "npm run prettier && npm run lint && npm run build && prettier:build && lint:build",
     "postpublish": "rm -fr build"
   },
   "repository": {
@@ -33,20 +36,41 @@
   },
   "homepage": "https://github.com/vansergen/rpc-bitcoin#readme",
   "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "@typescript-eslint/eslint-plugin": "^2.6.0",
-    "@typescript-eslint/parser": "^2.6.0",
-    "eslint": "^6.6.0",
-    "mocha": "^6.2.2",
-    "nock": "^11.7.0",
-    "prettier": "^1.18.2",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.4"
+    "@types/mocha": "^7.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.9",
+    "mocha": "^7.1.1",
+    "nock": "^12.0.3",
+    "prettier": "^2.0.2",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "rpc-request": "^3.1.1"
+    "rpc-request": "^4.0.9"
   },
   "directories": {
     "test": "test"
+  },
+  "lint-staged": {
+    "*.{ts,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts,js}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "funding": {
+    "type": "Coinbase Commerce",
+    "url": "https://commerce.coinbase.com/checkout/89a70363-3d1f-4aa0-8d2a-1424ed9e87ee"
   }
 }

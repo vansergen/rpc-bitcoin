@@ -1,4 +1,4 @@
-import { RPC, RPCOtpions } from "rpc-request";
+import { RPC, RPCOptions } from "rpc-request";
 
 export type formatParam = {
   format?: "json" | "hex" | "bin";
@@ -30,9 +30,7 @@ export type TxParams = formatParam & {
   txid: string;
 };
 
-export type RESTIniOptions = RPCOtpions & {
-  url?: string;
-};
+export type RESTIniOptions = RPCOptions & { url?: string };
 
 export class RESTClient extends RPC {
   /**
@@ -99,7 +97,7 @@ export class RESTClient extends RPC {
   async getUtxos({
     checkmempool = true,
     outpoints,
-    format = "json"
+    format = "json",
   }: UtxosParams) {
     let uri = "rest/getutxos" + (checkmempool ? "/checkmempool" : "");
     outpoints = !Array.isArray(outpoints) ? [outpoints] : outpoints;
