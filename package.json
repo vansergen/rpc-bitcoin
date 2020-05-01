@@ -19,7 +19,9 @@
     "lint-fix": "npm run lint -- --fix",
     "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts",
     "prepublishOnly": "npm run prettier && npm run lint && npm run build && npm run prettier:build && npm run lint:build",
-    "postpublish": "rm -fr build"
+    "postpublish": "rm -fr build",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -49,7 +51,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "rpc-request": "^4.0.9"
+    "rpc-request": "^4.0.9",
+    "snyk": "^1.316.1"
   },
   "directories": {
     "test": "test"
@@ -72,5 +75,6 @@
   "funding": {
     "type": "Coinbase Commerce",
     "url": "https://commerce.coinbase.com/checkout/89a70363-3d1f-4aa0-8d2a-1424ed9e87ee"
-  }
+  },
+  "snyk": true
 }
