@@ -20,7 +20,7 @@
     "test": "mocha -r ts-node/register --full-trace --ui tdd --bail --extension ts",
     "prepublishOnly": "npm run prettier && npm run lint && npm run build && npm run prettier:build && npm run lint:build",
     "postpublish": "rm -fr build",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk-protect",
     "prepare": "npm run snyk-protect"
   },
   "repository": {
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "rpc-request": "^4.0.9",
-    "snyk": "^1.388.0"
+    "@snyk/protect": "latest"
   },
   "directories": {
     "test": "test"
