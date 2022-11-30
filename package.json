@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "rpc-request": "^4.0.9",
-    "snyk": "^1.388.0"
+    "snyk": "^1.1064.0"
   },
   "directories": {
     "test": "test"
